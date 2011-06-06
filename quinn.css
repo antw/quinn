@@ -1,0 +1,200 @@
+body { padding: 75px 75px 75px 175px; }
+
+/**
+ * DEBUGGING STYLES
+ * ================
+ */
+
+.quinn { width: 500px; margin-bottom: 10px; }
+
+.debug .quinn,
+.debug .quinn .bar,
+.debug .quinn .value,
+.debug .reset,
+.debug .minus,
+.debug .plus,
+.debug .help {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#hover-label, #buttons, #stretch {
+  background: url(../images/arrows.png) 0 -100px no-repeat;
+  height: 27px;
+  position: absolute;
+  top: 145px;
+  left: 35px;
+  width: 122px;
+}
+
+#buttons {
+  background-position: 0 -50px;
+  left: 705px;
+  top: 145px;
+  width: 153px;
+}
+
+#stretch {
+  background-position: 0 0;
+  width: 78px;
+  height: 29px;
+  top: 45px;
+  left: 275px;
+}
+
+code     { font-family: Menlo, Monaco, monospace; font-size: 12px; }
+
+a        { color: #3e86bd; }
+a:active { color: #32648a; }
+
+.information a       { text-decoration: none; }
+.information a:hover { text-decoration: underline; }
+
+/**
+ * SLIDER STYLES
+ * =============
+ */
+
+.quinn { position: relative; margin-bottom: 25px; }
+
+/* Elements with sprited backgrounds. */
+
+.quinn .bar .left, .quinn .bar .main, .quinn .bar .right,
+.quinn .active-bar .left, .quinn .active-bar .main, .quinn
+.active-bar .right, .quinn .handle,
+.quinn .reset, .quinn .minus, .quinn .plus, .quinn .help {
+  background-image: url(images/default.png);
+  background-repeat: no-repeat;
+}
+
+/* Float clearing */
+
+.quinn {
+  overflow: hidden;
+}
+
+/**
+ * Slider bar components
+ * ---------------------
+ *
+ * The left, main, and right elements are purely visual, and display the
+ * curve to the left, the main slider bar background, and the curve to
+ * the right. They're positionned absolutely to the .quinn element.
+ *
+ * An extra 12px space is added to the left and right, since the handle
+ * width is 24px; this allows the handle to look correct when the slider
+ * is all the way to the left or right.
+ */
+
+.quinn .bar, .quinn .active-bar {
+  height: 18px;
+  float: left;
+  position: relative;
+  width: 140px;
+}
+
+.quinn .bar .left, .quinn .bar .main, .quinn .bar .right,
+.quinn .active-bar .left, .quinn .active-bar .main,
+.quinn .active-bar .right {
+  height: 18px;
+  position: absolute;
+  top: 7px;
+  z-index: 1;
+}
+
+.quinn .bar .left, .quinn .bar .right,
+.quinn .active-bar .left, .quinn .active-bar .right {
+  height: 4px;
+  width: 4px
+}
+
+.quinn .bar .left, .quinn .active-bar .left {
+  background-position: -50px 0;
+  left: 0;
+}
+
+.quinn .bar .main, .quinn .active-bar .main {
+  background-position: 0 -150px;
+  background-repeat: repeat-x;
+  left: 4px;
+  right: 4px;
+}
+
+.quinn .bar .right, .quinn .active-bar .right {
+  background-position: -56px 0;
+  right: 0px;
+}
+
+/**
+ * Active slider
+ * -------------
+ *
+ * The active slider is a style applied to the area to the bar on the
+ * left of the handle.
+ */
+
+.quinn .active-bar {
+  min-width: 10px;
+  width: auto;
+}
+
+.quinn .active-bar .left,
+.quinn .active-bar .main,
+.quinn .active-bar .right {
+  z-index: 2;
+}
+
+.quinn .active-bar .left {
+  background-position: -70px 0;
+}
+
+.quinn .active-bar .main {
+  background-position: 0 -200px;
+  right: 4px;
+}
+
+.quinn .active-bar .right {
+  background-position: -76px 0;
+  right: 0px;
+}
+
+/**
+ * Slider handle
+ * -------------
+ *
+ * The slider handle is the main button on which the user may click and
+ * drag in order to adjust the slider value.
+ */
+
+.quinn .movable-range {
+  height: 18px;
+  float: left;
+  position: relative;
+
+  /* a slightly negative left margin allows the handle to "dangle" over the
+   * left of the slider bar */
+  /* margin-left: -144px; [> width(.bar) - width(.handle) / 4 <]*/
+
+  /* the full width should be the width of the slider bar, with a little
+   * added so as to allow part of the handle to "dangle" over the
+   * right of the slider bar */
+  /* width: 126px; [> width(.bar) - width(.handle) * 3/4 <]*/
+}
+
+.quinn .handle {
+  background-position: 0 0;
+  cursor: default;
+  height: 18px;
+  left: 0%;
+  outline: none;
+  position: absolute;
+  width: 24px;
+  z-index: 5;
+}
+
+.quinn .handle:active, .quinn .handle.active {
+  background-position: 0 -30px;
+}
+
+.quinn .handle:focus {
+  background-position: 0 -60px;
+}
