@@ -170,6 +170,10 @@
         Pri eirmod feugiat assentior et.
     </p>
 
+    <div class="example">
+        <pre><code>$('.slider').quinn();</code></pre>
+    </div>
+
     <h2>Options</h2>
 
     <p>
@@ -177,7 +181,20 @@
         when initializing: <code>$(selector).quinn(optionsHash);</code>
     </p>
 
-    <h3>Setting an initial value <code>value: number</code></h3>
+    <h3>Minima and Maxima <code>range: [min, max]</code></h3>
+
+    <p>
+        By default, the lowest value of a Quinn slider is 0, and the highest
+        is 100. By supplying a <strong>range</strong> option, you can change
+        these to any values you wish. <strong>range</strong> should be a
+        two-element array in the format <code>[minimum, maximum]</code>.
+    </p>
+
+    <div class="example">
+        <pre title="Turn it up to eleven!"><code>$('.slider').quinn({ range: [0, 11] });</code></pre>
+    </div>
+
+    <h3>Initial values <code>value: number</code></h3>
 
     <p>
         Since you probably don&rsquo;t want to initialize the slider at the
@@ -185,10 +202,7 @@
         allows you to supply a value which should be used instead.
     </p>
 
-    <div class="example with-value">
-        <div class="slider"></div>
-        <div class="value"></div>
-
+    <div class="example">
         <pre><code>$('.slider').quinn({ value: 25 });</code></pre>
     </div>
 
@@ -202,11 +216,17 @@
         acceptable value.
     </p>
 
-    <div class="example interval">
-        <div class="slider"></div>
-        <div class="value"></div>
+    <div class="example">
+        <pre><code>$('.slider').quinn({ interval: 10, value: 8 });</code></pre>
+    </div>
 
-        <pre><code>$('.slider').quinn({ interval: 5, value: 3 });</code></pre>
+    <p>
+        Combined with the <strong>range</strong> option,
+        <strong>interval</strong> can be powerful:
+    </p>
+
+    <div class="example interval">
+        <pre><code>$('.slider').quinn({ range: [0, 1.21], interval: 0.01 });</code></pre>
     </div>
 
     <h3>Selectable ranges <code>selectable: [min, max]</code></h3>
@@ -217,10 +237,7 @@
         be passed when creating the slider instance.
     </p>
 
-    <div class="example selectable">
-        <div class="slider"></div>
-        <div class="value"></div>
-
+    <div class="example">
         <pre><code>$('.slider').quinn({ selectable: [35, 80] });</code></pre>
     </div>
 
@@ -233,11 +250,33 @@
         is used. The lower value is instead rounded to 40.
     </p>
 
-    <div class="example selectable-interval">
-        <div class="slider"></div>
-        <div class="value"></div>
-
+    <div class="example">
         <pre><code>$('.slider').quinn({ selectable: [35, 80], interval: 20 });</code></pre>
+    </div>
+
+    <h3>onChange callback: <code>onChange: function</code></h3>
+
+    <div class="example">
+        <pre><code>$('.slider').quinn({
+    onChange: function (newValue, slider) {
+        console.log(newValue);
+    }
+});</code></pre>
+    </div>
+
+    <p>
+       By explicitly returning false in your callback, you can cancel the
+       slider value change.
+    </p>
+
+    <div class="example">
+        <pre><code>$('.slider').quinn({
+    onChange: function (newValue, slider) {
+        if (newValue > 40 && newValue < 60) {
+            return false;
+        }
+    }
+});</code></pre>
     </div>
 
     <script type="text/javascript" src="vendor/jquery-1.6.1.js"></script>
@@ -252,16 +291,31 @@
                 // only to the current example (rather than all .slider
                 // elements) and eval (ooh, evil).
                 var code = $('code:first', this).text(),
-                    self = $(this),
+                    self = $(this), customCallback,
                     options;
 
+                self.prepend($('<div class="value"></div>'));
+                self.prepend($('<div class="slider"></div>'));
+
                 code = code.replace(/\$\('\.slider'\)\.quinn\(/, '');
-                code = code.replace(/\);/, '');
+                code = code.replace(/\);$/, '');
 
                 options = eval('Object(' + code + ')');
+                customCallback = options.onChange;
+
                 options = $.extend(options, {
-                    onChange: function (newValue) {
-                        self.children('.value').text(newValue);
+                    onChange: function (newValue, slider) {
+                        var retVal = true;
+
+                        if (customCallback) {
+                            retVal = customCallback(newValue, slider);
+                        }
+
+                        if (retVal !== false) {
+                            self.children('.value').text(newValue);
+                        }
+
+                        return retVal;
                     }
                 });
 
