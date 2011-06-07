@@ -181,7 +181,7 @@
 
         /* baseline */
 
-        h2, p, ul {
+        h2, h3, h4, p, ul {
             margin: 24px 0;
         }
 
@@ -237,6 +237,19 @@
           padding: 23px 24px 24px;
       }
 
+      dl {
+        overflow: auto;
+      }
+
+      dt, dd {
+        float: left;
+        width: 50%;
+      }
+
+      dd {
+        font-style: italic;
+      }
+
       code {
           font: 13px/18px Menlo, Monaco, monospace;
       }
@@ -258,6 +271,7 @@
       h2 {
           font-size: 24px;
           font-weight: bold;
+          margin-top: 48px;
       }
 
       h3 {
@@ -269,6 +283,11 @@
       h3 code {
           color: #5f676c;
           margin-left: 8px;
+      }
+
+      h4 {
+        font-weight: bold;
+        margin-bottom: -24px;
       }
 
       h1, h2, h3 { margin-left: -24px; }
@@ -306,6 +325,34 @@
         <pre><code>$('.slider').quinn();</code></pre>
     </div>
 
+    <h2>Downloads</h2>
+
+    <dl>
+      <dt>
+        <a href="http://antw.github.com/quinn/jquery.quinn.js">Development Version (0.0.1)</a>
+      </dt>
+      <dd>11.2kb, Uncompressed with comments</dd>
+      <dt>Production Version (0.0.1)</dt>
+      <dd>??kb, Minified and Gzipped</dd>
+    </dl>
+
+    <h2>Table of Contents</h2>
+    <h4>Options</h4>
+
+    <p>
+      <a href="#range">Minima and Maxima</a>,
+      <a href="#value">Inital Values</a>,
+      <a href="#interval">Intervals</a>,
+      <a href="#selectable">Selectable Ranges</a>
+    </p>
+
+    <h4>Callbacks</h4>
+
+    <p>
+      <a href="#setup">onSetup</a>,
+      <a href="#change">onChange</a>
+    </p>
+
     <h2>Options</h2>
 
     <p>
@@ -313,7 +360,7 @@
         when initializing: <code>$(selector).quinn(optionsHash);</code>
     </p>
 
-    <h3>Minima and Maxima <code>range: [min, max]</code></h3>
+    <h3 id="range">Minima and Maxima <code>range: [min, max]</code></h3>
 
     <p>
         By default, the lowest value of a Quinn slider is 0, and the highest
@@ -326,7 +373,7 @@
         <pre title="Turn it up to eleven!"><code>$('.slider').quinn({ range: [0, 11] });</code></pre>
     </div>
 
-    <h3>Initial values <code>value: number</code></h3>
+    <h3 id="value">Initial Values <code>value: number</code></h3>
 
     <p>
         Since you probably don&rsquo;t want to initialize the slider at the
@@ -338,7 +385,7 @@
         <pre><code>$('.slider').quinn({ value: 25 });</code></pre>
     </div>
 
-    <h3>Intervals <code>interval: number</code></h3>
+    <h3 id="interval">Intervals <code>interval: number</code></h3>
 
     <p>
         The <strong>interval</strong> changes the slider so that only values
@@ -361,7 +408,7 @@
         <pre><code>$('.slider').quinn({ range: [0, 1.21], interval: 0.01 });</code></pre>
     </div>
 
-    <h3>Selectable ranges <code>selectable: [min, max]</code></h3>
+    <h3 id="selectable">Selectable Ranges <code>selectable: [min, max]</code></h3>
 
     <p>
         Sometimes it is desirable that only part of the slider may be selected
@@ -393,7 +440,7 @@
         like any other option.
     </p>
 
-    <h3>onSetup <code>onSetup: function (currentValue, quinn)</code></h3>
+    <h3 id="setup">onSetup <code>onSetup: function (currentValue, quinn)</code></h3>
 
     <p>
         <strong>onSetup</strong> is run only once; immediately after the Quinn
@@ -402,7 +449,7 @@
         your value was not value), and the Quinn instance.
     </p>
 
-    <h3>onChange <code>onChange: function (newValue, quinn)</code></h3>
+    <h3 id="change">onChange <code>onChange: function (newValue, quinn)</code></h3>
 
     <p>
         The <strong>onChange</strong> callback is run each time the slider
