@@ -378,12 +378,45 @@
         <pre><code>$('.slider').quinn({ selectable: [35, 80], interval: 20 });</code></pre>
     </div>
 
-    <h3>onChange callback: <code>onChange: function</code></h3>
+    <h2>Callbacks</h2>
 
-    <div class="example">
+    <p>
+        Callbacks are supplied when calling <code>jQuery.quinn</code> just
+        like any other option.
+    </p>
+
+    <h3>onSetup <code>onSetup: function (currentValue, quinn)</code></h3>
+
+    <p>
+        <strong>onSetup</strong> is run only once; immediately after the Quinn
+        constructor has completed. Two arguments are supplied: the current
+        value (which may be different to the initial value you supplied, if
+        your value was not value), and the Quinn instance.
+    </p>
+
+    <h3>onChange <code>onChange: function (newValue, quinn)</code></h3>
+
+    <p>
+        The <strong>onChange</strong> callback is run each time the slider
+        value changes. The function is supplied with two arguments: the new
+        slider value, and the Quinn instance the previous slider value can be
+        retrieved with <code>quinn.value</code> since the <code>value</code>
+        attribute is only update after the callback has completed.
+    </p>
+
+    <div class="example onchange-example">
         <pre><code>$('.slider').quinn({
     onChange: function (newValue, slider) {
-        console.log(newValue);
+        var h = (128 - newValue * 1.28).toFixed(),
+            l = (35 + newValue * 0.1).toFixed();
+
+        $('.onchange-example .value').
+            css('color', 'hsl(' + h + ', 50%, ' + l + '%)');
+    },
+
+    onSetup: function (value, slider) {
+        // Run the onChange callback immediately.
+        slider.options.onChange.call(slider, value);
     }
 });</code></pre>
     </div>
@@ -408,63 +441,7 @@
     <script type="text/javascript" src="vendor/underscore-1.1.6.js"></script>
     <script type="text/javascript" src="jquery.quinn.js"></script>
     <script type="text/javascript" src="vendor/highlight.pack.js"></script>
-
-    <script type="text/javascript">
-        $(function () {
-            $('.example').each(function () {
-                // Retrieve the example code, adjust it so that it applies
-                // only to the current example (rather than all .slider
-                // elements) and eval (ooh, evil).
-                var self = $(this),
-                    code = self.find('code'),
-                    self = $(this), customCallback,
-                    customCallback, options, precision;
-
-                self.prepend($('<div class="value"></div>'));
-                self.prepend($('<div class="slider"></div>'));
-
-                code.addClass('language-javascript');
-
-                code = code.text();
-                code = code.replace(/\$\('\.slider'\)\.quinn\(/, '');
-                code = code.replace(/\);$/, '');
-
-                options = eval('Object(' + code + ')');
-                customCallback = options.onChange;
-
-                // Format the numbers nicely, using the same number of decimal
-                // places as the interval. Surely there's a nicer way to
-                // achive this...
-                precision = (options.interval || 1).toString().split('.');
-                precision = precision[1] ? precision[1].length : 0;
-
-                options = $.extend(options, {
-                    onChange: function (newValue, slider) {
-                        var retVal = true;
-
-                        if (customCallback) {
-                            retVal = customCallback(newValue, slider);
-                        }
-
-                        if (retVal !== false) {
-                            self.children('.value').text(
-                                newValue.toFixed(precision));
-                        }
-
-                        return retVal;
-                      },
-                      onSetup: function (value, slider) {
-                          self.children('.value').text(
-                              value.toFixed(precision));
-                      }
-                });
-
-                self.children('.slider').quinn(options);
-            });
-
-            hljs.initHighlightingOnLoad();
-        });
-    </script>
+    <script type="text/javascript" src="vendor/examples.js"></script>
 
   </body>
 </html>
