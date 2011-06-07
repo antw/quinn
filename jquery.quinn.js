@@ -14,7 +14,7 @@
     function Quinn (wrapper, options) {
         var selectMin, selectMax;
 
-        _.bindAll(this, 'clickPosition', 'enableDrag');
+        _.bindAll(this, 'clickBar', 'enableDrag');
 
         this.wrapper    = wrapper;
         this.options    = $.extend({}, Quinn.defaults, options);
@@ -52,7 +52,7 @@
         this.setValue(this.options.value);
 
         this.wrapper.
-            delegate('.bar',    'click',     this.clickPosition).
+            delegate('.bar',    'click',     this.clickBar).
             delegate('.handle', 'mousedown', this.enableDrag);
     }
 
@@ -146,7 +146,7 @@
         }
     };
 
-    Quinn.prototype.setValue = function (newValue) {
+    Quinn.prototype.setValue = function (newValue, animate) {
         if (newValue === null) {
             newValue = this.range[0];
         }
@@ -178,14 +178,14 @@
 
         percent = (newValue - this.range[0]) / delta * 100;
 
-        this.setPosition(percent.toString() + '%');
+        this.setPosition(percent.toString() + '%', animate);
         this.value = newValue;
 
         return true;
     }
 
-    Quinn.prototype.clickPosition = function (event) {
-        this.setPosition(this.__positionFromMouse(event.pageX), true);
+    Quinn.prototype.clickBar = function (event) {
+        this.setValue(this.__valueFromMouse(event.pageX), true);
         return event.preventDefault();
     };
 
