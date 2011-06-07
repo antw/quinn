@@ -1,60 +1,9 @@
-body { padding: 75px 75px 75px 175px; }
-
-/**
- * DEBUGGING STYLES
- * ================
- */
-
-.quinn { width: 500px; margin-bottom: 10px; }
-
-.debug .quinn,
-.debug .quinn .bar,
-.debug .quinn .value,
-.debug .reset,
-.debug .minus,
-.debug .plus,
-.debug .help {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-#hover-label, #buttons, #stretch {
-  background: url(../images/arrows.png) 0 -100px no-repeat;
-  height: 27px;
-  position: absolute;
-  top: 145px;
-  left: 35px;
-  width: 122px;
-}
-
-#buttons {
-  background-position: 0 -50px;
-  left: 705px;
-  top: 145px;
-  width: 153px;
-}
-
-#stretch {
-  background-position: 0 0;
-  width: 78px;
-  height: 29px;
-  top: 45px;
-  left: 275px;
-}
-
-code     { font-family: Menlo, Monaco, monospace; font-size: 12px; }
-
-a        { color: #3e86bd; }
-a:active { color: #32648a; }
-
-.information a       { text-decoration: none; }
-.information a:hover { text-decoration: underline; }
-
 /**
  * SLIDER STYLES
  * =============
  */
 
-.quinn { position: relative; margin-bottom: 25px; }
+.quinn { position: relative; }
 
 /* Elements with sprited backgrounds. */
 

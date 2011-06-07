@@ -6,27 +6,239 @@
     <link rel="stylesheet" type="text/css" href="quinn.css" />
 
     <style>
+        /* http://meyerweb.com/eric/tools/css/reset/
+           v2.0b2 | 201101
+           NOTE: THIS IS A BETA VERSION (see previous line)
+           USE WITH CAUTION AND TEST WITH ABANDON */
+
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header, hgroup,
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure,
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+        body {
+            line-height: 1;
+        }
+        ol, ul {
+            list-style: none;
+        }
+        blockquote, q {
+            quotes: none;
+        }
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content: '';
+            content: none;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        /* baseline */
+
+        h2, p, ul {
+            margin: 24px 0;
+        }
+
       body {
+        background: #edf2f7;
+        color: #282c2f;
+        font: 16px/24px "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
         margin: 0;
-        padding: 50px;
-        width: 500px;
+        padding: 48px 96px;
+        width: 550px;
+      }
+
+      strong {
+          font-weight: bold;
+      }
+
+      .example {
+          background: white;
+          border: 1px solid #c6cdd1;
+          border-bottom-color: #bdc3c7;
+          border-radius: 4px;
+          box-shadow: 0 1px 0 #dce4e9;
+          overflow: hidden;
+          margin: 23px 0 25px;
+          padding: 23px;
+          /* width is 487px */
+      }
+
+      .example .slider {
+          border-right: 1px solid #d9e0e4;
+          float: left;
+          margin: -24px 0;
+          padding: 27px 24px 27px 0;
+          width: 375px;
+      }
+
+      .example .value {
+          font: bold 15px/1 "Helvetica Neue", Arial, Helvetica, sans-serif;
+          float: left;
+          min-height: 45px;
+          padding: 3px 0 0 25px;
+          text-align: center;
+          width: 73px;
+      }
+
+      .example pre {
+          background: #f8fbfd;
+          border-top: 1px solid #d9e0e4;
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+          clear: both;
+          margin: 0 -24px -24px;
+          padding: 23px 24px 24px;
+      }
+
+      code {
+          font: 13px/18px Menlo, Monaco, monospace;
       }
 
       h1 {
-        border-bottom: 1px solid #ccc;
-        font: bold 18px Helvetica;
-        padding-bottom: 9px;
-        margin: 0 0 30px 0;
+          font-style: italic;
+          font-size: 38px;
+          line-height: 36px;
+          margin: 12px 0 24px;
       }
+
+      h1 .subtext {
+          color: #828a8e;
+          font-weight: normal;
+          font-size: 26px;
+          line-height: 0;
+      }
+
+      h2 {
+          font-size: 24px;
+          font-weight: bold;
+      }
+
+      h3 {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: -12px;
+      }
+
+      h3 code {
+          color: #5f676c;
+          margin-left: 8px;
+      }
+
+      h1, h2, h3 { margin-left: -24px; }
+
+      p code {
+          color: #5f676c;
+      }
+
+      a        { color: #42749b; text-decoration: none; }
+      a:hover  { text-decoration: underline }
+      a:active { color: #2c4e69; }
     </style>
   </head>
 
   <body>
 
-    <h1>Basic Slider</h1>
+    <h1>Quinn <span class="subtext"> &ndash; a jQuery slider library</span></h1>
 
-    <div class="basic-slider"></div>
-    <div class="value"></div>
+    <p>
+    <a href="#">Lorem ipsum</a> dolor sit amet, ex iudico tation eum, eum cu nonumy
+        similique. Regione senserit periculis sea ei, dolores corrumpit est
+        in. Duo ocurreret cotidieque an, no fabulas menandri iudicabit sit.
+        Pri eirmod feugiat assentior et.
+    </p>
+
+    <h2>Options</h2>
+
+    <p>
+        In order to customise the Quinn slider, you may pass extra options
+        when initializing: <code>$(selector).quinn(optionsHash);</code>
+    </p>
+
+    <h3>Setting an initial value <code>value: number</code></h3>
+
+    <p>
+        Since you probably don&rsquo;t want to initialize the slider at the
+        lowest possible value each time, the <strong>value</strong> option
+        allows you to supply a value which should be used instead.
+    </p>
+
+    <div class="example with-value">
+        <div class="slider"></div>
+        <div class="value"></div>
+
+        <pre><code>$('.slider').quinn({ value: 25 });</code></pre>
+    </div>
+
+    <h3>Intervals <code>interval: number</code></h3>
+
+    <p>
+        The <strong>interval</strong> changes the slider so that only values
+        which are divisble by the <strong>interval</strong> may be chosen. If
+        the slider is initialized with a custom value (see above) which is not
+        evenly divisible by the interval, it will be rounded to the nearest
+        acceptable value.
+    </p>
+
+    <div class="example interval">
+        <div class="slider"></div>
+        <div class="value"></div>
+
+        <pre><code>$('.slider').quinn({ interval: 5, value: 3 });</code></pre>
+    </div>
+
+    <h3>Selectable ranges <code>selectable: [min, max]</code></h3>
+
+    <p>
+        Sometimes it is desirable that only part of the slider may be selected
+        by the user. In this case, the <strong>selectable</strong> option may
+        be passed when creating the slider instance.
+    </p>
+
+    <div class="example selectable">
+        <div class="slider"></div>
+        <div class="value"></div>
+
+        <pre><code>$('.slider').quinn({ selectable: [35, 80] });</code></pre>
+    </div>
+
+    <p>
+        When using selectable, your <strong>interval</strong> settings will
+        still be respected, and <strong>selectable</strong> values which are
+        not at one of the interval values will be rounded to the nearest
+        inclusive interval. Note that in the example below the lowest
+        selectable value 35 is not available since <code>interval: 20</code>
+        is used. The lower value is instead rounded to 40.
+    </p>
+
+    <div class="example selectable-interval">
+        <div class="slider"></div>
+        <div class="value"></div>
+
+        <pre><code>$('.slider').quinn({ selectable: [35, 80], interval: 20 });</code></pre>
+    </div>
 
     <script type="text/javascript" src="vendor/jquery-1.6.1.js"></script>
     <script type="text/javascript" src="vendor/jquery.easing.1.3.js"></script>
@@ -34,14 +246,27 @@
     <script type="text/javascript" src="jquery.quinn.js"></script>
 
     <script type="text/javascript">
-        $('.basic-slider').quinn({
-            range: [-5, 100],
-            selectable: [35, 80],
-            interval: 15,
-            value: 50,
-            onChange: function (newValue, slider) {
-                $('.value').text(newValue);
-            }
+        $(function () {
+            $('.example').each(function () {
+                // Retrieve the example code, adjust it so that it applies
+                // only to the current example (rather than all .slider
+                // elements) and eval (ooh, evil).
+                var code = $('code:first', this).text(),
+                    self = $(this),
+                    options;
+
+                code = code.replace(/\$\('\.slider'\)\.quinn\(/, '');
+                code = code.replace(/\);/, '');
+
+                options = eval('Object(' + code + ')');
+                options = $.extend(options, {
+                    onChange: function (newValue) {
+                        self.children('.value').text(newValue);
+                    }
+                });
+
+                self.children('.slider').quinn(options);
+            });
         });
     </script>
 
