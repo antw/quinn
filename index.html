@@ -429,6 +429,7 @@
     <div class="example">
         <pre><code>$('.slider').quinn({
     onChange: function (newValue, slider) {
+        // Prevent selection of 41 to 59.
         if (newValue > 40 && newValue < 60) {
             return false;
         }
