@@ -12,7 +12,7 @@
      * the element events, values, etc.
      */
     function Quinn (wrapper, options) {
-        var rangeMax;
+        var selectMin, selectMax;
 
         _.bindAll(this, 'clickPosition', 'enableDrag');
 
@@ -20,16 +20,31 @@
         this.options    = $.extend({}, Quinn.defaults, options);
         this.isDragging = false;
 
-        // Make sure that the range option given makes sense given the
-        // interval. For example, being given an interval of 2, but the range
-        // [0, 7], the highest value in the range isn't selectable.
-        rangeMax = this.__roundToInterval(this.options.range[1]);
+        // For convenience.
+        this.range      = this.options.range;
+        this.selectable = this.options.selectable ||
+                          this.options.range.slice(0);
 
-        if (rangeMax != this.options.range[1]) {
-            if (rangeMax > this.options.range[1]) {
-                this.options.range[1] = rangeMax - this.options.interval;
+        // The "selectable" values need to be fixes so that they match up
+        // with the "inverval" options. For example, if given an interval of
+        // 2, the selectable range needs to be adjusted so that odd values
+        // are not possible...
+        selectMin = this.__roundToInterval(this.selectable[0]);
+        selectMax = this.__roundToInterval(this.selectable[1]);
+
+        if (selectMin != this.selectable[0]) {
+            if (selectMin < this.selectable[0]) {
+                this.selectable[0] = selectMin + this.options.interval;
             } else {
-                this.options.range[1] = rangeMax;
+                this.selectable[0] = selectMin;
+            }
+        }
+
+        if (selectMax != this.selectable[1]) {
+            if (selectMax > this.selectable[1]) {
+                this.selectable[1] = selectMax - this.options.interval;
+            } else {
+                this.selectable[1] = selectMax;
             }
         }
 
@@ -133,17 +148,13 @@
 
     Quinn.prototype.setValue = function (newValue) {
         if (newValue === null) {
-            newValue = this.options.range[0];
+            newValue = this.range[0];
         }
 
-        var delta = this.options.range[1] - this.options.range[0],
-            position, percent;
+        var delta = this.range[1] - this.range[0], percent;
 
         // Round the value according to the interval settings.
         newValue = this.__roundToInterval(newValue);
-
-        position = newValue - this.options.range[0];
-        percent  = position / delta * 100;
 
         if (newValue === this.value) {
             return false;
@@ -151,10 +162,10 @@
 
         // Adjusting the value may have resulted in it being rounded to a
         // value outside the acceptable range.
-        if (newValue < this.options.range[0]) {
-            newValue = this.options.range[0];
-        } else if (newValue > this.options.range[1]) {
-            newValue = this.options.range[1];
+        if (newValue < this.selectable[0]) {
+            newValue = this.selectable[0];
+        } else if (newValue > this.selectable[1]) {
+            newValue = this.selectable[1];
         }
 
         // Run the onChange callback; if the callback returns false then stop
@@ -164,6 +175,8 @@
                 return false;
             }
         }
+
+        percent = (newValue - this.range[0]) / delta * 100;
 
         this.setPosition(percent.toString() + '%');
         this.value = newValue;
@@ -229,9 +242,9 @@
 
     Quinn.prototype.__valueFromMouse = function (mousePosition) {
         var percent = this.__positionFromMouse(mousePosition),
-            delta   = this.options.range[1] - this.options.range[0];
+            delta   = this.range[1] - this.range[0];
 
-        return this.options.range[0] + delta * (percent / 100);
+        return this.range[0] + delta * (percent / 100);
     };
 
     Quinn.prototype.__positionFromMouse = function (mousePosition) {
@@ -250,7 +263,7 @@
             barPosition = mousePosition - this.bar.offset().left;
         }
 
-        return barPosition / barWidth * 100
+        return barPosition / barWidth * 100;
     };
 
     /**
@@ -261,8 +274,16 @@
      * maximum range options.
      */
     Quinn.prototype.__roundToInterval = function (number) {
-        var multiplier = 1 / this.options.interval;
-        return Math.round(number * multiplier) / multiplier;
+        var multiplier = 1 / this.options.interval,
+            rounded    = Math.round(number * multiplier) / multiplier;
+
+        // if (rounded > this.range[1] ) {
+        //     return this.range[1];
+        // } else if (rounded < this.range[0]) {
+        //     return this.range[0];
+        // } else {
+            return rounded;
+        // }
     };
 
     /**
@@ -273,6 +294,11 @@
         // An array with the lowest and highest values represented by the
         // slider.
         range: [0, 100],
+
+        // The range of values which can be selected by the user. Normally
+        // this would be the same as "range", however this option allows you
+        // to make only a portion of the slider selectable.
+        selectable: null,
 
         // The "steps" by which the selectable value increases. For example,
         // when set to 2, the default slider will increase in steps from 0, 2,
