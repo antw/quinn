@@ -17,7 +17,7 @@
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
         this.wrapper    = wrapper;
-        this.options    = $.extend({}, Quinn.defaults, options);
+        this.options    = _.defaults(options, Quinn.defaults);
         this.isDragging = false;
 
         // For convenience.
