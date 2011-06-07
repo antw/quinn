@@ -14,7 +14,7 @@
     function Quinn (wrapper, options) {
         var selectMin, selectMax;
 
-        _.bindAll(this, 'clickBar', 'enableDrag');
+        _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
         this.wrapper    = wrapper;
         this.options    = $.extend({}, Quinn.defaults, options);
@@ -203,13 +203,13 @@
         this.handle.addClass('active');
 
         $(document).
-            bind('mouseup.quinn',   this.disableDrag.bind(this)).
-            bind('mousemove.quinn', this.drag.bind(this)).
+            bind('mouseup.quinn',   this.disableDrag).
+            bind('mousemove.quinn', this.drag).
 
             // The mouse may leave the window while dragging, and the mouse
             // button released. Watch for the mouse re-entering, and see what
             // the button is doing.
-            bind('mouseenter.quinn', this.disableDrag.bind(this));
+            bind('mouseenter.quinn', this.disableDrag);
 
         return event.preventDefault();
     };
