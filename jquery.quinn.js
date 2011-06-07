@@ -54,6 +54,11 @@
         this.wrapper.
             delegate('.bar',    'click',     this.clickBar).
             delegate('.handle', 'mousedown', this.enableDrag);
+
+        // Fire the onSetup callback.
+        if (typeof this.options.onSetup === 'function') {
+            this.options.onSetup(this.value, this);
+        }
     }
 
     /**
@@ -312,8 +317,21 @@
         value: null,
 
         // A callback which is run when changing the slider value. Additional
-        // callbacks may be added with Quinn#bind('change')
+        // callbacks may be added with Quinn#bind('change').
+        //
+        // Arguments:
+        //   number: the altered slider value
+        //   Quinn:  the Quinn instance
+        //
         onChange: null,
+
+        // Run once after the slider has been constructed.
+        //
+        // Arguments:
+        //   number: the current slider value
+        //   Quinn:  the Quinn instance
+        //
+        onSetup: null,
 
         // When using animations (such as clicking on the bar), how long
         // should the duration be? Any jQuery effect duration value is

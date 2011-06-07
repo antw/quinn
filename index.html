@@ -447,12 +447,16 @@
                         }
 
                         if (retVal !== false) {
-                          self.children('.value').text(
-                              newValue.toFixed(precision));
+                            self.children('.value').text(
+                                newValue.toFixed(precision));
                         }
 
                         return retVal;
-                    }
+                      },
+                      onSetup: function (value, slider) {
+                          self.children('.value').text(
+                              value.toFixed(precision));
+                      }
                 });
 
                 self.children('.slider').quinn(options);
