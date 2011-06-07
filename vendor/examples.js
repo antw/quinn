@@ -23,7 +23,7 @@
     function determinePrecision (number) {
         if (_.isNumber(number)) {
             number = number.toString().split('.');
-            return number[1] ? number[1] : 0
+            return number[1] ? number[1].length : 0
         }
 
         return 0;
