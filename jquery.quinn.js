@@ -56,7 +56,7 @@
             delegate('.handle', 'mousedown', this.enableDrag);
 
         // Fire the onSetup callback.
-        if (typeof this.options.onSetup === 'function') {
+        if (_.isFunction(this.options.onSetup)) {
             this.options.onSetup(this.value, this);
         }
     }
@@ -152,7 +152,7 @@
     };
 
     Quinn.prototype.setValue = function (newValue, animate, doCallback) {
-        if (newValue === null) {
+        if (_.isNull(newValue)) {
             newValue = this.range[0];
         }
 
@@ -175,9 +175,7 @@
 
         // Run the onChange callback; if the callback returns false then stop
         // immediately and do not change the value.
-        if (typeof this.options.onChange === 'function' &&
-                doCallback !== false) {
-
+        if (_.isFunction(this.options.onChange) && doCallback !== false) {
             if (this.options.onChange(newValue, this) === false ) {
                 return false;
             }
@@ -237,10 +235,10 @@
     Quinn.prototype.__extractNumber = function (string) {
         var value = 0;
 
-        if (typeof string === 'string') {
+        if (_.isString(string)) {
             value = string.match(/^\d+/);
             value = value && parseInt(value[0], 10) || 0;
-        } else if (typeof string === 'number') {
+        } else if (_.isNumber(string)) {
             value = string;
         }
 
