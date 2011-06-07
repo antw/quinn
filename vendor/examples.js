@@ -40,7 +40,7 @@
 
             // The number of decimal places with which to format the
             // displayed value for this example.
-            precision = determinePrecision(options.value);
+            precision = determinePrecision(options.interval);
 
         $this.prepend($('<div class="value"></div>'));
         $this.prepend($('<div class="slider"></div>'));
