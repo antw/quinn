@@ -49,7 +49,7 @@
         }
 
         this.render();
-        this.setValue(this.options.value);
+        this.setValue(this.options.value, false, false);
 
         this.wrapper.
             delegate('.bar',    'click',     this.clickBar).
@@ -146,7 +146,7 @@
         }
     };
 
-    Quinn.prototype.setValue = function (newValue, animate) {
+    Quinn.prototype.setValue = function (newValue, animate, doCallback) {
         if (newValue === null) {
             newValue = this.range[0];
         }
@@ -170,7 +170,9 @@
 
         // Run the onChange callback; if the callback returns false then stop
         // immediately and do not change the value.
-        if (typeof this.options.onChange === 'function') {
+        if (typeof this.options.onChange === 'function' &&
+                doCallback !== false) {
+
             if (this.options.onChange(newValue, this) === false ) {
                 return false;
             }
