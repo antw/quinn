@@ -11,24 +11,34 @@
      * Quinn is the main slider class, and handles setting up the slider UI,
      * the element events, values, etc.
      */
-    function Quinn(wrapper, options) {
-        this.wrapper   = wrapper;
-        this.options   = $.extend({}, Quinn.defaults, options);
+    function Quinn (wrapper, options) {
+        var rangeMax;
 
-        console.log(options);
-        console.log(this.options);
+        _.bindAll(this, 'clickPosition', 'enableDrag');
 
-        this.render();
-
-        this.handle    = wrapper.find('.handle');
-        this.bar       = wrapper.find('.bar');
-        this.activeBar = wrapper.find('.active-bar');
-
+        this.wrapper    = wrapper;
+        this.options    = $.extend({}, Quinn.defaults, options);
         this.isDragging = false;
 
+        // Make sure that the range option given makes sense given the
+        // interval. For example, being given an interval of 2, but the range
+        // [0, 7], the highest value in the range isn't selectable.
+        rangeMax = this.__roundToInterval(this.options.range[1]);
+
+        if (rangeMax != this.options.range[1]) {
+            if (rangeMax > this.options.range[1]) {
+                this.options.range[1] = rangeMax - this.options.interval;
+            } else {
+                this.options.range[1] = rangeMax;
+            }
+        }
+
+        this.render();
+        this.setValue(this.options.value);
+
         this.wrapper.
-            delegate('.bar',    'click',     this.clickPosition.bind(this)).
-            delegate('.handle', 'mousedown', this.enableDrag.bind(this));
+            delegate('.bar',    'click',     this.clickPosition).
+            delegate('.handle', 'mousedown', this.enableDrag);
     }
 
     /**
@@ -50,9 +60,9 @@
             element.append($('<div />', { 'class': 'right' }));
         }
 
-        this.bar       = $('<div/>', { 'class': 'bar' });
-        this.activeBar = $('<div/>', { 'class': 'active-bar' });
-        this.handle    = $('<a />',  { 'class': 'handle' });
+        this.bar       = $('<div />', { 'class': 'bar' });
+        this.activeBar = $('<div />', { 'class': 'active-bar' });
+        this.handle    = $('<a />',   { 'class': 'handle' });
 
         addRoundingElements(this.bar);
         addRoundingElements(this.activeBar);
@@ -121,6 +131,45 @@
         }
     };
 
+    Quinn.prototype.setValue = function (newValue) {
+        if (newValue === null) {
+            newValue = this.options.range[0];
+        }
+
+        var delta = this.options.range[1] - this.options.range[0],
+            position, percent;
+
+        // Round the value according to the interval settings.
+        newValue = this.__roundToInterval(newValue);
+
+        position = newValue - this.options.range[0];
+        percent  = position / delta * 100;
+
+        if (newValue === this.value) {
+            return false;
+        }
+
+        // Adjusting the value may have resulted in it being rounded to a
+        // value outside the acceptable range.
+        if (newValue < this.options.range[0]) {
+            newValue = this.options.range[0];
+        } else if (newValue > this.options.range[1]) {
+            newValue = this.options.range[1];
+        }
+
+        // Run the onChange callback; if the callback returns false then stop
+        // immediately and do not change the value.
+        if (typeof this.options.onChange === 'function') {
+            if (this.options.onChange(newValue, this) === false ) {
+                return false;
+            }
+        }
+
+        this.setPosition(percent.toString() + '%');
+        this.value = newValue;
+
+        return true;
+    }
 
     Quinn.prototype.clickPosition = function (event) {
         this.setPosition(this.__positionFromMouse(event.pageX), true);
@@ -161,7 +210,7 @@
     };
 
     Quinn.prototype.drag = function (event) {
-        this.setPosition(this.__positionFromMouse(event.pageX));
+        this.setValue(this.__valueFromMouse(event.pageX));
         return event.preventDefault();
     };
 
@@ -176,6 +225,13 @@
         }
 
         return value;
+    };
+
+    Quinn.prototype.__valueFromMouse = function (mousePosition) {
+        var percent = this.__positionFromMouse(mousePosition),
+            delta   = this.options.range[1] - this.options.range[0];
+
+        return this.options.range[0] + delta * (percent / 100);
     };
 
     Quinn.prototype.__positionFromMouse = function (mousePosition) {
@@ -198,10 +254,39 @@
     };
 
     /**
+     * Given a number, rounds it to the nearest interval.
+     *
+     * For example, if options.interval is 5, given 4 will round to 5. Given
+     * 2 will round to 0, etc. Does not take account of the minimum and
+     * maximum range options.
+     */
+    Quinn.prototype.__roundToInterval = function (number) {
+        var multiplier = 1 / this.options.interval;
+        return Math.round(number * multiplier) / multiplier;
+    };
+
+    /**
      * Options used when creating a Quinn instance when not explicitly given
      * by a developer.
      */
     Quinn.defaults = {
+        // An array with the lowest and highest values represented by the
+        // slider.
+        range: [0, 100],
+
+        // The "steps" by which the selectable value increases. For example,
+        // when set to 2, the default slider will increase in steps from 0, 2,
+        // 4, 8, etc.
+        interval: 1,
+
+        // The initial value of the slider. null = the lowest value in the
+        // range option.
+        value: null,
+
+        // A callback which is run when changing the slider value. Additional
+        // callbacks may be added with Quinn#bind('change')
+        onChange: null,
+
         // When using animations (such as clicking on the bar), how long
         // should the duration be? Any jQuery effect duration value is
         // permitted.
