@@ -418,7 +418,7 @@
                 var self = $(this),
                     code = self.find('code'),
                     self = $(this), customCallback,
-                    customCallback, options;
+                    customCallback, options, precision;
 
                 self.prepend($('<div class="value"></div>'));
                 self.prepend($('<div class="slider"></div>'));
@@ -432,6 +432,12 @@
                 options = eval('Object(' + code + ')');
                 customCallback = options.onChange;
 
+                // Format the numbers nicely, using the same number of decimal
+                // places as the interval. Surely there's a nicer way to
+                // achive this...
+                precision = (options.interval || 1).toString().split('.');
+                precision = precision[1] ? precision[1].length : 0;
+
                 options = $.extend(options, {
                     onChange: function (newValue, slider) {
                         var retVal = true;
@@ -441,7 +447,8 @@
                         }
 
                         if (retVal !== false) {
-                            self.children('.value').text(newValue);
+                          self.children('.value').text(
+                              newValue.toFixed(precision));
                         }
 
                         return retVal;
