@@ -343,7 +343,8 @@
       <a href="#range">Minima and Maxima</a>,
       <a href="#value">Inital Values</a>,
       <a href="#interval">Intervals</a>,
-      <a href="#selectable">Selectable Ranges</a>
+      <a href="#selectable">Selectable Ranges</a>,
+      <a href="#effects">Effects</a>
     </p>
 
     <h4>Callbacks</h4>
@@ -431,6 +432,27 @@
 
     <div class="example">
         <pre><code>$('.slider').quinn({ selectable: [35, 80], interval: 20 });</code></pre>
+    </div>
+
+    <h3 id="effects">Effects <code>effects and effectSpeed</code></h3>
+
+    <p>
+        Some actions make use of jQuery effects. For example, clicking
+        anywhere on the slider bar immediately changes the slider value but,
+        by default, animates movement of the handle. Animations may be
+        disabled entirely through us of the <code>effects: false</code>,
+        option, or the duration of the animation changes with the
+        <code>effectSpeed</code> option.
+    </p>
+
+    <p>
+      If the <a href="http://gsgd.co.uk/sandbox/jquery/easing/">Easing</a>
+      library is available, your default animation easing function will be
+      used.
+    </p>
+
+    <div class="example">
+        <pre><code>$('.slider').quinn({ effects: false });</code></pre>
     </div>
 
     <h2>Callbacks</h2>
