@@ -30,11 +30,14 @@ permission. Quinn is released under the [New BSD License][license].
 Downloads
 ---------
 
+[Everything (0.1.0)][tarball]
+:   Tarball containing JS, CSS, and images
+
 [Development Version (0.1.0)][development-js]
-:   11.2kb, Uncompressed with comments
+:   11.2kb, JS only, Uncompressed with comments
 
 [Production Version (0.1.0)][production-js]
-:   1.37kb, Minified and Gzipped
+:   1.37kb, JS only, Minified and Gzipped
 
 Table of Contents
 -----------------
@@ -241,6 +244,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
+[tarball]:        https://github.com/antw/quinn/tarball/v0.1.0
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 

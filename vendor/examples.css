@@ -285,11 +285,15 @@ dl {
 dt, dd {
     float: left;
     margin: 0;
-    width: 50%;
+}
+
+dt {
+    width: 42%;
 }
 
 dd {
     font-style: italic;
+    width: 58%;
 }
 
 /* "Black" */
