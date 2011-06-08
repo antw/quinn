@@ -10,11 +10,12 @@
         };
     }
 
-    function extractOptions (element) {
+    function extractOptions (element, exampleID) {
         var code = element.text().
             // replace(/^\$\('\.slider'/, 'el.children(".slider"').
             replace(/\$\('\.slider'\)\.quinn\(/, '').
-            replace(/\);\s*$/, '');
+            replace(/\);\s*$/, '').
+            replace(/\.value/, '#' + exampleID + ' .value');
 
         if (code.length === 0) {
             return {};
@@ -39,8 +40,11 @@
             // Contains the <code> element from the example.
             code = $this.find('code'),
 
+            // A unique ID used to identify the example.
+            exampleID = _.uniqueId('example_'),
+
             // The options used by the $.fn.quinn call in the example.
-            options = extractOptions(code),
+            options = extractOptions(code, exampleID),
 
             // The number of decimal places with which to format the
             // displayed value for this example.
@@ -49,7 +53,7 @@
             // The main DOM node which will replace the pre element.
             exampleEl;
 
-        exampleEl = $('<div class="example"></div>');
+        exampleEl = $('<div class="example" id="' + exampleID + '"></div>');
 
         exampleEl.append($('<div class="slider"></div>'));
         exampleEl.append($('<div class="value"></div>'));

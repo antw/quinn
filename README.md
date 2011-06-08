@@ -152,6 +152,21 @@ Quinn instance. The previous value of the slider can be retrieved with
 `quinn.value` since the value attribute is only updated after the
 callback has completed.
 
+    $('.slider').quinn({
+        onChange: function (newValue, slider) {
+            var h = (128 - newValue * 1.28).toFixed(),
+                l = (35 + newValue * 0.1).toFixed();
+
+            $('.value').
+                css('color', 'hsl(' + h + ', 50%, ' + l + '%)');
+        },
+
+        onSetup: function (value, slider) {
+            // Run the onChange callback immediately.
+            slider.options.onChange.call(slider, value);
+        }
+    });
+
 Be aware that the **onChange** callback is run every time the slider
 value changes, which can be extremely frequent when dragging the slider
 handle. This is perfect for "hooking" in to the slider to display the
