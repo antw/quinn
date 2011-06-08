@@ -14,10 +14,14 @@
         var code = element.text().
             // replace(/^\$\('\.slider'/, 'el.children(".slider"').
             replace(/\$\('\.slider'\)\.quinn\(/, '').
-            replace(/\);$/, '');
+            replace(/\);\s*$/, '');
 
-        // Yes, yes. I know.
-        return eval('Object(' + code + ')');
+        if (code.length === 0) {
+            return {};
+        } else {
+            // Yes, yes. I know.
+            return eval('Object(' + code + ')');
+        }
     }
 
     function determinePrecision (number) {
@@ -29,7 +33,7 @@
         return 0;
     }
 
-    $('.example').each(function () {
+    $('pre').each(function () {
         var $this = $(this),
 
             // Contains the <code> element from the example.
@@ -40,17 +44,24 @@
 
             // The number of decimal places with which to format the
             // displayed value for this example.
-            precision = determinePrecision(options.interval);
+            precision = determinePrecision(options.interval),
 
-        $this.prepend($('<div class="value"></div>'));
-        $this.prepend($('<div class="slider"></div>'));
+            // The main DOM node which will replace the pre element.
+            exampleEl;
 
-        // For syntax highlighting.
-        code.addClass('language-javascript');
+        exampleEl = $('<div class="example"></div>');
 
-        $this.children('.slider').quinn(_.extend(options, {
-            onChange: wrapCallback(options.onChange, $this, precision),
-            onSetup:  wrapCallback(options.onSetup,  $this, precision)
+        exampleEl.append($('<div class="slider"></div>'));
+        exampleEl.append($('<div class="value"></div>'));
+        exampleEl.append($('<pre></pre>').append(
+            $('<code class="language-javascript"></code>').html($this.html())
+        ));
+
+        $this.replaceWith(exampleEl);
+
+        exampleEl.children('.slider').quinn(_.extend(options, {
+            onChange: wrapCallback(options.onChange, exampleEl, precision),
+            onSetup:  wrapCallback(options.onSetup,  exampleEl, precision)
         }));
     });
 

@@ -3,9 +3,12 @@
   <head>
 
     <title>Slider Demo</title>
-    <link rel="stylesheet" type="text/css" href="quinn.css" />
+    <link rel="stylesheet" $thistype="text/css" href="quinn.css" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 
     <style>
+        @charset "utf-8"
+
         /* http://meyerweb.com/eric/tools/css/reset/
            v2.0b2 | 201101
            NOTE: THIS IS A BETA VERSION (see previous line)
@@ -230,11 +233,16 @@
       .example pre {
           background: #f8fbfd;
           border-top: 1px solid #d9e0e4;
+          border-left: none;
           border-bottom-left-radius: 7px;
           border-bottom-right-radius: 7px;
           clear: both;
           margin: 0 -24px -24px;
           padding: 23px 24px 24px;
+      }
+
+      .example pre code {
+          color: #383d40;
       }
 
       dl {
@@ -243,6 +251,7 @@
 
       dt, dd {
         float: left;
+        margin: 0;
         width: 50%;
       }
 
@@ -280,11 +289,22 @@
           margin-bottom: -12px;
       }
 
-      h3 .subtext {
+      h3 .subtext, h3 code + code:before {
           font-size: 16px;
           font-style: italic;
           font-weight: normal;
           margin-left: 8px;
+      }
+
+      h3 code + code:before {
+          color: #282c2f;
+          content: " and ";
+          font: italic 16px/24px "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
+          margin: 0 4px;
+      }
+
+      h3 code + code {
+          margin-left: 0;
       }
 
       h3 code {
@@ -301,10 +321,39 @@
         margin-bottom: -24px;
       }
 
+      h4 em {
+          color: #5f676c;
+          font: italic 14px/24px "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
+      }
+
+      h4 em:before {
+          content: " — ";
+      }
+
       h1, h2, h3 { margin-left: -24px; }
 
       p code {
           color: #5f676c;
+      }
+
+      /* non-JS pre blocks */
+      pre {
+          border-left: 3px solid #c6cdd1;
+          padding-left: 21px;
+      }
+
+      pre code {
+          color: #5f676c;
+      }
+
+      ul.yes li:before {
+          content: "✔";
+          color: #588b48;
+          margin-right: 6px;
+      }
+
+      .slider .bar {
+          min-height: 18px;
       }
 
       a        { color: #42749b; text-decoration: none; }
@@ -315,221 +364,202 @@
 
   <body>
 
+    <!-- edit README.md, not this file -->
+    <!-- then run rake readme to regenerate this file -->
     <!-- begin README -->
-    <!-- end README -->
 
-    <h1>Quinn <span class="subtext"> &ndash; a jQuery slider library</span></h1>
+    <h1 id="quinn">Quinn</h1>
 
-    <p>
-        <a href="http://github.com/antw/quinn">Quinn</a> is a jQuery plugin
-        which creates sliders (aka ranges, aka track bars) for HTML-based
-        application. The project is hosted on
-        <a href="http://github.com/antw/quinn">Github</a>. You can report bugs
-        and discuss feature on the
-        <a href="http://github.com/antw/quinn">issues page</a>, or direct your
-        tweets at <a href="http://twitter.com/antw">@antw</a>.
-    </p>
+<p><a href="http://github.com/antw/quinn">Quinn</a> is a jQuery-based plugin which creates sliders (aka.
+ranges, aka. track  bars) for HTML-based appliications. The project is
+hosted on <a href="http://github.com/antw/quinn">GitHub</a>; you can report bugs and discuss features on
+the <a href="http://github.com/antw/quinn/issues">issue tracker</a>, or direct your tweets at <a href="http://twitter.com/antw">@antw</a>.</p>
 
-    <p>
-        Quinn was developed for <a href="http://energytransitionmodel.com">Quintel
-        Intelligence</a>.
-    </p>
+<pre><code>$('.slider').quinn();
+</code></pre>
 
-    <div class="example">
-        <pre><code>$('.slider').quinn();</code></pre>
-    </div>
+<p>The library requires <a href="http://jquery.com">jQuery</a> and <a href="http://documentcloud.github.com/underscore">Underscore.js</a>.</p>
 
-    <h2>Downloads</h2>
+<p>Quinn has been tested and confirmed working in the following
+environments:</p>
 
-    <dl>
-      <dt>
-        <a href="http://antw.github.com/quinn/jquery.quinn.js">Development Version (0.0.1)</a>
-      </dt>
-      <dd>11.2kb, Uncompressed with comments</dd>
-      <dt>Production Version (0.0.1)</dt>
-      <dd>??kb, Minified and Gzipped</dd>
-    </dl>
+<ul class="yes">
+  <li>Chrome 11 and 12</li>
+  <li>Firefox 3.5 and 4.0</li>
+  <li>Safari 4</li>
+</ul>
 
-    <h2>Table of Contents</h2>
-    <h4>Options</h4>
+<p>Tests in Internet Explorer and Opera are pending, as is support for
+touch devices. There are no plans to support Internet Explorer 6.</p>
 
-    <p>
-      <a href="#range">Minima and Maxima</a>,
-      <a href="#value">Inital Values</a>,
-      <a href="#interval">Intervals</a>,
-      <a href="#selectable">Selectable Ranges</a>,
-      <a href="#effects">Effects</a>
-    </p>
+<p>Quinn was developed as part of Quintel Intelligence’s <a href="http://www.energytransitionmodel.com">Energy Transition
+Model</a> application, and has been open-sourced with their kind
+permission. Quinn is released under the <a href="http://github.com/antw/quinn/blob/master/LICENSE">New BSD License</a>.</p>
 
-    <h4>Callbacks</h4>
+<h2 id="downloads">Downloads</h2>
 
-    <p>
-      <a href="#setup">onSetup</a>,
-      <a href="#change">onChange</a>
-    </p>
+<dl>
+  <dt><a href="http://antw.github.com/quinn/jquery.quinn.js">Development Version (0.0.1)</a></dt>
+  <dd>11.2kb, Uncompressed with comments</dd>
+  <dt><a href="http://antw.github.com/quinn/jquery.quinn.min.js">Production Version (0.0.1)</a></dt>
+  <dd>(soon), Minified and Gzipped</dd>
+</dl>
 
-    <h2>Options</h2>
+<h2 id="table-of-contents">Table of Contents</h2>
 
-    <p>
-        In order to customise the Quinn slider, you may pass extra options
-        when initializing: <code>$(selector).quinn(optionsHash);</code>
-    </p>
+<h4 id="options">Options</h4>
 
-    <h3 id="range">Minima and Maxima <code>range: [min, max]</code></h3>
+<p><a href="#range">Minima and Maxima</a>, <a href="#value">Initial Values</a>,
+<a href="#interval">Intervals</a>, <a href="#selectable">Selectable Ranges</a>,
+<a href="#effects">Effects</a></p>
 
-    <p>
-        By default, the lowest value of a Quinn slider is 0, and the highest
-        is 100. By supplying a <strong>range</strong> option, you can change
-        these to any values you wish. <strong>range</strong> should be a
-        two-element array in the format <code>[minimum, maximum]</code>.
-    </p>
+<h4 id="callbacks">Callbacks</h4>
 
-    <div class="example">
-        <pre title="Turn it up to eleven!"><code>$('.slider').quinn({ range: [0, 11] });</code></pre>
-    </div>
+<p><a href="#onsetup">onSetup</a>, <a href="#onchange">onChange</a></p>
 
-    <h3 id="value">Initial Values <code>value: number</code></h3>
+<h2 id="options-1">Options</h2>
 
-    <p>
-        Since you probably don&rsquo;t want to initialize the slider at the
-        lowest possible value each time, the <strong>value</strong> option
-        allows you to supply a value which should be used instead.
-    </p>
+<p>In order to customise the appearance and behaviour of the Quinn slider
+instance, you may pass extra options when initiazing:
+<code>$(selector).quinn(optionsHash);</code></p>
 
-    <div class="example">
-        <pre><code>$('.slider').quinn({ value: 25 });</code></pre>
-    </div>
+<h3 id="range">Minima and Maxima <code>range: [min, max]</code></h3>
 
-    <h3 id="interval">Intervals <code>interval: number</code></h3>
+<p>By default, a Quinn slider allows selection of whole numbers between 0
+and 100. By supplying a <strong>range</strong> option, you can change these values:
+<strong>range</strong> should be an array of two values, where the first value is the
+minimum value represented on the slider, and the second is the maximum.</p>
 
-    <p>
-        The <strong>interval</strong> changes the slider so that only values
-        which are divisble by the <strong>interval</strong> may be chosen. If
-        the slider is initialized with a custom value (see above) which is not
-        evenly divisible by the interval, it will be rounded to the nearest
-        acceptable value.
-    </p>
+<pre><code>// Our volume knobs go up to eleven.
+$('.slider').quinn({ range: [ 0, 11 ] });
+</code></pre>
 
-    <div class="example">
-        <pre><code>$('.slider').quinn({ interval: 10, value: 8 });</code></pre>
-    </div>
+<h3 id="value">Initial Values <code>value: number</code></h3>
 
-    <p>
-        Combined with the <strong>range</strong> option,
-        <strong>interval</strong> can be powerful:
-    </p>
+<p>When a slider is created without a default value, it will initialze with
+the slider in the minimum value position. Supplying a <strong>value</strong> option
+results in the slider being created with a different starting value.</p>
 
-    <div class="example interval">
-        <pre><code>$('.slider').quinn({ range: [0, 1.21], interval: 0.01 });</code></pre>
-    </div>
+<pre><code>$('.slider').quinn({ value: 25 });
+</code></pre>
 
-    <h3 id="selectable">Selectable Ranges <code>selectable: [min, max]</code></h3>
+<h3 id="interval">Intervals <code>interval: number</code></h3>
 
-    <p>
-        Sometimes it is desirable that only part of the slider may be selected
-        by the user. In this case, the <strong>selectable</strong> option may
-        be passed when creating the slider instance.
-    </p>
+<p>The <strong>interval</strong> option restricts the values which may be selected using
+the slider to numbers which are divisible by the interval without a
+remainder. For example, a step of 10 only 0, 10, 20, 30, …, n, to
+be chosen.</p>
 
-    <div class="example">
-        <pre><code>$('.slider').quinn({ selectable: [35, 80] });</code></pre>
-    </div>
+<pre><code>$('.slider').quinn({ interval: 10 });
+</code></pre>
 
-    <p>
-        When using selectable, your <strong>interval</strong> settings will
-        still be respected, and <strong>selectable</strong> values which are
-        not at one of the interval values will be rounded to the nearest
-        inclusive interval. Note that in the example below the lowest
-        selectable value 35 is not available since <code>interval: 20</code>
-        is used. The lower value is instead rounded to 40.
-    </p>
+<p>If you supply an initial value which can’t be used as it doesn’t “fit”
+with the interval, the value will be rounded to the nearest acceptable
+point on the slider. For example, an interval of 10, and an initial
+value of 17 will result in the slider being initialized with a value of
+20 instead.</p>
 
-    <div class="example">
-        <pre><code>$('.slider').quinn({ selectable: [35, 80], interval: 20 });</code></pre>
-    </div>
+<p>Combining the <strong>interval</strong> option with <strong><a href="#range">range</a></strong> permits the
+creation of sliders with arbitrary values:</p>
 
-    <h3 id="effects">
-      Effects
-      <span class="subtext"><code>effects: bool</code> &nbsp;and&nbsp; <code>effectSpeed: number</code></span>
-    </h3>
+<pre><code>$('.slider').quinn({ range: [0, 1.21], interval: 0.01 });
+</code></pre>
 
-    <p>
-        Some actions make use of jQuery effects. For example, clicking
-        anywhere on the slider bar immediately changes the slider value but,
-        by default, animates movement of the handle. Animations may be
-        disabled entirely through us of the <code>effects: false</code>,
-        option, or the duration of the animation changes with the
-        <code>effectSpeed</code> option.
-    </p>
+<h3 id="selectable">Selectable Ranges <code>selectable: [min, max]</code></h3>
 
-    <p>
-      If the <a href="http://gsgd.co.uk/sandbox/jquery/easing/">Easing</a>
-      library is available, your default animation easing function will be
-      used.
-    </p>
+<p>Sometimes you want to show a slider where only a certain partition of
+the values may be chosen by the user. This is achieved using the
+<strong>selectable</strong> option.</p>
 
-    <div class="example">
-        <pre><code>$('.slider').quinn({ effects: false });</code></pre>
-    </div>
+<p>The example below is created with the default range <code>[0, 100]</code>, but
+restricts the values the user may select:</p>
 
-    <h2>Callbacks</h2>
+<pre><code>$('.slider').quinn({ selectable: [35, 80] });
+</code></pre>
 
-    <p>
-        Callbacks are supplied when calling <code>jQuery.quinn</code> just
-        like any other option.
-    </p>
+<p>The “selectable” values can be changed later with <code>setSelectable(min,
+max)</code>.</p>
 
-    <h3 id="setup">onSetup <code>onSetup: function (currentValue, quinn)</code></h3>
+<p>When using <strong>selectable</strong>, your <strong>interval</strong> option will still be
+respected and <strong>selectable</strong> values which don’t fit with the interval
+will be rounded to the nearest inclusive interval. Note that in the
+example below the lowest selectable value (5) is not available since
+<code>interval: 20</code> is used. The lower value is instead rounded to 20 (not
+0 since this is outside the selectable range supplied and might break
+your data validation later).</p>
 
-    <p>
-        <strong>onSetup</strong> is run only once; immediately after the Quinn
-        constructor has completed. Two arguments are supplied: the current
-        value (which may be different to the initial value you supplied, if
-        your value was not value), and the Quinn instance.
-    </p>
+<pre><code>$('.slider').quinn({ selectable: [5, 80], interval: 20 });
+</code></pre>
 
-    <h3 id="change">onChange <code>onChange: function (newValue, quinn)</code></h3>
+<h3 id="effects">Effects <code>effects: bool</code> <code>effectSpeed: number</code></h3>
 
-    <p>
-        The <strong>onChange</strong> callback is run each time the slider
-        value changes. The function is supplied with two arguments: the new
-        slider value, and the Quinn instance the previous slider value can be
-        retrieved with <code>quinn.value</code> since the <code>value</code>
-        attribute is only update after the callback has completed.
-    </p>
+<p>Some Quinn actions make use of jQuery effects. For example, clicking on
+the slider bar immediately changes the value and animates movement of
+the handle to the new position. Animation length may be altered with the
+<strong>effectSpeed</strong> option which may be any valid jQuery animation length
+(fast, slow, or a number), or disabled completely by setting <code>effects:
+false</code>.</p>
 
-    <div class="example onchange-example">
-        <pre><code>$('.slider').quinn({
-    onChange: function (newValue, slider) {
-        var h = (128 - newValue * 1.28).toFixed(),
-            l = (35 + newValue * 0.1).toFixed();
+<p>If the [Easing][easing] library is available, your default animation
+easing function will be used.</p>
 
-        $('.onchange-example .value').
-            css('color', 'hsl(' + h + ', 50%, ' + l + '%)');
-    },
+<pre><code>$('.slider').quinn({ effects: false });
+</code></pre>
 
-    onSetup: function (value, slider) {
-        // Run the onChange callback immediately.
-        slider.options.onChange.call(slider, value);
-    }
-});</code></pre>
-    </div>
+<h2 id="callbacks-1">Callbacks</h2>
 
-    <p>
-       By explicitly returning false in your callback, you can cancel the
-       slider value change.
-    </p>
+<p>The behavior of the slider may be further customised through the use of
+callback functions which are supplied as part of the options object when
+creating the slider.</p>
 
-    <div class="example">
-        <pre><code>$('.slider').quinn({
+<h3 id="onsetup">onSetup <code>onSetup: function (currentValue, quinn)</code></h3>
+
+<p><strong>onSetup</strong> is run only once, immediately after the Quinn constructor
+has completed. Two arguments are supplied: the current value of the
+slider and the Quinn instance. Note that the slider value given during
+initialization may differ from the one given to the callback since the
+constructor adjusts the slider value to fit with the <strong>range</strong>,
+<strong>selectable</strong>, and <strong>interval</strong> options. The value supplied to the
+callback is correct.</p>
+
+<h3 id="onchange">onChange <code>onChange: function (newValue, quinn)</code></h3>
+
+<p>The <strong>onChange</strong> callback is run each time the slider value changes. The
+function is supplied with two arguments: the new slider value, and the
+Quinn instance. The previous value of the slider can be retrieved with
+<code>quinn.value</code> since the value attribute is only updated after the
+callback has completed.</p>
+
+<p>Be aware that the <strong>onChange</strong> callback is run every time the slider
+value changes, which can be extremely frequent when dragging the slider
+handle. This is perfect for “hooking” in to the slider to display the
+value elsewhere in your UI (such as the examples on this page), to
+update a graph in real-time, etc, but is not suitable for persisting the
+slider value to a server unless you like flooding your application with
+tens of HTTP requests per second. Use <strong>onComplete</strong> which is fired only
+after the user has finished dragging the handle.</p>
+
+<p>Explicitly returning false in the callback will prevent the change.</p>
+
+<pre><code>$('.slider').quinn({
     onChange: function (newValue, slider) {
         // Prevent selection of 41 to 59.
-        if (newValue > 40 && newValue < 60) {
+        if (newValue &gt; 40 &amp;&amp; newValue &lt; 60) {
             return false;
         }
     }
-});</code></pre>
-    </div>
+});
+</code></pre>
+
+<h2 id="history">History</h2>
+
+<h4 id="june-8th-2011">0.0.1 <em>June 8th, 2011</em></h4>
+
+<p>Initial release on GitHub. Supports most planned features, but tests in
+Opera and Internet Explorer are not yet complete.</p>
+
+
+    <!-- end README -->
 
     <script type="text/javascript" src="vendor/jquery-1.6.1.js"></script>
     <script type="text/javascript" src="vendor/jquery.easing.1.3.js"></script>
