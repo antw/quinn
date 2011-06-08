@@ -280,9 +280,20 @@
           margin-bottom: -12px;
       }
 
+      h3 .subtext {
+          font-size: 16px;
+          font-style: italic;
+          font-weight: normal;
+          margin-left: 8px;
+      }
+
       h3 code {
           color: #5f676c;
           margin-left: 8px;
+      }
+
+      h3 .subtext code {
+          margin-left: 0;
       }
 
       h4 {
@@ -303,6 +314,9 @@
   </head>
 
   <body>
+
+    <!-- begin README -->
+    <!-- end README -->
 
     <h1>Quinn <span class="subtext"> &ndash; a jQuery slider library</span></h1>
 
@@ -434,7 +448,10 @@
         <pre><code>$('.slider').quinn({ selectable: [35, 80], interval: 20 });</code></pre>
     </div>
 
-    <h3 id="effects">Effects <code>effects and effectSpeed</code></h3>
+    <h3 id="effects">
+      Effects
+      <span class="subtext"><code>effects: bool</code> &nbsp;and&nbsp; <code>effectSpeed: number</code></span>
+    </h3>
 
     <p>
         Some actions make use of jQuery effects. For example, clicking
