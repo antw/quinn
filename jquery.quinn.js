@@ -69,6 +69,8 @@
         }
     }
 
+    /* RENDERING ---------------------------------------------------------- */
+
     /**
      * Quinn is initialized with an empty wrapper element; render adds the
      * necessary DOM elements in order to display the slider UI.
@@ -161,6 +163,8 @@
         }
     };
 
+    /* MANIPULATION ------------------------------------------------------- */
+
     Quinn.prototype.setValue = function (newValue, animate, doCallback) {
         if (_.isNull(newValue)) {
             newValue = this.range[0];
@@ -194,6 +198,24 @@
 
         return true;
     };
+
+    /**
+     * Disables the slider so that a user may not change it's value.
+     */
+    Quinn.prototype.disable = function () {
+        this.isDisabled = true;
+        this.wrapper.addClass('disabled').css('opacity', 0.5);
+    }
+
+    /**
+     * Enabled the slider so that a user may change it's value.
+     */
+    Quinn.prototype.enable = function () {
+        this.isDisabled = false;
+        this.wrapper.removeClass('disabled').css('opacity', 1.0);
+    }
+
+    /* EVENTS ------------------------------------------------------------- */
 
     Quinn.prototype.clickBar = function (event) {
         if (this.__willChange()) {
@@ -252,21 +274,7 @@
         return event.preventDefault();
     };
 
-    /**
-     * Disables the slider so that a user may not change it's value.
-     */
-    Quinn.prototype.disable = function () {
-        this.isDisabled = true;
-        this.wrapper.addClass('disabled').css('opacity', 0.5);
-    }
-
-    /**
-     * Enabled the slider so that a user may change it's value.
-     */
-    Quinn.prototype.enable = function () {
-        this.isDisabled = false;
-        this.wrapper.removeClass('disabled').css('opacity', 1.0);
-    }
+    /* PSUEDO-PRIVATE METHODS --------------------------------------------- */
 
     Quinn.prototype.__extractNumber = function (string) {
         var value = 0;
@@ -368,6 +376,8 @@
             }
         }
     };
+
+    /* OPTIONS ------------------------------------------------------------ */
 
     /**
      * Options used when creating a Quinn instance when not explicitly given
