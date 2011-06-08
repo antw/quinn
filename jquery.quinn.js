@@ -124,16 +124,15 @@
     };
 
     /**
-     * Moves the position of the slider handle, and the active-bar background
-     * elements. Does not change the slider value (use setValue()).
+     * Moves the slider handle and the active-bar background elements so that
+     * they accurately represent the value of the slider.
      */
-    Quinn.prototype.setPosition = function (percent, animate) {
-        var opts = this.options,
-            percentStr, barPercentStr, barMin, barMinAsPercent;
-
-        // No error handling atm.
-        percent = this.__extractNumber(percent);
-        percentStr = percent.toString() + '%';
+    Quinn.prototype.rePosition = function (animate) {
+        var opts       = this.options,
+            delta      = this.range[1] - this.range[0],
+            percent    = (this.value - this.range[0]) / delta * 100,
+            percentStr = percent.toString() + '%',
+            barPercentStr, barMin, barMinAsPercent;
 
         if (animate && opts.effects) {
             barPercentStr = percentStr;
@@ -164,8 +163,6 @@
             newValue = this.range[0];
         }
 
-        var delta = this.range[1] - this.range[0], percent;
-
         // Round the value according to the step option.
         newValue = this.__roundToStep(newValue);
 
@@ -189,10 +186,8 @@
             }
         }
 
-        percent = (newValue - this.range[0]) / delta * 100;
-
-        this.setPosition(percent.toString() + '%', animate);
         this.value = newValue;
+        this.rePosition(animate);
 
         return true;
     };
