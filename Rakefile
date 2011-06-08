@@ -1,7 +1,11 @@
 require 'rubygems'
 
-desc 'Build the library'
-task :build => :readme do
+desc 'Build the library and readme'
+task :build => [:readme, :minified] do
+end
+
+desc 'Build the minified version'
+task :minified do
   require 'closure-compiler'
 
   source  = File.read('jquery.quinn.js')
