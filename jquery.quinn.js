@@ -50,6 +50,8 @@
         this.render();
         this.setValue(this.options.value, false, false);
 
+        this.previousValues = [];
+
         this.wrapper.
             delegate('.bar',    'click',     this.clickBar).
             delegate('.handle', 'mousedown', this.enableDrag);
@@ -189,7 +191,10 @@
     }
 
     Quinn.prototype.clickBar = function (event) {
+        this.__willChange();
         this.setValue(this.__valueFromMouse(event.pageX), true);
+        this.__hasChanged();
+
         return event.preventDefault();
     };
 
@@ -197,6 +202,8 @@
         if (! event.which === 1) {
             return true; // Not left mouse button.
         }
+
+        this.__willChange();
 
         this.isDragging = true;
         this.handle.addClass('active');
@@ -222,6 +229,8 @@
         this.handle.removeClass('active');
 
         this.isDragging = false;
+
+        this.__hasChanged();
 
         return event.preventDefault();
     };
@@ -287,6 +296,37 @@
             return this.range[0];
         } else {
             return rounded;
+        }
+    };
+
+    /**
+     * Tells the Quinn instance that the user is about to make a change to the
+     * slider value.
+     */
+    Quinn.prototype.__willChange = function () {
+        this.previousValues.unshift(this.value);
+    };
+
+    /**
+     * Tells the Quinn instance that the user has finished making their
+     * changes to the slider.
+     */
+    Quinn.prototype.__hasChanged = function () {
+        var restoreTo;
+
+        // Run the onComplete callback; if the callback returns false then
+        // we revert the slider change, and restore everything to how it was
+        // before. Note that reverting the change will also fire an onChange
+        // event as the value is restored to it's original value.
+        if (_.isFunction(this.options.onComplete)) {
+            if (this.options.onComplete(this.value, this) === false ) {
+                restoreTo           = _.head(this.previousValues);
+                this.previousValues = _.tail(this.previousValues);
+
+                this.setValue(restoreTo, true);
+
+                return false;
+            }
         }
     };
 

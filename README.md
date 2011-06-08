@@ -187,6 +187,26 @@ Explicitly returning false in the callback will prevent the change.
         }
     });
 
+### onComplete `onComplete: function (newValue, quinn)` {#oncomplete}
+
+**onComplete** is similar to the to the **onChange** event in that it is
+fired when the slider value is changed by a user. However, unlike
+**onChange** it is fired only after the user has _finished_ changing the
+value. This is defined as clicking the slider bar to change the value,
+or lifting the left mouse button after dragging the slider handle.
+
+    $('.slider').quinn({
+        value: 25,
+
+        onComplete: function (newValue, slider) {
+            // Disallow selecting a value over 50, but only
+            // after the user has finished moving the slider.
+            if (newValue > 50) {
+                return false;
+            }
+        }
+    });
+
 History
 -------
 
