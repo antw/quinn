@@ -48,7 +48,7 @@
 
             // The number of decimal places with which to format the
             // displayed value for this example.
-            precision = determinePrecision(options.interval),
+            precision = determinePrecision(options.step),
 
             // The main DOM node which will replace the pre element.
             exampleEl;
