@@ -33,7 +33,7 @@ Downloads
 :   11.2kb, Uncompressed with comments
 
 [Production Version (0.0.1)][production-js]
-:   1.25kb, Minified and Gzipped
+:   1.37kb, Minified and Gzipped
 
 Table of Contents
 -----------------
@@ -45,7 +45,7 @@ Table of Contents
 
 #### Callbacks
 
-[onSetup][onsetup], [onChange][onchange]
+[onSetup][onsetup], [onChange][onchange], [onComplete][oncomplete]
 
 Options
 -------
@@ -233,3 +233,4 @@ Opera and Internet Explorer are not yet complete.
 [effects]:        #effects
 [onsetup]:        #onsetup
 [onchange]:       #onchange
+[oncomplete]:     #oncomplete
