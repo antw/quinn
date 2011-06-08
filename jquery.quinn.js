@@ -326,6 +326,11 @@
                 this.setValue(restoreTo, true);
 
                 return false;
+            } else {
+                if (_.head(this.previousValues) === this.value) {
+                    // User reset the slider back to where it was.
+                    this.previousValues = _.tail(this.previousValues);
+                }
             }
         }
     };
