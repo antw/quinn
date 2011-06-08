@@ -235,6 +235,7 @@ Opera and Internet Explorer are not yet complete.
 [license]:        http://github.com/antw/quinn/blob/master/LICENSE
 [jq]:             http://jquery.com
 [us]:             http://documentcloud.github.com/underscore
+[easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
