@@ -33,7 +33,7 @@ Downloads
 :   11.2kb, Uncompressed with comments
 
 [Production Version (0.0.1)][production-js]
-:   (soon), Minified and Gzipped
+:   1.25kb, Minified and Gzipped
 
 Table of Contents
 -----------------
