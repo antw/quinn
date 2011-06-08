@@ -220,22 +220,29 @@
     Quinn.prototype.clickBar = function (event) {
         if (this.__willChange()) {
             this.setValue(this.__valueFromMouse(event.pageX), true);
-            this.__hasChanged();
+            // this.__hasChanged();
 
             // Allow user to further refine the slider value by dragging
             // without releasing the mouse button.
-            this.enableDrag(event);
+            this.enableDrag(event, true);
         }
 
         return event.preventDefault();
     };
 
-    Quinn.prototype.enableDrag = function (event) {
+    /**
+     * Begins a drag event which permits a user to move the slider handle in
+     * order to adjust the slider value.
+     *
+     * When skipPreamble is true, enableDrag will not run the __willChange()
+     * function assuming that it has already been run (see clickBar).
+     */
+    Quinn.prototype.enableDrag = function (event, skipPreamble) {
         if (event.which !== 1) {
             return true; // Not left mouse button.
         }
 
-        if (! this.__willChange()) {
+        if (! skipPreamble && ! this.__willChange()) {
             return false; // No changes permitted.
         }
 
