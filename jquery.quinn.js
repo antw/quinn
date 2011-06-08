@@ -220,7 +220,6 @@
     Quinn.prototype.clickBar = function (event) {
         if (this.__willChange()) {
             this.setValue(this.__valueFromMouse(event.pageX), true);
-            // this.__hasChanged();
 
             // Allow user to further refine the slider value by dragging
             // without releasing the mouse button.
