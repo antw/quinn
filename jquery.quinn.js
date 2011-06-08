@@ -19,6 +19,7 @@
         this.wrapper    = wrapper;
         this.options    = _.defaults(options, Quinn.defaults);
         this.isDragging = false;
+        this.isDisabled = false;
 
         // For convenience.
         this.range      = this.options.range;
@@ -57,6 +58,10 @@
         this.wrapper.
             delegate('.bar',    'click',     this.clickBar).
             delegate('.handle', 'mousedown', this.enableDrag);
+
+        if (this.options.disable === true) {
+            this.disable();
+        }
 
         // Fire the onSetup callback.
         if (_.isFunction(this.options.onSetup)) {
@@ -193,9 +198,10 @@
     };
 
     Quinn.prototype.clickBar = function (event) {
-        this.__willChange();
-        this.setValue(this.__valueFromMouse(event.pageX), true);
-        this.__hasChanged();
+        if (this.__willChange()) {
+            this.setValue(this.__valueFromMouse(event.pageX), true);
+            this.__hasChanged();
+        }
 
         return event.preventDefault();
     };
@@ -205,7 +211,9 @@
             return true; // Not left mouse button.
         }
 
-        this.__willChange();
+        if (! this.__willChange()) {
+            return false; // No changes permitted.
+        }
 
         this.isDragging = true;
         this.handle.addClass('active');
@@ -241,6 +249,22 @@
         this.setValue(this.__valueFromMouse(event.pageX));
         return event.preventDefault();
     };
+
+    /**
+     * Disables the slider so that a user may not change it's value.
+     */
+    Quinn.prototype.disable = function () {
+        this.isDisabled = true;
+        this.wrapper.addClass('disabled').css('opacity', 0.5);
+    }
+
+    /**
+     * Enabled the slider so that a user may change it's value.
+     */
+    Quinn.prototype.enable = function () {
+        this.isDisabled = false;
+        this.wrapper.removeClass('disabled').css('opacity', 1.0);
+    }
 
     Quinn.prototype.__extractNumber = function (string) {
         var value = 0;
@@ -303,10 +327,16 @@
 
     /**
      * Tells the Quinn instance that the user is about to make a change to the
-     * slider value.
+     * slider value. Calling functions should check the return value of
+     * __willChange -- if false, no changes are permitted to the slider.
      */
     Quinn.prototype.__willChange = function () {
+        if (this.isDisabled === true) {
+            return false;
+        }
+
         this.previousValues.unshift(this.value);
+        return true;
     };
 
     /**
@@ -359,6 +389,10 @@
         // The initial value of the slider. null = the lowest value in the
         // range option.
         value: null,
+
+        // Disables the slider when initialized so that a user may not change
+        // it's value.
+        disable: false,
 
         // A callback which is run when changing the slider value. Additional
         // callbacks may be added with Quinn#bind('change').

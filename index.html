@@ -410,7 +410,8 @@ permission. Quinn is released under the <a href="http://github.com/antw/quinn/bl
 <h4 id="options">Options</h4>
 
 <p><a href="#range">Minima and Maxima</a>, <a href="#value">Initial Values</a>,
-<a href="#step">Steps</a>, <a href="#selectable">Selectable Ranges</a>, <a href="#effects">Effects</a></p>
+<a href="#step">Steps</a>, <a href="#selectable">Selectable Ranges</a>, <a href="#effects">Effects</a>,
+<a href="#disable">Disabling the Slider</a></p>
 
 <h4 id="callbacks">Callbacks</h4>
 
@@ -431,6 +432,13 @@ minimum value represented on the slider, and the second is the maximum.</p>
 
 <pre><code>// Our volume knobs go up to eleven.
 $('.slider').quinn({ range: [ 0, 11 ] });
+</code></pre>
+
+<p>Negative values are perfectly acceptable, but the “active bar” (the blue
+background) doesn’t yet handle this correctly – it ought to originate
+at zero rather than always on the left.</p>
+
+<pre><code>$('.slider').quinn({ range: [ -100, 0 ] });
 </code></pre>
 
 <h3 id="value">Initial Values <code>value: number</code></h3>
@@ -500,6 +508,14 @@ false</code>.</p>
 easing function will be used.</p>
 
 <pre><code>$('.slider').quinn({ effects: false });
+</code></pre>
+
+<h3 id="disable">Disabling the Slider <code>disable: bool</code></h3>
+
+<p>When you do not wish the user to be able to interact with the slider,
+pass <code>false</code> with the <strong>disable</strong> option:</p>
+
+<pre><code>$('.slider').quinn({ value: 50, disable: true });
 </code></pre>
 
 <h2 id="callbacks-1">Callbacks</h2>

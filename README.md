@@ -40,7 +40,8 @@ Table of Contents
 #### Options
 
 [Minima and Maxima][range], [Initial Values][value],
-[Steps][step], [Selectable Ranges][selectable], [Effects][effects]
+[Steps][step], [Selectable Ranges][selectable], [Effects][effects],
+[Disabling the Slider][disable]
 
 #### Callbacks
 
@@ -62,6 +63,12 @@ minimum value represented on the slider, and the second is the maximum.
 
     // Our volume knobs go up to eleven.
     $('.slider').quinn({ range: [ 0, 11 ] });
+
+Negative values are perfectly acceptable, but the "active bar" (the blue
+background) doesn't yet handle this correctly -- it ought to originate
+at zero rather than always on the left.
+
+    $('.slider').quinn({ range: [ -100, 0 ] });
 
 ### Initial Values `value: number` {#value}
 
@@ -125,6 +132,13 @@ If the [Easing][easing] library is available, your default animation
 easing function will be used.
 
     $('.slider').quinn({ effects: false });
+
+### Disabling the Slider `disable: bool` {#disable}
+
+When you do not wish the user to be able to interact with the slider,
+pass `false` with the **disable** option:
+
+    $('.slider').quinn({ value: 50, disable: true });
 
 Callbacks
 ---------
@@ -230,6 +244,7 @@ Opera and Internet Explorer are not yet complete.
 [step]:           #step
 [selectable]:     #selectable
 [effects]:        #effects
+[disable]:        #disable
 [onsetup]:        #onsetup
 [onchange]:       #onchange
 [oncomplete]:     #oncomplete

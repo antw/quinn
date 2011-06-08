@@ -144,6 +144,10 @@
   background-position: 0 -30px;
 }
 
+.quinn.disabled .handle:active {
+  background-position: 0 0;
+}
+
 .quinn .handle:focus {
   background-position: 0 -60px;
 }
