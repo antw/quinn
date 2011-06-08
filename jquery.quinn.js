@@ -169,16 +169,16 @@
         // Round the value according to the step option.
         newValue = this.__roundToStep(newValue);
 
-        if (newValue === this.value) {
-            return false;
-        }
-
         // Adjusting the value may have resulted in it being rounded to a
         // value outside the acceptable range.
         if (newValue < this.selectable[0]) {
             newValue = this.selectable[0];
         } else if (newValue > this.selectable[1]) {
             newValue = this.selectable[1];
+        }
+
+        if (newValue === this.value) {
+            return false;
         }
 
         // Run the onChange callback; if the callback returns false then stop
