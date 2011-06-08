@@ -281,13 +281,13 @@
         var multiplier = 1 / this.options.step,
             rounded    = Math.round(number * multiplier) / multiplier;
 
-        // if (rounded > this.range[1] ) {
-        //     return this.range[1];
-        // } else if (rounded < this.range[0]) {
-        //     return this.range[0];
-        // } else {
+        if (rounded > this.range[1] ) {
+            return this.range[1];
+        } else if (rounded < this.range[0]) {
+            return this.range[0];
+        } else {
             return rounded;
-        // }
+        }
     };
 
     /**
