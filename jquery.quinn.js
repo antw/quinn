@@ -134,6 +134,9 @@
             percentStr = percent.toString() + '%',
             barPercentStr, barMin, barMinAsPercent;
 
+        this.handle.stop(true);
+        this.activeBar.stop(true);
+
         if (animate && opts.effects) {
             barPercentStr = percentStr;
 
@@ -195,6 +198,10 @@
     Quinn.prototype.clickBar = function (event) {
         if (this.__willChange()) {
             this.setValue(this.__valueFromMouse(event.pageX), true);
+            this.__hasChanged();
+
+            // Allow user to further refine the slider value by dragging
+            // without releasing the mouse button.
             this.enableDrag(event);
         }
 
