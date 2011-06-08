@@ -56,7 +56,7 @@
         this.previousValues = [];
 
         this.wrapper.
-            delegate('.bar',    'click',     this.clickBar).
+            delegate('.bar',    'mousedown', this.clickBar).
             delegate('.handle', 'mousedown', this.enableDrag);
 
         if (this.options.disable === true) {
@@ -195,7 +195,7 @@
     Quinn.prototype.clickBar = function (event) {
         if (this.__willChange()) {
             this.setValue(this.__valueFromMouse(event.pageX), true);
-            this.__hasChanged();
+            this.enableDrag(event);
         }
 
         return event.preventDefault();

@@ -230,6 +230,12 @@ or lifting the left mouse button after dragging the slider handle.
 History
 -------
 
+#### Git Head
+
+When clicking on the slider bar, the mouse button may be held down to refine
+the value by dragging the handle. The click and drag actions will fire
+separate `onComplete` events.
+
 #### 0.1.0 _June 8th, 2011_
 
 Initial release on GitHub. Supports most planned features, but tests in
