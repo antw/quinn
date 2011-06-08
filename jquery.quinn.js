@@ -25,16 +25,15 @@
         this.selectable = this.options.selectable ||
                           this.options.range.slice(0);
 
-        // The "selectable" values need to be fixes so that they match up
-        // with the "inverval" options. For example, if given an interval of
-        // 2, the selectable range needs to be adjusted so that odd values
-        // are not possible...
-        selectMin = this.__roundToInterval(this.selectable[0]);
-        selectMax = this.__roundToInterval(this.selectable[1]);
+        // The "selectable" values need to be fixes so that they match up with
+        // the "step" option. For example, if given a step of 2, the values
+        // need to be adjusted so that odd values are not possible...
+        selectMin = this.__roundToStep(this.selectable[0]);
+        selectMax = this.__roundToStep(this.selectable[1]);
 
         if (selectMin != this.selectable[0]) {
             if (selectMin < this.selectable[0]) {
-                this.selectable[0] = selectMin + this.options.interval;
+                this.selectable[0] = selectMin + this.options.step;
             } else {
                 this.selectable[0] = selectMin;
             }
@@ -42,7 +41,7 @@
 
         if (selectMax != this.selectable[1]) {
             if (selectMax > this.selectable[1]) {
-                this.selectable[1] = selectMax - this.options.interval;
+                this.selectable[1] = selectMax - this.options.step;
             } else {
                 this.selectable[1] = selectMax;
             }
@@ -158,8 +157,8 @@
 
         var delta = this.range[1] - this.range[0], percent;
 
-        // Round the value according to the interval settings.
-        newValue = this.__roundToInterval(newValue);
+        // Round the value according to the step option.
+        newValue = this.__roundToStep(newValue);
 
         if (newValue === this.value) {
             return false;
@@ -272,14 +271,14 @@
     };
 
     /**
-     * Given a number, rounds it to the nearest interval.
+     * Given a number, rounds it to the nearest step.
      *
-     * For example, if options.interval is 5, given 4 will round to 5. Given
+     * For example, if options.step is 5, given 4 will round to 5. Given
      * 2 will round to 0, etc. Does not take account of the minimum and
      * maximum range options.
      */
-    Quinn.prototype.__roundToInterval = function (number) {
-        var multiplier = 1 / this.options.interval,
+    Quinn.prototype.__roundToStep = function (number) {
+        var multiplier = 1 / this.options.step,
             rounded    = Math.round(number * multiplier) / multiplier;
 
         // if (rounded > this.range[1] ) {
@@ -308,7 +307,7 @@
         // The "steps" by which the selectable value increases. For example,
         // when set to 2, the default slider will increase in steps from 0, 2,
         // 4, 8, etc.
-        interval: 1,
+        step: 1,
 
         // The initial value of the slider. null = the lowest value in the
         // range option.

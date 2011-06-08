@@ -41,8 +41,7 @@ Table of Contents
 #### Options
 
 [Minima and Maxima][range], [Initial Values][value],
-[Intervals][interval], [Selectable Ranges][selectable],
-[Effects][effects]
+[Steps][step], [Selectable Ranges][selectable], [Effects][effects]
 
 #### Callbacks
 
@@ -73,25 +72,23 @@ results in the slider being created with a different starting value.
 
     $('.slider').quinn({ value: 25 });
 
-### Intervals `interval: number` {#interval}
+### Steps `step: number` {#step}
 
-The **interval** option restricts the values which may be selected using
-the slider to numbers which are divisible by the interval without a
-remainder. For example, a step of 10 only 0, 10, 20, 30, ..., n, to
-be chosen.
+The **step** option restricts the values which may be selected using the
+slider to numbers which are divisible by the step without a remainder.
+For example, a step of 10 only 0, 10, 20, 30, ..., n, to be chosen.
 
-    $('.slider').quinn({ interval: 10 });
+    $('.slider').quinn({ step: 10 });
 
 If you supply an initial value which can't be used as it doesn't "fit"
-with the interval, the value will be rounded to the nearest acceptable
-point on the slider. For example, an interval of 10, and an initial
-value of 17 will result in the slider being initialized with a value of
-20 instead.
+with the step, the value will be rounded to the nearest acceptable point
+on the slider. For example, an step of 10, and an initial value of 17
+will result in the slider being initialized with a value of 20 instead.
 
-Combining the **interval** option with **[range][range]** permits the
+Combining the **step** option with **[range][range]** permits the
 creation of sliders with arbitrary values:
 
-    $('.slider').quinn({ range: [0, 1.21], interval: 0.01 });
+    $('.slider').quinn({ range: [0, 1.21], step: 0.01 });
 
 ### Selectable Ranges `selectable: [min, max]` {#selectable}
 
@@ -107,15 +104,14 @@ restricts the values the user may select:
 The "selectable" values can be changed later with `setSelectable(min,
 max)`.
 
-When using **selectable**, your **interval** option will still be
-respected and **selectable** values which don't fit with the interval
-will be rounded to the nearest inclusive interval. Note that in the
-example below the lowest selectable value (5) is not available since
-`interval: 20` is used. The lower value is instead rounded to 20 (not
-0 since this is outside the selectable range supplied and might break
-your data validation later).
+When using **selectable**, your **step** option will still be respected
+and **selectable** values which don't fit with the step will be rounded
+to the nearest inclusive step. Note that in the example below the lowest
+selectable value (5) is not available since `step: 20` is used. The
+lower value is instead rounded to 20 (not 0 since this is outside the
+selectable range supplied and might break your data validation later).
 
-    $('.slider').quinn({ selectable: [5, 80], interval: 20 });
+    $('.slider').quinn({ selectable: [5, 80], step: 20 });
 
 ### Effects `effects: bool` `effectSpeed: number` {#effects}
 
@@ -145,7 +141,7 @@ has completed. Two arguments are supplied: the current value of the
 slider and the Quinn instance. Note that the slider value given during
 initialization may differ from the one given to the callback since the
 constructor adjusts the slider value to fit with the **range**,
-**selectable**, and **interval** options. The value supplied to the
+**selectable**, and **step** options. The value supplied to the
 callback is correct.
 
 ### onChange `onChange: function (newValue, quinn)` {#onchange}
@@ -197,7 +193,7 @@ Opera and Internet Explorer are not yet complete.
 
 [range]:          #range
 [value]:          #value
-[interval]:       #interval
+[step]:           #step
 [selectable]:     #selectable
 [effects]:        #effects
 [onsetup]:        #onsetup
