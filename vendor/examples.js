@@ -6,7 +6,13 @@
                 return false;
             }
 
-            element.children('.value').text(newValue.toFixed(precision));
+            var text = newValue.toFixed(precision);
+
+            if (slider && slider.wrapper.data('quinnSuffix')) {
+                text += ' ' + slider.wrapper.data('quinnSuffix');
+            }
+
+            element.children('.value').text(text);
         };
     }
 
@@ -62,6 +68,11 @@
         ));
 
         $this.replaceWith(exampleEl);
+
+        if (options.range && options.range[1] == 1.21) {
+            // It's easter!
+            exampleEl.find('.slider').data('quinnSuffix', 'GW');
+        }
 
         exampleEl.children('.slider').quinn(_.extend(options, {
             onChange: wrapCallback(options.onChange, exampleEl, precision),
