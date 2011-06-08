@@ -2,7 +2,7 @@ Quinn
 =====
 
 [Quinn][github] is a jQuery-based plugin which creates sliders (aka.
-ranges, aka. track  bars) for HTML appliications. The project is hosted
+ranges, aka. track  bars) for HTML applications. The project is hosted
 on [GitHub][github]; you can report bugs and discuss features on the
 [issue tracker][issues], or direct your tweets at [@antw][twitter].
 
@@ -56,7 +56,7 @@ Options
 -------
 
 In order to customise the appearance and behaviour of the Quinn slider
-instance, you may pass extra options when initiazing:
+instance, you may pass extra options when initializing:
 
     $(selector).quinn(optionsHash);
 {:.no-example}
@@ -79,9 +79,10 @@ at zero rather than always on the left.
 
 ### Initial Values `value: number` {#value}
 
-When a slider is created without a default value, it will initialze with
-the slider in the minimum value position. Supplying a **value** option
-results in the slider being created with a different starting value.
+When a slider is created without a default value, it will initialize
+with the slider in the minimum value position. Supplying a **value**
+option results in the slider being created with a different starting
+value.
 
     $('.slider').quinn({ value: 25 });
 
