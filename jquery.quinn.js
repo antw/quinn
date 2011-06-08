@@ -31,7 +31,7 @@
         selectMin = this.__roundToStep(this.selectable[0]);
         selectMax = this.__roundToStep(this.selectable[1]);
 
-        if (selectMin != this.selectable[0]) {
+        if (selectMin !== this.selectable[0]) {
             if (selectMin < this.selectable[0]) {
                 this.selectable[0] = selectMin + this.options.step;
             } else {
@@ -39,7 +39,7 @@
             }
         }
 
-        if (selectMax != this.selectable[1]) {
+        if (selectMax !== this.selectable[1]) {
             if (selectMax > this.selectable[1]) {
                 this.selectable[1] = selectMax - this.options.step;
             } else {
@@ -188,7 +188,7 @@
         this.value = newValue;
 
         return true;
-    }
+    };
 
     Quinn.prototype.clickBar = function (event) {
         this.__willChange();
@@ -245,7 +245,7 @@
 
         if (_.isString(string)) {
             value = string.match(/^\d+/);
-            value = value && parseInt(value[0], 10) || 0;
+            value = (value && parseInt(value[0], 10)) || 0;
         } else if (_.isNumber(string)) {
             value = string;
         }
