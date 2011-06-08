@@ -30,13 +30,13 @@ permission. Quinn is released under the [New BSD License][license].
 Downloads
 ---------
 
-[Everything (0.1.0)][tarball]
+[Everything (0.1.1)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.1.0)][development-js]
+[Development Version (0.1.1)][development-js]
 :   11.2kb, JS only, Uncompressed with comments
 
-[Production Version (0.1.0)][production-js]
+[Production Version (0.1.1)][production-js]
 :   1.37kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -230,7 +230,7 @@ or lifting the left mouse button after dragging the slider handle.
 History
 -------
 
-#### Git Head
+#### 0.1.1 _June 9th, 2011_
 
 When clicking on the slider bar, the mouse button may be held down to refine
 the value by dragging the handle. The click and drag actions will fire
@@ -250,7 +250,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.1.0
+[tarball]:        https://github.com/antw/quinn/tarball/v0.1.1
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
