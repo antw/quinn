@@ -362,6 +362,14 @@
         //
         onChange: null,
 
+        // Run after the user has finished making a change.
+        //
+        // Arguments:
+        //   number: the new slider value
+        //   Quinn:  the Quinn instance
+        //
+        onComplete: null,
+
         // Run once after the slider has been constructed.
         //
         // Arguments:
