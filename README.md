@@ -2,9 +2,9 @@ Quinn
 =====
 
 [Quinn][github] is a jQuery-based plugin which creates sliders (aka.
-ranges, aka. track  bars) for HTML-based appliications. The project is
-hosted on [GitHub][github]; you can report bugs and discuss features on
-the [issue tracker][issues], or direct your tweets at [@antw][twitter].
+ranges, aka. track  bars) for HTML appliications. The project is hosted
+on [GitHub][github]; you can report bugs and discuss features on the
+[issue tracker][issues], or direct your tweets at [@antw][twitter].
 
     $('.slider').quinn();
 
