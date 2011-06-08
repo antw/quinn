@@ -1,7 +1,7 @@
 Quinn
 =====
 
-[Quinn][github] is a jQuery-based plugin which creates sliders (aka.
+[Quinn][github] is a jQuery-based library which creates sliders (aka.
 ranges, aka. track  bars) for HTML applications. The project is hosted
 on [GitHub][github]; you can report bugs and discuss features on the
 [issue tracker][issues], or direct your tweets at [@antw][twitter].
