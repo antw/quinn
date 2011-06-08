@@ -210,7 +210,7 @@ or lifting the left mouse button after dragging the slider handle.
 History
 -------
 
-#### 0.0.1 _June 8th, 2011_
+#### 0.1.0 _June 8th, 2011_
 
 Initial release on GitHub. Supports most planned features, but tests in
 Opera and Internet Explorer are not yet complete.
