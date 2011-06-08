@@ -16,10 +16,12 @@ environments:
  - Chrome 11 and 12
  - Firefox 3.5 and 4.0
  - Safari 4
+ - Internet Explorer 8
  {:.yes}
 
-Tests in Internet Explorer and Opera are pending, as is support for
-touch devices. There are no plans to support Internet Explorer 6.
+Tests in Internet Explorer 7 and 9, and Opera are still pending, as is
+support for touch devices. There are no plans to support Internet
+Explorer 6.
 
 Quinn was developed as part of Quintel Intelligence's [Energy Transition
 Model][etm] application, and has been open-sourced with their kind
@@ -28,10 +30,10 @@ permission. Quinn is released under the [New BSD License][license].
 Downloads
 ---------
 
-[Development Version (0.0.1)][development-js]
+[Development Version (0.1.0)][development-js]
 :   11.2kb, Uncompressed with comments
 
-[Production Version (0.0.1)][production-js]
+[Production Version (0.1.0)][production-js]
 :   1.37kb, Minified and Gzipped
 
 Table of Contents
