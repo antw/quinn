@@ -34,7 +34,7 @@
         return 0;
     }
 
-    $('pre').each(function () {
+    $('pre:not(.no-example)').each(function () {
         var $this = $(this),
 
             // Contains the <code> element from the example.
@@ -68,6 +68,8 @@
             onSetup:  wrapCallback(options.onSetup,  exampleEl, precision)
         }));
     });
+
+    $('pre.no-example code').addClass('language-javascript');
 
     // Do highlighting.
     hljs.initHighlightingOnLoad();

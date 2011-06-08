@@ -54,7 +54,9 @@ Options
 
 In order to customise the appearance and behaviour of the Quinn slider
 instance, you may pass extra options when initiazing:
-`$(selector).quinn(optionsHash);`
+
+    $(selector).quinn(optionsHash);
+{:.no-example}
 
 ### Minima and Maxima `range: [min, max]` {#range}
 
