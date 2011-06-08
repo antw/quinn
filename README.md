@@ -8,7 +8,6 @@ the [issue tracker][issues], or direct your tweets at [@antw][twitter].
 
     $('.slider').quinn();
 
-
 The library requires [jQuery][jq] and [Underscore.js][us].
 
 Quinn has been tested and confirmed working in the following
