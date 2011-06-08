@@ -199,7 +199,7 @@
     };
 
     Quinn.prototype.enableDrag = function (event) {
-        if (! event.which === 1) {
+        if (event.which !== 1) {
             return true; // Not left mouse button.
         }
 
