@@ -25,6 +25,8 @@
         this.selectable = this.options.selectable ||
                           this.options.range.slice(0);
 
+        this.wrapper.data('quinn', this);
+
         // The "selectable" values need to be fixes so that they match up with
         // the "step" option. For example, if given a step of 2, the values
         // need to be adjusted so that odd values are not possible...
