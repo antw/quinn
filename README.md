@@ -23,9 +23,10 @@ environments:
 Tests in Internet Explorer 7 and 9, and Opera are still pending. There
 are no plans to support Internet Explorer 6.
 
-Quinn was developed as part of Quintel Intelligence's [Energy Transition
-Model][etm] application, and has been open-sourced with their kind
-permission. Quinn is released under the [New BSD License][license].
+Quinn was developed by [~antw][antw] as part of Quintel
+Intelligence's [Energy Transition Model][etm] application, and has been
+open-sourced with their kind permission. Quinn is released under the
+[New BSD License][license].
 
 Downloads
 ---------
@@ -249,6 +250,7 @@ Opera and Internet Explorer are not yet complete.
 [github]:         http://github.com/antw/quinn
 [issues]:         http://github.com/antw/quinn/issues
 [twitter]:        http://twitter.com/antw
+[antw]:           http://github.com/antw
 [annotated]:      http://antw.github.com/quinn/docs/jquery.quinn.html
 [etm]:            http://www.energytransitionmodel.com
 [license]:        http://github.com/antw/quinn/blob/master/LICENSE
