@@ -47,7 +47,7 @@ Table of Contents
 
 [Minima and Maxima][range], [Initial Values][value],
 [Steps][step], [Selectable Ranges][selectable], [Effects][effects],
-[Disabling the Slider][disable]
+[Specific Values][only], [Disabling the Slider][disable]
 
 #### Callbacks
 
@@ -143,6 +143,13 @@ If the [Easing][easing] library is available, your default animation
 easing function will be used.
 
     $('.slider').quinn({ effects: false });
+
+### Specific Values `only: [value, value, ...]` {#only}
+
+To create a slider where the user may select only from specific values,
+use the **only** option with an array of values which may be chosen.
+
+    $('.slider').quinn({ only: [10, 15, 50, 80], value: 50 });
 
 ### Disabling the Slider `disable: bool` {#disable}
 
@@ -303,6 +310,7 @@ Opera and Internet Explorer are not yet complete.
 [step]:           #step
 [selectable]:     #selectable
 [effects]:        #effects
+[only]:           #only
 [disable]:        #disable
 [onsetup]:        #onsetup
 [onchange]:       #onchange

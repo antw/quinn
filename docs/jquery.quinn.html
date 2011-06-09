@@ -698,6 +698,12 @@ maximum range options.</p>
         <span class="kd">var</span> <span class="nx">multiplier</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">,</span>
             <span class="nx">rounded</span>    <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">number</span> <span class="o">*</span> <span class="nx">multiplier</span><span class="p">)</span> <span class="o">/</span> <span class="nx">multiplier</span><span class="p">;</span>
 
+        <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">only</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">rounded</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">only</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">value</span> <span class="o">-</span> <span class="nx">number</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="nx">rounded</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">range</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">rounded</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">range</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
@@ -852,6 +858,18 @@ range option.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-47">&#182;</a>
         </div>
+        <p>Restrics the values which may be chosen to those listed in the
+<code>only</code> array.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="nx">only</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-48'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-48">&#182;</a>
+        </div>
         <p>Disables the slider when initialized so that a user may not change
 it&rsquo;s value.</p>
       </td>
@@ -859,10 +877,10 @@ it&rsquo;s value.</p>
         <div class='highlight'><pre>        <span class="nx">disable</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-48'>
+    <tr id='section-49'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-48">&#182;</a>
+          <a class="pilcrow" href="#section-49">&#182;</a>
         </div>
         <p>A callback which is run when changing the slider value. Additional
 callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
@@ -875,10 +893,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onChange</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-49'>
+    <tr id='section-50'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-49">&#182;</a>
+          <a class="pilcrow" href="#section-50">&#182;</a>
         </div>
         <p>Run after the user has finished making a change.</p>
 
@@ -890,10 +908,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onComplete</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-50'>
+    <tr id='section-51'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-50">&#182;</a>
+          <a class="pilcrow" href="#section-51">&#182;</a>
         </div>
         <p>Run once after the slider has been constructed.</p>
 
@@ -905,10 +923,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onSetup</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-51'>
+    <tr id='section-52'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-51">&#182;</a>
+          <a class="pilcrow" href="#section-52">&#182;</a>
         </div>
         <p>When using animations (such as clicking on the bar), how long
 should the duration be? Any jQuery effect duration value is
@@ -918,10 +936,10 @@ permitted.</p>
         <div class='highlight'><pre>        <span class="nx">effectSpeed</span><span class="o">:</span> <span class="s1">&#39;fast&#39;</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-52'>
+    <tr id='section-53'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-52">&#182;</a>
+          <a class="pilcrow" href="#section-53">&#182;</a>
         </div>
         <p>Set to false to disable all animation on the slider.</p>
       </td>
@@ -930,10 +948,10 @@ permitted.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-53'>
+    <tr id='section-54'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-53">&#182;</a>
+          <a class="pilcrow" href="#section-54">&#182;</a>
         </div>
         <hr />
       </td>
@@ -941,10 +959,10 @@ permitted.</p>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-54'>
+    <tr id='section-55'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-54">&#182;</a>
+          <a class="pilcrow" href="#section-55">&#182;</a>
         </div>
         <p>The jQuery helper function. Permits $(&hellip;).quinn();</p>
 

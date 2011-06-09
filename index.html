@@ -62,7 +62,7 @@ open-sourced with their kind permission. Quinn is released under the
 
 <p><a href="#range">Minima and Maxima</a>, <a href="#value">Initial Values</a>,
 <a href="#step">Steps</a>, <a href="#selectable">Selectable Ranges</a>, <a href="#effects">Effects</a>,
-<a href="#disable">Disabling the Slider</a></p>
+<a href="#only">Specific Values</a>, <a href="#disable">Disabling the Slider</a></p>
 
 <h4 id="callbacks">Callbacks</h4>
 
@@ -164,6 +164,14 @@ false</code>.</p>
 easing function will be used.</p>
 
 <pre><code>$('.slider').quinn({ effects: false });
+</code></pre>
+
+<h3 id="only">Specific Values <code>only: [value, value, ...]</code></h3>
+
+<p>To create a slider where the user may select only from specific values,
+use the <strong>only</strong> option with an array of values which may be chosen.</p>
+
+<pre><code>$('.slider').quinn({ only: [10, 15, 50, 80], value: 50 });
 </code></pre>
 
 <h3 id="disable">Disabling the Slider <code>disable: bool</code></h3>

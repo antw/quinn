@@ -402,6 +402,12 @@
         var multiplier = 1 / this.options.step,
             rounded    = Math.round(number * multiplier) / multiplier;
 
+        if (_.isArray(this.options.only)) {
+            rounded = _.min(this.options.only, function (value) {
+                return Math.abs(value - number);
+            });
+        }
+
         if (rounded > this.range[1] ) {
             return this.range[1];
         } else if (rounded < this.range[0]) {
@@ -481,6 +487,10 @@
         // The initial value of the slider. null = the lowest value in the
         // range option.
         value: null,
+
+        // Restrics the values which may be chosen to those listed in the
+        // `only` array.
+        only: null,
 
         // Disables the slider when initialized so that a user may not change
         // it's value.
