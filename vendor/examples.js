@@ -76,8 +76,10 @@
         exampleEl.append($('<div class="slider"></div>'));
         exampleEl.append($('<div class="value"></div>'));
         exampleEl.append($('<pre></pre>').append(
-            $('<code class="language-javascript"></code>').html($this.html())
+            $('<code class="javascript"></code>').html($this.html())
         ));
+
+        exampleEl.addClass($this[0].className);
 
         $this.replaceWith(exampleEl);
 
@@ -90,7 +92,8 @@
         }
     });
 
-    $('pre.no-example code').addClass('language-javascript');
+    $('pre.no-example:not(.css) code').addClass('javascript');
+    $('pre.css code').addClass('css');
 
     // Do highlighting.
     hljs.initHighlightingOnLoad();

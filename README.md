@@ -53,6 +53,8 @@ Table of Contents
 
 [onSetup][onsetup], [onChange][onchange], [onComplete][oncomplete]
 
+#### [Theming][theming]
+
 Options
 -------
 
@@ -232,6 +234,32 @@ or lifting the left mouse button after dragging the slider handle.
         }
     });
 
+Theming
+-------
+
+Altering Quinn's appearance is relatively simple. The default style uses
+a [single-image sprite][default-sprite]. If you don't need to resize any
+of the slider elements, replacing this image with
+[an alternative][aristo-sprite] is all it takes. In some cases, you may
+need to alter the CSS. For example:
+
+    .aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
+    .aristo .active-bar .left, .aristo .active-bar .main,
+    .aristo .active-bar .right, .aristo .handle, .aristo .reset,
+    .aristo .minus, .aristo .plus, .aristo .help {
+      background-image: url(../images/aristo.png);
+    }
+
+    .aristo .handle {
+      height: 21px;
+      margin-top: -1px;
+      width: 21px;
+    }
+{:class="no-example css"}
+
+    $('.slider').quinn({ value: 25 });
+{:class="aristo hide-code"}
+
 History
 -------
 
@@ -267,6 +295,9 @@ Opera and Internet Explorer are not yet complete.
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
+[default-sprite]: http://antw.github.com/quinn/images/default.png
+[aristo-sprite]:  http://antw.github.com/quinn/images/aristo.png
+
 [range]:          #range
 [value]:          #value
 [step]:           #step
@@ -276,3 +307,4 @@ Opera and Internet Explorer are not yet complete.
 [onsetup]:        #onsetup
 [onchange]:       #onchange
 [oncomplete]:     #oncomplete
+[theming]:        #theming

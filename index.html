@@ -68,6 +68,8 @@ open-sourced with their kind permission. Quinn is released under the
 
 <p><a href="#onsetup">onSetup</a>, <a href="#onchange">onChange</a>, <a href="#oncomplete">onComplete</a></p>
 
+<h4 id="themingtheming"><a href="#theming">Theming</a></h4>
+
 <h2 id="options-1">Options</h2>
 
 <p>In order to customise the appearance and behaviour of the Quinn slider
@@ -255,6 +257,31 @@ or lifting the left mouse button after dragging the slider handle.</p>
         }
     }
 });
+</code></pre>
+
+<h2 id="theming">Theming</h2>
+
+<p>Altering Quinn’s appearance is relatively simple. The default style uses
+a <a href="http://antw.github.com/quinn/images/default.png">single-image sprite</a>. If you don’t need to resize any
+of the slider elements, replacing this image with
+<a href="http://antw.github.com/quinn/images/aristo.png">an alternative</a> is all it takes. In some cases, you may
+need to alter the CSS. For example:</p>
+
+<pre class="no-example css"><code>.aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
+.aristo .active-bar .left, .aristo .active-bar .main,
+.aristo .active-bar .right, .aristo .handle, .aristo .reset,
+.aristo .minus, .aristo .plus, .aristo .help {
+  background-image: url(../images/aristo.png);
+}
+
+.aristo .handle {
+  height: 21px;
+  margin-top: -1px;
+  width: 21px;
+}
+</code></pre>
+
+<pre class="aristo hide-code"><code>$('.slider').quinn({ value: 25 });
 </code></pre>
 
 <h2 id="history">History</h2>

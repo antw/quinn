@@ -151,6 +151,7 @@ pre .yardoctag {
 
 pre .keyword,
 pre .id,
+pre .attribute,
 pre .phpdoc,
 pre .title,
 pre .built_in,
@@ -252,7 +253,15 @@ h4 em {
 }
 
 h4 em:before {
-  content: " — ";
+    content: " — ";
+}
+
+h4 + p {
+    padding-left: 24px;
+}
+
+h4 + p a {
+    white-space: nowrap;
 }
 
 h1, h2, h3 {
@@ -319,8 +328,8 @@ p code, pre code, h3 code, h4 em {
   border-radius: 4px;
   box-shadow: 0 1px 0 #dce4e9;
   overflow: hidden;
-  margin: 23px 0 25px;
-  padding: 23px;
+  margin: 23px 0 24px;
+  padding: 23px 23px 0;
   /* width is 487px */
 }
 
@@ -356,7 +365,7 @@ p code, pre code, h3 code, h4 em {
   border-bottom-right-radius: 7px;
 
   clear: both;
-  margin: 0 -24px -24px;
+  margin: 0 -24px;
   padding: 23px 24px 24px;
 }
 
@@ -367,6 +376,10 @@ p code, pre code, h3 code, h4 em {
 .example .slider .bar {
     /* reduces page "jumping" while the images load. */
     min-height: 18px;
+}
+
+.example.hide-code pre {
+    display: none;
 }
 
 /* Code blocks without JavaScript */
@@ -380,4 +393,20 @@ ul.yes li:before {
     content: "✔";
     color: #588b48;
     margin-right: 6px;
+}
+
+/*  THEME EXAMPLE - ARISTO
+ *  ----------------------------------------------------------------------- */
+
+.aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
+.aristo .active-bar .left, .aristo .active-bar .main,
+.aristo .active-bar .right, .aristo .handle, .aristo .reset,
+.aristo .minus, .aristo .plus, .aristo .help {
+  background-image: url(../images/aristo.png);
+}
+
+.aristo .handle {
+  height: 21px;
+  margin-top: -1px;
+  width: 21px;
 }
