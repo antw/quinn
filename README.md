@@ -254,7 +254,7 @@ need to alter the CSS. For example:
     .aristo .active-bar .left, .aristo .active-bar .main,
     .aristo .active-bar .right, .aristo .handle, .aristo .reset,
     .aristo .minus, .aristo .plus, .aristo .help {
-      background-image: url(../images/aristo.png);
+      background-image: url(images/aristo.png);
     }
 
     .aristo .handle {

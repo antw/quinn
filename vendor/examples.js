@@ -93,7 +93,13 @@
     });
 
     $('pre.no-example:not(.css) code').addClass('javascript');
-    $('pre.css code').addClass('css');
+
+    $('pre.css code').each(function () {
+        var $this = $(this);
+
+        $('body').append($('<style type="text/css" />').text($this.text()));
+        $this.addClass('css');
+    });
 
     // Do highlighting.
     hljs.initHighlightingOnLoad();

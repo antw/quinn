@@ -394,19 +394,3 @@ ul.yes li:before {
     color: #588b48;
     margin-right: 6px;
 }
-
-/*  THEME EXAMPLE - ARISTO
- *  ----------------------------------------------------------------------- */
-
-.aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
-.aristo .active-bar .left, .aristo .active-bar .main,
-.aristo .active-bar .right, .aristo .handle, .aristo .reset,
-.aristo .minus, .aristo .plus, .aristo .help {
-  background-image: url(../images/aristo.png);
-}
-
-.aristo .handle {
-  height: 21px;
-  margin-top: -1px;
-  width: 21px;
-}
