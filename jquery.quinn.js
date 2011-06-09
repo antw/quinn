@@ -1,15 +1,14 @@
 (function ($) {
 
-    // The jQuery helper function. Permits $(...).quinn();
-    $.fn.quinn = function (options) {
-        $.each(this, function () { new Quinn($(this), options); });
-    };
-
-    // -----------------------------------------------------------------------
-
     /**
+     * ## Quinn
+     *
      * Quinn is the main slider class, and handles setting up the slider UI,
      * the element events, values, etc.
+     *
+     * `wrapper` is expected to be a DOM Element wrapped in a jQuery instance.
+     * The slider will be placed into the wrapper element, respecting it's
+     * width, padding etc.
      */
     function Quinn (wrapper, options) {
         var selectMin, selectMax;
@@ -18,8 +17,9 @@
 
         this.wrapper    = wrapper;
         this.options    = _.defaults(options, Quinn.defaults);
-        this.isDragging = false;
         this.isDisabled = false;
+
+        this.previousValues = [];
 
         // For convenience.
         this.range      = this.options.range;
@@ -28,7 +28,7 @@
 
         this.wrapper.data('quinn', this);
 
-        // The "selectable" values need to be fixes so that they match up with
+        // The "selectable" values need to be fixed so that they match up with
         // the "step" option. For example, if given a step of 2, the values
         // need to be adjusted so that odd values are not possible...
         selectMin = this.__roundToStep(this.selectable[0]);
@@ -50,11 +50,11 @@
             }
         }
 
+        // Create the slider DOM elements, and set the initial value.
         this.render();
         this.setValue(this.options.value, false, false);
 
-        this.previousValues = [];
-
+        // Events triggered when the user seeks to update the slider.
         this.wrapper.
             delegate('.bar',    'mousedown', this.clickBar).
             delegate('.handle', 'mousedown', this.enableDrag);
@@ -69,9 +69,11 @@
         }
     }
 
-    /* RENDERING ---------------------------------------------------------- */
+    // ## Rendering
 
     /**
+     * ### render
+     *
      * Quinn is initialized with an empty wrapper element; render adds the
      * necessary DOM elements in order to display the slider UI.
      *
@@ -79,8 +81,6 @@
      * but should be called again if the slider is resized.
      */
     Quinn.prototype.render = function () {
-        // The slider depends on some absolute positioning, so  adjust the
-        // elements widths and positions as necessary ...
         var barWidth = this.wrapper.width(),
             movableRange, handleWidth, handleDangle;
 
@@ -105,13 +105,15 @@
 
         this.wrapper.append(movableRange.append(this.handle));
 
-        // Now, correctly position the elements ...
+        // The slider depends on some absolute positioning, so  adjust the
+        // elements widths and positions as necessary ...
 
         this.bar.css({ width: barWidth.toString() + 'px' });
         handleWidth = this.handle.width();
 
         // The "dangle" allows the handle to appear slightly to the left of
         // the slider bar.
+
         handleDangle = Math.round(handleWidth * 0.25);
 
         this.bar.css({
@@ -126,6 +128,8 @@
     };
 
     /**
+     * ### rePosition
+     *
      * Moves the slider handle and the active-bar background elements so that
      * they accurately represent the value of the slider.
      */
@@ -142,11 +146,12 @@
         if (animate && opts.effects) {
             barPercentStr = percentStr;
 
-            // animating the bar to less then it's minimum width results in
+            // Animating the bar to less then it's minimum width results in
             // weird glitches, so use the min-width when necessary.
-            barMin = this.__extractNumber(this.activeBar.css('min-width'));
+            if (_.isString(barMin = this.activeBar.css('min-width'))) {
+                barMin = barMin.match(/^\d+/);
+                barMin = (barMin && parseInt(barMin[0], 10)) || 0;
 
-            if (barMin) {
                 barMinAsPercent = this.bar.width();
                 barMinAsPercent = (barMin / barMinAsPercent) * 100;
 
@@ -163,18 +168,25 @@
         }
     };
 
-    /* MANIPULATION ------------------------------------------------------- */
+    // ## Slider Manipulation
 
+    /**
+     * ### setValue
+     *
+     * Updates the value of the slider to `newValue`. If the `animate`
+     * argument is truthy, the change in value will be animated when updating
+     * the slider position. The onChange callback may be skipped if
+     * `doCallback` is falsey.
+     */
     Quinn.prototype.setValue = function (newValue, animate, doCallback) {
+        // The default slider value when initialized is "null", so we default
+        // to setting the instance to the lowest available value.
         if (_.isNull(newValue)) {
-            newValue = this.range[0];
+            newValue = this.selectable[0];
         }
 
-        // Round the value according to the step option.
         newValue = this.__roundToStep(newValue);
 
-        // Adjusting the value may have resulted in it being rounded to a
-        // value outside the acceptable range.
         if (newValue < this.selectable[0]) {
             newValue = this.selectable[0];
         } else if (newValue > this.selectable[1]) {
@@ -200,6 +212,8 @@
     };
 
     /**
+     * ### disable
+     *
      * Disables the slider so that a user may not change it's value.
      */
     Quinn.prototype.disable = function () {
@@ -208,21 +222,30 @@
     }
 
     /**
-     * Enabled the slider so that a user may change it's value.
+     * ### enable
+     *
+     * Enables the slider so that a user may change it's value.
      */
     Quinn.prototype.enable = function () {
         this.isDisabled = false;
         this.wrapper.removeClass('disabled').css('opacity', 1.0);
     }
 
-    /* EVENTS ------------------------------------------------------------- */
+    // ## Event Handlers
 
+    /**
+     * ### clickBar
+     *
+     * Event handler which is used when the user clicks part of the slider bar
+     * to instantly change the value.
+     */
     Quinn.prototype.clickBar = function (event) {
         if (this.__willChange()) {
             this.setValue(this.__valueFromMouse(event.pageX), true);
 
             // Allow user to further refine the slider value by dragging
-            // without releasing the mouse button.
+            // without releasing the mouse button. `disableDrag` will take
+            // care of committing the final updated value.
             this.enableDrag(event, true);
         }
 
@@ -230,24 +253,30 @@
     };
 
     /**
+     * ### enableDrag
+     *
      * Begins a drag event which permits a user to move the slider handle in
      * order to adjust the slider value.
      *
-     * When skipPreamble is true, enableDrag will not run the __willChange()
-     * function assuming that it has already been run (see clickBar).
+     * When `skipPreamble` is true, enableDrag will not run the
+     * `__willChange()` on the assumption that it has already been run
+     * (see `clickBar`).
      */
     Quinn.prototype.enableDrag = function (event, skipPreamble) {
+        // Only enable dragging when the left mouse button is used.
         if (event.which !== 1) {
-            return true; // Not left mouse button.
+            return true;
         }
 
         if (! skipPreamble && ! this.__willChange()) {
-            return false; // No changes permitted.
+            return false;
         }
 
-        this.isDragging = true;
         this.handle.addClass('active');
 
+        // These events are bound for the duration of the drag operation and
+        // keep track of the value changes made, with the events being removed
+        // when the mouse button is released.
         $(document).
             bind('mouseup.quinn',   this.disableDrag).
             bind('mousemove.quinn', this.drag).
@@ -260,41 +289,43 @@
         return event.preventDefault();
     };
 
+    /**
+     * ### disableDrag
+     *
+     * Run when the user lifts the mouse button after completing a drag.
+     */
     Quinn.prototype.disableDrag = function (event) {
+        // Remove the events which were bound in `enableDrag`.
         $(document).
             unbind('mouseup.quinn').
             unbind('mousemove.quinn').
             unbind('mouseenter.quinn');
 
         this.handle.removeClass('active');
-
-        this.isDragging = false;
-
         this.__hasChanged();
 
         return event.preventDefault();
     };
 
+    /**
+     * ### drag
+     *
+     * Bound to the mousemove event, alters the slider value while the user
+     * contiues to hold the left mouse button.
+     */
     Quinn.prototype.drag = function (event) {
         this.setValue(this.__valueFromMouse(event.pageX));
         return event.preventDefault();
     };
 
-    /* PSUEDO-PRIVATE METHODS --------------------------------------------- */
+    // ## Psuedo-Private Methods
 
-    Quinn.prototype.__extractNumber = function (string) {
-        var value = 0;
-
-        if (_.isString(string)) {
-            value = string.match(/^\d+/);
-            value = (value && parseInt(value[0], 10)) || 0;
-        } else if (_.isNumber(string)) {
-            value = string;
-        }
-
-        return value;
-    };
-
+    /**
+     * ### __valueFromMouse
+     *
+     * Determines the value of the slider at the position indicated by the
+     * mouse cursor.
+     */
     Quinn.prototype.__valueFromMouse = function (mousePosition) {
         var percent = this.__positionFromMouse(mousePosition),
             delta   = this.range[1] - this.range[0];
@@ -302,6 +333,12 @@
         return this.range[0] + delta * (percent / 100);
     };
 
+    /**
+     * ### __positionFromMouse
+     *
+     * Determines how far along the bar the mouse cursor is as a percentage of
+     * the bar's width.
+     */
     Quinn.prototype.__positionFromMouse = function (mousePosition) {
         var barWidth = this.bar.width(),
             maxLeft  = this.bar.offset().left,
@@ -322,6 +359,8 @@
     };
 
     /**
+     * ### __roundToStep
+     *
      * Given a number, rounds it to the nearest step.
      *
      * For example, if options.step is 5, given 4 will round to 5. Given
@@ -342,8 +381,10 @@
     };
 
     /**
+     * ### __willChange
+     *
      * Tells the Quinn instance that the user is about to make a change to the
-     * slider value. Calling functions should check the return value of
+     * slider value. The calling function should check the return value of
      * __willChange -- if false, no changes are permitted to the slider.
      */
     Quinn.prototype.__willChange = function () {
@@ -356,6 +397,8 @@
     };
 
     /**
+     * ### __hasChanged
+     *
      * Tells the Quinn instance that the user has finished making their
      * changes to the slider.
      */
@@ -365,7 +408,7 @@
         // Run the onComplete callback; if the callback returns false then
         // we revert the slider change, and restore everything to how it was
         // before. Note that reverting the change will also fire an onChange
-        // event as the value is restored to it's original value.
+        // event when the value is reverted.
         if (_.isFunction(this.options.onComplete)) {
             if (this.options.onComplete(this.value, this) === false ) {
                 restoreTo           = _.head(this.previousValues);
@@ -376,18 +419,18 @@
                 return false;
             } else {
                 if (_.head(this.previousValues) === this.value) {
-                    // User reset the slider back to where it was.
+                    // The user reset the slider back to where it was.
                     this.previousValues = _.tail(this.previousValues);
                 }
             }
         }
     };
 
-    /* OPTIONS ------------------------------------------------------------ */
-
     /**
-     * Options used when creating a Quinn instance when not explicitly given
-     * by a developer.
+     * ### Options
+     *
+     * Default option values which are used when the user does not explicitly
+     * provide them.
      */
     Quinn.defaults = {
         // An array with the lowest and highest values represented by the
@@ -444,6 +487,13 @@
 
         // Set to false to disable all animation on the slider.
         effects: true
+    };
+
+    // -----------------------------------------------------------------------
+
+    // The jQuery helper function. Permits $(...).quinn();
+    $.fn.quinn = function (options) {
+        $.each(this, function () { new Quinn($(this), options); });
     };
 
 })(jQuery);

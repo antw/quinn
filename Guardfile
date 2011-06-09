@@ -21,8 +21,10 @@ def say(message)
 end
 
 guard 'guard' do
-  watch('jquery.quinn.js') { `rake minified` ; say 'Minified library' }
-  watch('README.md')       { `rake readme` ;   say 'Built index.html' }
+  watch('jquery.quinn.js') { `rake minified`  ; say 'Minified library'
+                             `rake annotated` ; say 'Build annotated docs' }
+
+  watch('README.md')       { `rake readme`    ; say 'Built index.html' }
 end
 
 # :set syntax=ruby
