@@ -254,6 +254,11 @@
      * to instantly change the value.
      */
     Quinn.prototype.clickBar = function (event) {
+        // Ignore the click if the left mouse button wasn't used.
+        if (! DOES_TOUCH && event.which !== 1) {
+            return true;
+        }
+
         if (this.__willChange()) {
             this.setValue(this.__valueFromMouse(event.pageX), true);
 

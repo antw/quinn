@@ -435,15 +435,29 @@ immediately and do not change the value.</p>
 to instantly change the value.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">clickBar</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">__willChange</span><span class="p">())</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">setValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">__valueFromMouse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span></pre></div>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">clickBar</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
     <tr id='section-23'>
       <td class=docs>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-23">&#182;</a>
+        </div>
+        <p>Ignore the click if the left mouse button wasn&rsquo;t used.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">DOES_TOUCH</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">__willChange</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">setValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">__valueFromMouse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-24'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-24">&#182;</a>
         </div>
         <p>Allow user to further refine the slider value by dragging
 without releasing the mouse button. <code>disableDrag</code> will take
@@ -480,10 +494,10 @@ order to adjust the slider value.</p>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enableDrag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">skipPreamble</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-25'>
+    <tr id='section-26'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-25">&#182;</a>
+          <a class="pilcrow" href="#section-26">&#182;</a>
         </div>
         <p>Only enable dragging when the left mouse button is used.</p>
       </td>
@@ -499,10 +513,10 @@ order to adjust the slider value.</p>
         <span class="k">this</span><span class="p">.</span><span class="nx">handle</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span></pre></div>
       </td>
     </tr>
-    <tr id='section-26'>
+    <tr id='section-27'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-26">&#182;</a>
+          <a class="pilcrow" href="#section-27">&#182;</a>
         </div>
         <p>These events are bound for the duration of the drag operation and
 keep track of the value changes made, with the events being removed
@@ -514,10 +528,10 @@ when the mouse button is released.</p>
             <span class="nx">bind</span><span class="p">(</span><span class="nx">DRAG_E</span>     <span class="o">+</span> <span class="s1">&#39;.quinn&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">drag</span><span class="p">).</span></pre></div>
       </td>
     </tr>
-    <tr id='section-27'>
+    <tr id='section-28'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-27">&#182;</a>
+          <a class="pilcrow" href="#section-28">&#182;</a>
         </div>
         <p>The mouse may leave the window while dragging, and the mouse
 button released. Watch for the mouse re-entering, and see what
@@ -543,10 +557,10 @@ the button is doing.</p>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">disableDrag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-29'>
+    <tr id='section-30'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-29">&#182;</a>
+          <a class="pilcrow" href="#section-30">&#182;</a>
         </div>
         <p>Remove the events which were bound in <code>enableDrag</code>.</p>
       </td>
@@ -637,10 +651,10 @@ the bar&rsquo;s width.</p>
         <span class="k">if</span> <span class="p">(</span><span class="nx">mousePosition</span> <span class="o">&lt;</span> <span class="nx">maxLeft</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-34'>
+    <tr id='section-35'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-34">&#182;</a>
+          <a class="pilcrow" href="#section-35">&#182;</a>
         </div>
         <p>Mouse is to the left of the bar.</p>
       </td>
@@ -649,10 +663,10 @@ the bar&rsquo;s width.</p>
         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">mousePosition</span> <span class="o">&gt;</span> <span class="nx">maxRight</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-35'>
+    <tr id='section-36'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-35">&#182;</a>
+          <a class="pilcrow" href="#section-36">&#182;</a>
         </div>
         <p>Mouse is to the right of the bar.</p>
       </td>
@@ -731,10 +745,10 @@ changes to the slider.</p>
         <span class="kd">var</span> <span class="nx">restoreTo</span><span class="p">;</span></pre></div>
       </td>
     </tr>
-    <tr id='section-39'>
+    <tr id='section-40'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-39">&#182;</a>
+          <a class="pilcrow" href="#section-40">&#182;</a>
         </div>
         <p>Run the onComplete callback; if the callback returns false then
 we revert the slider change, and restore everything to how it was
@@ -754,10 +768,10 @@ event when the value is reverted.</p>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">head</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValues</span><span class="p">)</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-40'>
+    <tr id='section-41'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-40">&#182;</a>
+          <a class="pilcrow" href="#section-41">&#182;</a>
         </div>
         <p>The user reset the slider back to where it was.</p>
       </td>
@@ -783,10 +797,10 @@ provide them.</p>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">defaults</span> <span class="o">=</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-42'>
+    <tr id='section-43'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-42">&#182;</a>
+          <a class="pilcrow" href="#section-43">&#182;</a>
         </div>
         <p>An array with the lowest and highest values represented by the
 slider.</p>
@@ -795,10 +809,10 @@ slider.</p>
         <div class='highlight'><pre>        <span class="nx">range</span><span class="o">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span></pre></div>
       </td>
     </tr>
-    <tr id='section-43'>
+    <tr id='section-44'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-43">&#182;</a>
+          <a class="pilcrow" href="#section-44">&#182;</a>
         </div>
         <p>The range of values which can be selected by the user. Normally
 this would be the same as &ldquo;range&rdquo;, however this option allows you
@@ -808,10 +822,10 @@ to make only a portion of the slider selectable.</p>
         <div class='highlight'><pre>        <span class="nx">selectable</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-44'>
+    <tr id='section-45'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-44">&#182;</a>
+          <a class="pilcrow" href="#section-45">&#182;</a>
         </div>
         <p>The &ldquo;steps&rdquo; by which the selectable value increases. For example,
 when set to 2, the default slider will increase in steps from 0, 2,
@@ -821,10 +835,10 @@ when set to 2, the default slider will increase in steps from 0, 2,
         <div class='highlight'><pre>        <span class="nx">step</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-45'>
+    <tr id='section-46'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-45">&#182;</a>
+          <a class="pilcrow" href="#section-46">&#182;</a>
         </div>
         <p>The initial value of the slider. null = the lowest value in the
 range option.</p>
@@ -833,10 +847,10 @@ range option.</p>
         <div class='highlight'><pre>        <span class="nx">value</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-46'>
+    <tr id='section-47'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-46">&#182;</a>
+          <a class="pilcrow" href="#section-47">&#182;</a>
         </div>
         <p>Disables the slider when initialized so that a user may not change
 it&rsquo;s value.</p>
@@ -845,10 +859,10 @@ it&rsquo;s value.</p>
         <div class='highlight'><pre>        <span class="nx">disable</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-47'>
+    <tr id='section-48'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-47">&#182;</a>
+          <a class="pilcrow" href="#section-48">&#182;</a>
         </div>
         <p>A callback which is run when changing the slider value. Additional
 callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
@@ -861,10 +875,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onChange</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-48'>
+    <tr id='section-49'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-48">&#182;</a>
+          <a class="pilcrow" href="#section-49">&#182;</a>
         </div>
         <p>Run after the user has finished making a change.</p>
 
@@ -876,10 +890,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onComplete</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-49'>
+    <tr id='section-50'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-49">&#182;</a>
+          <a class="pilcrow" href="#section-50">&#182;</a>
         </div>
         <p>Run once after the slider has been constructed.</p>
 
@@ -891,10 +905,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onSetup</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-50'>
+    <tr id='section-51'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-50">&#182;</a>
+          <a class="pilcrow" href="#section-51">&#182;</a>
         </div>
         <p>When using animations (such as clicking on the bar), how long
 should the duration be? Any jQuery effect duration value is
@@ -904,10 +918,10 @@ permitted.</p>
         <div class='highlight'><pre>        <span class="nx">effectSpeed</span><span class="o">:</span> <span class="s1">&#39;fast&#39;</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-51'>
+    <tr id='section-52'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-51">&#182;</a>
+          <a class="pilcrow" href="#section-52">&#182;</a>
         </div>
         <p>Set to false to disable all animation on the slider.</p>
       </td>
@@ -916,10 +930,10 @@ permitted.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-52'>
+    <tr id='section-53'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-52">&#182;</a>
+          <a class="pilcrow" href="#section-53">&#182;</a>
         </div>
         <hr />
       </td>
@@ -927,10 +941,10 @@ permitted.</p>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-53'>
+    <tr id='section-54'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-53">&#182;</a>
+          <a class="pilcrow" href="#section-54">&#182;</a>
         </div>
         <p>The jQuery helper function. Permits $(&hellip;).quinn();</p>
 
