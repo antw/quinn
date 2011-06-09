@@ -246,7 +246,7 @@ Opera and Internet Explorer are not yet complete.
 [github]:         http://github.com/antw/quinn
 [issues]:         http://github.com/antw/quinn/issues
 [twitter]:        http://twitter.com/antw
-[annotated]:      http://antw.github.com/docs/jquery.quinn.html
+[annotated]:      http://antw.github.com/quinn/docs/jquery.quinn.html
 [etm]:            http://www.energytransitionmodel.com
 [license]:        http://github.com/antw/quinn/blob/master/LICENSE
 [jq]:             http://jquery.com
