@@ -31,14 +31,14 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.1.2)][tarball]
+[Everything (0.1.3)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.1.2)][development-js]
-:   11.2kb, JS only, Uncompressed with comments
+[Development Version (0.1.3)][development-js]
+:   13.3kb, JS only, Uncompressed with comments
 
-[Production Version (0.1.2)][production-js]
-:   1.37kb, JS only, Minified and Gzipped
+[Production Version (0.1.3)][production-js]
+:   1.54kb, JS only, Minified and Gzipped
 
 Table of Contents
 -----------------
@@ -232,7 +232,7 @@ or lifting the left mouse button after dragging the slider handle.
 History
 -------
 
-#### Git Head
+#### 0.1.3 _June 9th, 2011_
 
 Adds support for touch devices (iOS, Android, etc).
 
@@ -258,7 +258,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.1.2
+[tarball]:        https://github.com/antw/quinn/tarball/v0.1.3
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
