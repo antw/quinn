@@ -20,9 +20,8 @@ environments:
  - Internet Explorer 8
  {:.yes}
 
-Tests in Internet Explorer 7 and 9, and Opera are still pending, as is
-support for touch devices. There are no plans to support Internet
-Explorer 6.
+Tests in Internet Explorer 7 and 9, and Opera are still pending. There
+are no plans to support Internet Explorer 6.
 
 Quinn was developed as part of Quintel Intelligence's [Energy Transition
 Model][etm] application, and has been open-sourced with their kind
@@ -231,6 +230,10 @@ or lifting the left mouse button after dragging the slider handle.
 
 History
 -------
+
+#### Git Head
+
+Adds support for touch devices (iOS, Android, etc).
 
 #### 0.1.2 _June 9th, 2011_
 

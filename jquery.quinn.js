@@ -1,5 +1,19 @@
 (function ($) {
 
+    // Event names used for setting up drag events.
+    var DRAG_E       = 'mousemove',
+        DRAG_START_E = 'mousedown',
+        DRAG_END_E   = 'mouseup',
+        DOES_TOUCH   = false;
+
+    try {
+        document.createEvent("TouchEvent");
+        DOES_TOUCH   =  true;
+        DRAG_E       = 'touchmove';
+        DRAG_START_E = 'touchstart';
+        DRAG_END_E   = 'touchend'
+    } catch(e) {}
+
     /**
      * ## Quinn
      *
@@ -56,8 +70,8 @@
 
         // Events triggered when the user seeks to update the slider.
         this.wrapper.
-            delegate('.bar',    'mousedown', this.clickBar).
-            delegate('.handle', 'mousedown', this.enableDrag);
+            delegate('.bar',    'mousedown',   this.clickBar).
+            delegate('.handle',  DRAG_START_E, this.enableDrag);
 
         if (this.options.disable === true) {
             this.disable();
@@ -245,8 +259,13 @@
 
             // Allow user to further refine the slider value by dragging
             // without releasing the mouse button. `disableDrag` will take
-            // care of committing the final updated value.
-            this.enableDrag(event, true);
+            // care of committing the final updated value. This doesn't
+            // work nicely on touch devices, so we don't do this there.
+            if (DOES_TOUCH) {
+                this.__hasChanged();
+            } else {
+                this.enableDrag(event, true);
+            }
         }
 
         return event.preventDefault();
@@ -264,7 +283,7 @@
      */
     Quinn.prototype.enableDrag = function (event, skipPreamble) {
         // Only enable dragging when the left mouse button is used.
-        if (event.which !== 1) {
+        if (! DOES_TOUCH && event.which !== 1) {
             return true;
         }
 
@@ -278,8 +297,8 @@
         // keep track of the value changes made, with the events being removed
         // when the mouse button is released.
         $(document).
-            bind('mouseup.quinn',   this.disableDrag).
-            bind('mousemove.quinn', this.drag).
+            bind(DRAG_END_E + '.quinn', this.disableDrag).
+            bind(DRAG_E     + '.quinn', this.drag).
 
             // The mouse may leave the window while dragging, and the mouse
             // button released. Watch for the mouse re-entering, and see what
@@ -297,8 +316,8 @@
     Quinn.prototype.disableDrag = function (event) {
         // Remove the events which were bound in `enableDrag`.
         $(document).
-            unbind('mouseup.quinn').
-            unbind('mousemove.quinn').
+            unbind(DRAG_END_E + '.quinn').
+            unbind(DRAG_E + '.quinn').
             unbind('mouseenter.quinn');
 
         this.handle.removeClass('active');
@@ -314,7 +333,14 @@
      * contiues to hold the left mouse button.
      */
     Quinn.prototype.drag = function (event) {
-        this.setValue(this.__valueFromMouse(event.pageX));
+        if (event.type === 'touchmove') {
+            this.setValue(this.__valueFromMouse(
+                event.originalEvent.targetTouches[0].pageX
+            ));
+        } else {
+            this.setValue(this.__valueFromMouse(event.pageX));
+        }
+
         return event.preventDefault();
     };
 
