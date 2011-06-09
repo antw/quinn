@@ -519,7 +519,7 @@
 
     // The jQuery helper function. Permits $(...).quinn();
     $.fn.quinn = function (options) {
-        $.each(this, function () { new Quinn($(this), options); });
+        return $.each(this, function () { new Quinn($(this), options); });
     };
 
 })(jQuery);
