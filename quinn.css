@@ -46,23 +46,23 @@
 .quinn .active-bar .right {
   height: 18px;
   position: absolute;
-  top: 7px;
   z-index: 1;
 }
 
 .quinn .bar .left, .quinn .bar .right,
 .quinn .active-bar .left, .quinn .active-bar .right {
+  top: 7px;
   height: 4px;
   width: 4px
 }
 
 .quinn .bar .left, .quinn .active-bar .left {
-  background-position: -50px 0;
+  background-position: -43px 0;
   left: 0;
 }
 
 .quinn .bar .main, .quinn .active-bar .main {
-  background-position: 0 -150px;
+  background-position: 0 -143px;
   background-repeat: repeat-x;
   left: 4px;
   right: 4px;
@@ -71,6 +71,7 @@
 .quinn .bar .right, .quinn .active-bar .right {
   background-position: -56px 0;
   right: 0px;
+  top: 7px;
 }
 
 /**
@@ -97,7 +98,7 @@
 }
 
 .quinn .active-bar .main {
-  background-position: 0 -200px;
+  background-position: 0 -193px;
   right: 4px;
 }
 
