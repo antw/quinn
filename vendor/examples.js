@@ -30,11 +30,11 @@
                 return false;
             }
 
-            var precision = determinePrecision(slider.value),
+            var precision = determinePrecision(slider.options.step),
                 text      = newValue.toFixed(precision);
 
-            if (slider && slider.wrapper.data('quinnSuffix')) {
-                text += ' ' + slider.wrapper.data('quinnSuffix');
+            if (slider.range[1] === 1.21) {
+                text += ' GW';
             }
 
             slider.wrapper.parents('.example').children('.value').text(text);
