@@ -235,9 +235,11 @@ or lifting the left mouse button after dragging the slider handle.
 History
 -------
 
-#### 0.1.3 _June 9th, 2011_
+#### 0.1.4 _June 9th, 2011_
 
-Adds support for touch devices (iOS, Android, etc).
+Adds support for touch devices (iOS, Android, etc). Various small fixes
+to make the library "more jQuery-like", including the ability to chain
+other functions off `$.fn.quinn()`.
 
 #### 0.1.2 _June 9th, 2011_
 
