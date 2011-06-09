@@ -30,7 +30,7 @@
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
         this.wrapper    = wrapper;
-        this.options    = _.defaults(options, Quinn.defaults);
+        this.options    = _.defaults(options || {}, Quinn.defaults);
         this.isDisabled = false;
 
         this.previousValues = [];
