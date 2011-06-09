@@ -35,17 +35,17 @@
         <p>Event names used for setting up drag events.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="kd">var</span> <span class="nx">DRAG_E</span>       <span class="o">=</span> <span class="s1">&#39;mousemove&#39;</span><span class="p">,</span>
-        <span class="nx">DRAG_START_E</span> <span class="o">=</span> <span class="s1">&#39;mousedown&#39;</span><span class="p">,</span>
-        <span class="nx">DRAG_END_E</span>   <span class="o">=</span> <span class="s1">&#39;mouseup&#39;</span><span class="p">,</span>
-        <span class="nx">DOES_TOUCH</span>   <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <div class='highlight'><pre>    <span class="kd">var</span> <span class="nx">DRAG_E</span>           <span class="o">=</span> <span class="s1">&#39;mousemove&#39;</span><span class="p">,</span>
+        <span class="nx">DRAG_START_E</span>     <span class="o">=</span> <span class="s1">&#39;mousedown&#39;</span><span class="p">,</span>
+        <span class="nx">DRAG_END_E</span>       <span class="o">=</span> <span class="s1">&#39;mouseup&#39;</span><span class="p">,</span>
+        <span class="nx">IS_TOUCH_ENABLED</span> <span class="o">=</span>  <span class="kc">false</span><span class="p">;</span>
 
     <span class="k">try</span> <span class="p">{</span>
         <span class="nb">document</span><span class="p">.</span><span class="nx">createEvent</span><span class="p">(</span><span class="s2">&quot;TouchEvent&quot;</span><span class="p">);</span>
-        <span class="nx">DOES_TOUCH</span>   <span class="o">=</span>  <span class="kc">true</span><span class="p">;</span>
-        <span class="nx">DRAG_E</span>       <span class="o">=</span> <span class="s1">&#39;touchmove&#39;</span><span class="p">;</span>
-        <span class="nx">DRAG_START_E</span> <span class="o">=</span> <span class="s1">&#39;touchstart&#39;</span><span class="p">;</span>
-        <span class="nx">DRAG_END_E</span>   <span class="o">=</span> <span class="s1">&#39;touchend&#39;</span>
+        <span class="nx">DRAG_E</span>           <span class="o">=</span> <span class="s1">&#39;touchmove&#39;</span><span class="p">;</span>
+        <span class="nx">DRAG_START_E</span>     <span class="o">=</span> <span class="s1">&#39;touchstart&#39;</span><span class="p">;</span>
+        <span class="nx">DRAG_END_E</span>       <span class="o">=</span> <span class="s1">&#39;touchend&#39;</span>
+        <span class="nx">IS_TOUCH_ENABLED</span> <span class="o">=</span>  <span class="kc">true</span><span class="p">;</span>
     <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{}</span></pre></div>
       </td>
     </tr>
@@ -446,7 +446,7 @@ to instantly change the value.</p>
         <p>Ignore the click if the left mouse button wasn&rsquo;t used.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">DOES_TOUCH</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">IS_TOUCH_ENABLED</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
 
@@ -465,7 +465,7 @@ care of committing the final updated value. This doesn&rsquo;t
 work nicely on touch devices, so we don&rsquo;t do this there.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">DOES_TOUCH</span><span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">IS_TOUCH_ENABLED</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">this</span><span class="p">.</span><span class="nx">__hasChanged</span><span class="p">();</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
                 <span class="k">this</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
@@ -502,7 +502,7 @@ order to adjust the slider value.</p>
         <p>Only enable dragging when the left mouse button is used.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">DOES_TOUCH</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">IS_TOUCH_ENABLED</span> <span class="o">&amp;&amp;</span> <span class="nx">event</span><span class="p">.</span><span class="nx">which</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
 

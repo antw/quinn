@@ -1,17 +1,17 @@
 (function ($) {
 
     // Event names used for setting up drag events.
-    var DRAG_E       = 'mousemove',
-        DRAG_START_E = 'mousedown',
-        DRAG_END_E   = 'mouseup',
-        DOES_TOUCH   = false;
+    var DRAG_E           = 'mousemove',
+        DRAG_START_E     = 'mousedown',
+        DRAG_END_E       = 'mouseup',
+        IS_TOUCH_ENABLED =  false;
 
     try {
         document.createEvent("TouchEvent");
-        DOES_TOUCH   =  true;
-        DRAG_E       = 'touchmove';
-        DRAG_START_E = 'touchstart';
-        DRAG_END_E   = 'touchend'
+        DRAG_E           = 'touchmove';
+        DRAG_START_E     = 'touchstart';
+        DRAG_END_E       = 'touchend'
+        IS_TOUCH_ENABLED =  true;
     } catch(e) {}
 
     /**
@@ -255,7 +255,7 @@
      */
     Quinn.prototype.clickBar = function (event) {
         // Ignore the click if the left mouse button wasn't used.
-        if (! DOES_TOUCH && event.which !== 1) {
+        if (! IS_TOUCH_ENABLED && event.which !== 1) {
             return true;
         }
 
@@ -266,7 +266,7 @@
             // without releasing the mouse button. `disableDrag` will take
             // care of committing the final updated value. This doesn't
             // work nicely on touch devices, so we don't do this there.
-            if (DOES_TOUCH) {
+            if (IS_TOUCH_ENABLED) {
                 this.__hasChanged();
             } else {
                 this.enableDrag(event, true);
@@ -288,7 +288,7 @@
      */
     Quinn.prototype.enableDrag = function (event, skipPreamble) {
         // Only enable dragging when the left mouse button is used.
-        if (! DOES_TOUCH && event.which !== 1) {
+        if (! IS_TOUCH_ENABLED && event.which !== 1) {
             return true;
         }
 
