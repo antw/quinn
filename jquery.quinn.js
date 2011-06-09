@@ -99,19 +99,19 @@
             movableRange, handleWidth, handleDangle;
 
         function addRoundingElements(element) {
-            element.append($('<div />', { 'class': 'left'  }));
-            element.append($('<div />', { 'class': 'main'  }));
-            element.append($('<div />', { 'class': 'right' }));
+            element.append($('<div class="left" />'));
+            element.append($('<div class="main" />'));
+            element.append($('<div class="right" />'));
         }
 
-        this.bar       = $('<div />', { 'class': 'bar' });
-        this.activeBar = $('<div />', { 'class': 'active-bar' });
-        this.handle    = $('<a />',   { 'class': 'handle' });
+        this.bar       = $('<div class="bar" />');
+        this.activeBar = $('<div class="active-bar" />');
+        this.handle    = $('<a class="handle" />');
 
         addRoundingElements(this.bar);
         addRoundingElements(this.activeBar);
 
-        movableRange = $('<div />', { 'class': 'movable-range' });
+        movableRange = $('<div class="movable-range" />');
 
         this.bar.append(this.activeBar);
         this.wrapper.html(this.bar);
