@@ -31,13 +31,13 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.1.5)][tarball]
+[Everything (0.1.6)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.1.5)][development-js]
+[Development Version (0.1.6)][development-js]
 :   13.3kb, JS only, Uncompressed with comments
 
-[Production Version (0.1.5)][production-js]
+[Production Version (0.1.6)][production-js]
 :   1.54kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -270,11 +270,12 @@ need to alter the CSS. For example:
 History
 -------
 
-#### 0.1.5 _June 10th, 2011_
+#### 0.1.6 _June 10th, 2011_
 
 The `only` option has been added which restricts the choosable values
 to those which are in the `only` array. Respects the `selectable` and
-`range` settings.
+`range` settings. Clicking in the space above the visible slider bar now
+correctly triggers events.
 
 #### 0.1.4 _June 9th, 2011_
 
@@ -305,7 +306,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.1.5
+[tarball]:        https://github.com/antw/quinn/tarball/v0.1.6
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
