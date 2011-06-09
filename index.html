@@ -304,7 +304,8 @@ to those which are in the <code>only</code> array. Respects the <code>selectable
 
 <p>Adds support for touch devices (iOS, Android, etc). Various small fixes
 to make the library “more jQuery-like”, including the ability to chain
-other functions off <code>$.fn.quinn()</code>.</p>
+other functions off <code>$.fn.quinn()</code>. “Click-dragging” no longer fires two
+<code>onComplete</code> events; only one when the user releases the mouse button.</p>
 
 <h4 id="june-9th-2011-1">0.1.2 <em>June 9th, 2011</em></h4>
 

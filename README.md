@@ -280,7 +280,8 @@ to those which are in the `only` array. Respects the `selectable` and
 
 Adds support for touch devices (iOS, Android, etc). Various small fixes
 to make the library "more jQuery-like", including the ability to chain
-other functions off `$.fn.quinn()`.
+other functions off `$.fn.quinn()`. "Click-dragging" no longer fires two
+`onComplete` events; only one when the user releases the mouse button.
 
 #### 0.1.2 _June 9th, 2011_
 
