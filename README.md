@@ -174,18 +174,21 @@ Quinn instance. The previous value of the slider can be retrieved with
 `quinn.value` since the value attribute is only updated after the
 callback has completed.
 
+    function changeValueColour (value) {
+        var h = (128 - value * 1.28).toFixed(),
+            l = (35 + value * 0.1).toFixed();
+
+        $('.value').css('color', 'hsl('+h+', 50%, '+l+'%)');
+    }
+
     $('.slider').quinn({
         onChange: function (newValue, slider) {
-            var h = (128 - newValue * 1.28).toFixed(),
-                l = (35 + newValue * 0.1).toFixed();
-
-            $('.value').
-                css('color', 'hsl(' + h + ', 50%, ' + l + '%)');
+            changeValueColour(newValue);
         },
 
         onSetup: function (value, slider) {
-            // Run the onChange callback immediately.
-            slider.options.onChange.call(slider, value);
+            // Set the initial colour.
+            changeValueColour(value);
         }
     });
 

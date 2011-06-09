@@ -1,33 +1,17 @@
 (function ($) {
 
-    function wrapCallback (cb, element, precision) {
-        return function (newValue, slider) {
-            if (_.isFunction(cb) && cb(newValue, slider) === false) {
-                return false;
-            }
-
-            var text = newValue.toFixed(precision);
-
-            if (slider && slider.wrapper.data('quinnSuffix')) {
-                text += ' ' + slider.wrapper.data('quinnSuffix');
-            }
-
-            element.children('.value').text(text);
-        };
-    }
-
-    function extractOptions (element, exampleID) {
+    function extractExample (element, exampleID) {
         var code = element.text().
             // replace(/^\$\('\.slider'/, 'el.children(".slider"').
-            replace(/\$\('\.slider'\)\.quinn\(/, '').
-            replace(/\);\s*$/, '').
-            replace(/\.value/, '#' + exampleID + ' .value');
+            replace(/\.quinn/,  '.quinnExample').
+            replace(/\.slider/, '#' + exampleID + ' .slider').
+            replace(/\.value/,  '#' + exampleID + ' .value');
 
         if (code.length === 0) {
-            return {};
+            return function () {};
         } else {
             // Yes, yes. I know.
-            return eval('Object(' + code + ')');
+            return function () { eval(code); };
         }
     }
 
@@ -40,21 +24,49 @@
         return 0;
     }
 
+    function wrapCallback (cb, precision) {
+        return function (newValue, slider) {
+            if (_.isFunction(cb) && cb(newValue, slider) === false) {
+                return false;
+            }
+
+            var precision = determinePrecision(slider.value),
+                text      = newValue.toFixed(precision);
+
+            if (slider && slider.wrapper.data('quinnSuffix')) {
+                text += ' ' + slider.wrapper.data('quinnSuffix');
+            }
+
+            slider.wrapper.parents('.example').children('.value').text(text);
+        };
+    }
+
+    // Wraps around the onChange and onSetup callbacks given in the
+    // example to ensure that the value shown in the interactive example
+    // is updated as the slider is moved.
+
+    $.fn.quinnExample = function (options) {
+        var $this = this;
+
+        options = options || {};
+
+        options = _.extend(options, {
+            onChange: wrapCallback(options.onChange, 1),
+            onSetup:  wrapCallback(options.onSetup,  1)
+        });
+
+        return $this.quinn(options);
+    };
+
     $('pre:not(.no-example)').each(function () {
         var $this = $(this),
-
-            // Contains the <code> element from the example.
-            code = $this.find('code'),
 
             // A unique ID used to identify the example.
             exampleID = _.uniqueId('example_'),
 
             // The options used by the $.fn.quinn call in the example.
-            options = extractOptions(code, exampleID),
-
-            // The number of decimal places with which to format the
-            // displayed value for this example.
-            precision = determinePrecision(options.step),
+            // options = extractOptions(code, exampleID),
+            initExample = extractExample($this.find('code'), exampleID),
 
             // The main DOM node which will replace the pre element.
             exampleEl;
@@ -69,15 +81,13 @@
 
         $this.replaceWith(exampleEl);
 
-        if (options.range && options.range[1] == 1.21) {
-            // It's easter!
-            exampleEl.find('.slider').data('quinnSuffix', 'GW');
+        try {
+            initExample();
+        } catch(e) {
+            if (! _.isUndefined(console)) {
+                console.log('Failed to init '+exampleID+' - ' + e.toString());
+            }
         }
-
-        exampleEl.children('.slider').quinn(_.extend(options, {
-            onChange: wrapCallback(options.onChange, exampleEl, precision),
-            onSetup:  wrapCallback(options.onSetup,  exampleEl, precision)
-        }));
     });
 
     $('pre.no-example code').addClass('language-javascript');
