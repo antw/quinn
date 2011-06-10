@@ -29,8 +29,6 @@
 
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
-        console.log(options);
-
         this.wrapper    = wrapper;
         this.options    = _.defaults({}, options, Quinn.defaults);
         this.isDisabled = false;
@@ -38,33 +36,29 @@
         this.previousValues = [];
 
         // For convenience.
-        this.range      = this.options.range;
-        this.selectable = this.options.selectable ||
-                          this.options.range.slice(0);
-
-        this.wrapper.data('quinn', this);
+        this.range      = this.options.range.slice();
+        this.selectable = this.options.selectable || this.range;
 
         // The "selectable" values need to be fixed so that they match up with
         // the "step" option. For example, if given a step of 2, the values
         // need to be adjusted so that odd values are not possible...
+
         selectMin = this.__roundToStep(this.selectable[0]);
         selectMax = this.__roundToStep(this.selectable[1]);
 
-        if (selectMin !== this.selectable[0]) {
-            if (selectMin < this.selectable[0]) {
-                this.selectable[0] = selectMin + this.options.step;
-            } else {
-                this.selectable[0] = selectMin;
-            }
+        if (selectMin < this.selectable[0]) {
+            selectMin += this.options.step;
         }
 
-        if (selectMax !== this.selectable[1]) {
-            if (selectMax > this.selectable[1]) {
-                this.selectable[1] = selectMax - this.options.step;
-            } else {
-                this.selectable[1] = selectMax;
-            }
+        if (selectMax > this.selectable[1]) {
+            selectMax -= this.options.step;
         }
+
+        this.selectable = [ selectMin, selectMax ];
+
+        // Attaches the instance to the DOM node so that it can be accessed
+        // by developers later.
+        this.wrapper.data('quinn', this);
 
         // Create the slider DOM elements, and set the initial value.
         this.render();
@@ -410,10 +404,10 @@
             });
         }
 
-        if (rounded > this.range[1] ) {
-            return this.range[1];
-        } else if (rounded < this.range[0]) {
-            return this.range[0];
+        if (rounded > this.selectable[1] ) {
+            return rounded - this.options.step;
+        } else if (rounded < this.selectable[0]) {
+            return rounded + this.options.step;
         } else {
             return rounded;
         }
