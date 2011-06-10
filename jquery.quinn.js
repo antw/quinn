@@ -10,9 +10,9 @@
         document.createEvent("TouchEvent");
         DRAG_E           = 'touchmove';
         DRAG_START_E     = 'touchstart';
-        DRAG_END_E       = 'touchend'
+        DRAG_END_E       = 'touchend';
         IS_TOUCH_ENABLED =  true;
-    } catch(e) {}
+    } catch (e) {}
 
     /**
      * ## Quinn
@@ -29,8 +29,10 @@
 
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
+        console.log(options);
+
         this.wrapper    = wrapper;
-        this.options    = _.defaults(options || {}, Quinn.defaults);
+        this.options    = _.defaults({}, options, Quinn.defaults);
         this.isDisabled = false;
 
         this.previousValues = [];
@@ -233,7 +235,7 @@
     Quinn.prototype.disable = function () {
         this.isDisabled = true;
         this.wrapper.addClass('disabled').css('opacity', 0.5);
-    }
+    };
 
     /**
      * ### enable
@@ -243,7 +245,7 @@
     Quinn.prototype.enable = function () {
         this.isDisabled = false;
         this.wrapper.removeClass('disabled').css('opacity', 1.0);
-    }
+    };
 
     // ## Event Handlers
 
