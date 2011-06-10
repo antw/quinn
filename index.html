@@ -272,14 +272,13 @@ or lifting the left mouse button after dragging the slider handle.</p>
 <p>Altering Quinn’s appearance is relatively simple. The default style uses
 a <a href="http://antw.github.com/quinn/images/default.png">single-image sprite</a>. If you don’t need to resize any
 of the slider elements, replacing this image with
-<a href="http://antw.github.com/quinn/images/aristo.png">an alternative</a> is all it takes. In some cases, you may
+<a href="http://antw.github.com/quinn/vendor/aristo.png">an alternative</a> is all it takes. In some cases, you may
 need to alter the CSS. For example:</p>
 
 <pre class="no-example css"><code>.aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
 .aristo .active-bar .left, .aristo .active-bar .main,
-.aristo .active-bar .right, .aristo .handle, .aristo .reset,
-.aristo .minus, .aristo .plus, .aristo .help {
-  background-image: url(images/aristo.png);
+.aristo .active-bar .right, .aristo .handle {
+  background-image: url(vendor/aristo.png);
 }
 
 .aristo .handle {
@@ -289,7 +288,49 @@ need to alter the CSS. For example:</p>
 }
 </code></pre>
 
-<pre class="aristo hide-code"><code>$('.slider').quinn({ value: 25 });
+<pre class="aristo hide-code"><code>$('.slider').quinn({ value: 75 });
+</code></pre>
+
+<p>Or:</p>
+
+<pre class="no-example css"><code>.rainbow .bar .left, .rainbow .bar .main, .rainbow .bar .right,
+.rainbow .active-bar .left, .rainbow .active-bar .main,
+.rainbow .active-bar .right, .rainbow .handle {
+  background-image: url(vendor/rainbow.png);
+}
+
+.rainbow .bar, .rainbow .bar .left, .rainbow .bar .main,
+.rainbow .bar .right, .rainbow .active-bar .left,
+.rainbow .active-bar .main, .rainbow .active-bar .right {
+  height: 25px;
+}
+
+.rainbow .handle {
+  height: 23px;
+  margin-top: -1px;
+  width: 23px;
+}
+</code></pre>
+
+<pre class="rainbow hide-code"><code>function changeValueColour (value) {
+    var h = (128 - value * 1.28).toFixed(),
+        l = (35 + value * 0.1).toFixed();
+
+    $('.value').css('color', 'hsl('+h+', 50%, '+l+'%)');
+}
+
+$('.slider').quinn({
+    value: 25,
+
+    onChange: function (newValue, slider) {
+        changeValueColour(newValue);
+    },
+
+    onSetup: function (value, slider) {
+        // Set the initial colour.
+        changeValueColour(value);
+    }
+});
 </code></pre>
 
 <h2 id="history">History</h2>

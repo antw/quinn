@@ -252,9 +252,8 @@ need to alter the CSS. For example:
 
     .aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
     .aristo .active-bar .left, .aristo .active-bar .main,
-    .aristo .active-bar .right, .aristo .handle, .aristo .reset,
-    .aristo .minus, .aristo .plus, .aristo .help {
-      background-image: url(images/aristo.png);
+    .aristo .active-bar .right, .aristo .handle {
+      background-image: url(vendor/aristo.png);
     }
 
     .aristo .handle {
@@ -264,8 +263,50 @@ need to alter the CSS. For example:
     }
 {:class="no-example css"}
 
-    $('.slider').quinn({ value: 25 });
+    $('.slider').quinn({ value: 75 });
 {:class="aristo hide-code"}
+
+Or:
+
+    .rainbow .bar .left, .rainbow .bar .main, .rainbow .bar .right,
+    .rainbow .active-bar .left, .rainbow .active-bar .main,
+    .rainbow .active-bar .right, .rainbow .handle {
+      background-image: url(vendor/rainbow.png);
+    }
+
+    .rainbow .bar, .rainbow .bar .left, .rainbow .bar .main,
+    .rainbow .bar .right, .rainbow .active-bar .left,
+    .rainbow .active-bar .main, .rainbow .active-bar .right {
+      height: 25px;
+    }
+
+    .rainbow .handle {
+      height: 23px;
+      margin-top: -1px;
+      width: 23px;
+    }
+{:class="no-example css"}
+
+    function changeValueColour (value) {
+        var h = (128 - value * 1.28).toFixed(),
+            l = (35 + value * 0.1).toFixed();
+
+        $('.value').css('color', 'hsl('+h+', 50%, '+l+'%)');
+    }
+
+    $('.slider').quinn({
+        value: 25,
+
+        onChange: function (newValue, slider) {
+            changeValueColour(newValue);
+        },
+
+        onSetup: function (value, slider) {
+            // Set the initial colour.
+            changeValueColour(value);
+        }
+    });
+{:class="rainbow hide-code"}
 
 History
 -------
@@ -311,7 +352,7 @@ Opera and Internet Explorer are not yet complete.
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
 [default-sprite]: http://antw.github.com/quinn/images/default.png
-[aristo-sprite]:  http://antw.github.com/quinn/images/aristo.png
+[aristo-sprite]:  http://antw.github.com/quinn/vendor/aristo.png
 
 [range]:          #range
 [value]:          #value
