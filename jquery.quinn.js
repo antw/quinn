@@ -102,7 +102,7 @@
 
         this.bar       = $('<div class="bar" />');
         this.activeBar = $('<div class="active-bar" />');
-        this.handle    = $('<a class="handle" />');
+        this.handle    = $('<span class="handle" />');
 
         addRoundingElements(this.bar);
         addRoundingElements(this.activeBar);
