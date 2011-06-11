@@ -247,26 +247,8 @@ Theming
 Altering Quinn's appearance is relatively simple. The default style uses
 a [single-image sprite][default-sprite]. If you don't need to resize any
 of the slider elements, replacing this image with
-[an alternative][aristo-sprite] is all it takes. In some cases, you may
+[an alternative][rainbow-sprite] is all it takes. In some cases, you may
 need to alter the CSS. For example:
-
-    .aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
-    .aristo .active-bar .left, .aristo .active-bar .main,
-    .aristo .active-bar .right, .aristo .handle {
-      background-image: url(vendor/aristo.png);
-    }
-
-    .aristo .handle {
-      height: 21px;
-      margin-top: -1px;
-      width: 21px;
-    }
-{:class="no-example css"}
-
-    $('.slider').quinn({ value: 75 });
-{:class="aristo hide-code"}
-
-Or:
 
     .rainbow .bar .left, .rainbow .bar .main, .rainbow .bar .right,
     .rainbow .active-bar .left, .rainbow .active-bar .main,
@@ -282,7 +264,6 @@ Or:
 
     .rainbow .handle {
       height: 23px;
-      margin-top: -1px;
       width: 23px;
     }
 {:class="no-example css"}
@@ -352,7 +333,7 @@ Opera and Internet Explorer are not yet complete.
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
 [default-sprite]: http://antw.github.com/quinn/images/default.png
-[aristo-sprite]:  http://antw.github.com/quinn/vendor/aristo.png
+[rainbow-sprite]: http://antw.github.com/quinn/vendor/rainbow.png
 
 [range]:          #range
 [value]:          #value

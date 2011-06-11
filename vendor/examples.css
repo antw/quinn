@@ -337,15 +337,15 @@ p code, pre code, h3 code, h4 em {
   border-right: 1px solid #d9e0e4;
   float: left;
   margin: -24px 0;
-  padding: 27px 24px 27px 0;
+  padding: 24px 24px 24px 0;
   width: 375px;
 }
 
 .example .value {
   font: bold 15px/1 "Helvetica Neue", Arial, Helvetica, sans-serif;
   float: left;
-  min-height: 44px;
-  padding: 4px 0 0 25px;
+  min-height: 40px;
+  padding: 2px 0 0 25px;
   text-align: center;
   width: 73px;
 }
@@ -393,4 +393,10 @@ ul.yes li:before {
     content: "✔";
     color: #588b48;
     margin-right: 6px;
+}
+
+/* Rainbow theme adjustment. */
+
+.example.rainbow .slider {
+    padding-top: 23px;
 }

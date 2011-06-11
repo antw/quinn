@@ -272,26 +272,8 @@ or lifting the left mouse button after dragging the slider handle.</p>
 <p>Altering Quinn’s appearance is relatively simple. The default style uses
 a <a href="http://antw.github.com/quinn/images/default.png">single-image sprite</a>. If you don’t need to resize any
 of the slider elements, replacing this image with
-<a href="http://antw.github.com/quinn/vendor/aristo.png">an alternative</a> is all it takes. In some cases, you may
+<a href="http://antw.github.com/quinn/vendor/rainbow.png">an alternative</a> is all it takes. In some cases, you may
 need to alter the CSS. For example:</p>
-
-<pre class="no-example css"><code>.aristo .bar .left, .aristo .bar .main, .aristo .bar .right,
-.aristo .active-bar .left, .aristo .active-bar .main,
-.aristo .active-bar .right, .aristo .handle {
-  background-image: url(vendor/aristo.png);
-}
-
-.aristo .handle {
-  height: 21px;
-  margin-top: -1px;
-  width: 21px;
-}
-</code></pre>
-
-<pre class="aristo hide-code"><code>$('.slider').quinn({ value: 75 });
-</code></pre>
-
-<p>Or:</p>
 
 <pre class="no-example css"><code>.rainbow .bar .left, .rainbow .bar .main, .rainbow .bar .right,
 .rainbow .active-bar .left, .rainbow .active-bar .main,
@@ -307,7 +289,6 @@ need to alter the CSS. For example:</p>
 
 .rainbow .handle {
   height: 23px;
-  margin-top: -1px;
   width: 23px;
 }
 </code></pre>
