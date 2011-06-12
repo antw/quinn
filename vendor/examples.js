@@ -83,13 +83,7 @@
 
         $this.replaceWith(exampleEl);
 
-        try {
-            initExample();
-        } catch(e) {
-            if (! _.isUndefined(console)) {
-                console.log('Failed to init '+exampleID+' - ' + e.toString());
-            }
-        }
+        initExample();
     });
 
     $('pre.no-example:not(.css) code').addClass('javascript');
