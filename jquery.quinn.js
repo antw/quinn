@@ -30,7 +30,7 @@
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
         this.wrapper    = wrapper;
-        this.options    = _.defaults({}, options, Quinn.defaults);
+        this.options    = _.extend({}, Quinn.defaults, options);
         this.isDisabled = false;
 
         this.previousValues = [];
@@ -219,6 +219,44 @@
         this.rePosition(animate);
 
         return true;
+    };
+
+    /**
+     * ### stepUp
+     *
+     * Increases the value of the slider by `step`. Does nothing if the slider
+     * is alredy at its maximum value.
+     *
+     * The optional argument is an integer which indicates the number of steps
+     * by which to increase the value.
+     *
+     * Returns the new slider value
+     */
+    Quinn.prototype.stepUp = function (count) {
+        this.__willChange(_.bind(function () {
+            this.setValue(this.value + this.options.step * (count || 1));
+        }, this));
+
+        return this.value;
+    };
+
+    /**
+     * ### stepDown
+     *
+     * Decreases the value of the slider by `step`. Does nothing if the slider
+     * is alredy at its minimum value.
+     *
+     * The optional argument is an integer which indicates the number of steps
+     * by which to decrease the value.
+     *
+     * Returns the new slider value
+     */
+    Quinn.prototype.stepDown = function (count) {
+        this.__willChange(_.bind(function () {
+            this.setValue(this.value - this.options.step * (count || 1));
+        }, this));
+
+        return this.value;
     };
 
     /**
@@ -419,13 +457,22 @@
      * Tells the Quinn instance that the user is about to make a change to the
      * slider value. The calling function should check the return value of
      * __willChange -- if false, no changes are permitted to the slider.
+     *
+     * The optional argument is a function which will be run, followed by
+     * __hasChanged(). See stepUp for an example use.
      */
-    Quinn.prototype.__willChange = function () {
+    Quinn.prototype.__willChange = function (block) {
         if (this.isDisabled === true) {
             return false;
         }
 
         this.previousValues.unshift(this.value);
+
+        if (_.isFunction(block)) {
+            block();
+            return this.__hasChanged();
+        }
+
         return true;
     };
 
