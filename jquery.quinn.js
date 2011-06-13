@@ -77,6 +77,8 @@
         if (_.isFunction(this.options.onSetup)) {
             this.options.onSetup(this.value, this);
         }
+
+        return this;
     }
 
     // ## Rendering
