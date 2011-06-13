@@ -62,7 +62,7 @@
 
         // Create the slider DOM elements, and set the initial value.
         this.render();
-        this.setValue(this.options.value, false, false);
+        this.__setValue(this.options.value, false, false);
 
         // Events triggered when the user seeks to update the slider.
         this.wrapper.
@@ -189,38 +189,17 @@
      * argument is truthy, the change in value will be animated when updating
      * the slider position. The onChange callback may be skipped if
      * `doCallback` is falsey.
+     *
+     * This is the public version of __setValue which is a public API method;
+     * use this in your application code when you need to change the slider
+     * value.
      */
     Quinn.prototype.setValue = function (newValue, animate, doCallback) {
-        // The default slider value when initialized is "null", so we default
-        // to setting the instance to the lowest available value.
-        if (_.isNull(newValue)) {
-            newValue = this.selectable[0];
-        }
+        this.__willChange(_.bind(function () {
+            return this.__setValue(newValue, animate, doCallback);
+        }, this));
 
-        newValue = this.__roundToStep(newValue);
-
-        if (newValue < this.selectable[0]) {
-            newValue = this.selectable[0];
-        } else if (newValue > this.selectable[1]) {
-            newValue = this.selectable[1];
-        }
-
-        if (newValue === this.value) {
-            return false;
-        }
-
-        // Run the onChange callback; if the callback returns false then stop
-        // immediately and do not change the value.
-        if (_.isFunction(this.options.onChange) && doCallback !== false) {
-            if (this.options.onChange(newValue, this) === false ) {
-                return false;
-            }
-        }
-
-        this.value = newValue;
-        this.rePosition(animate);
-
-        return true;
+        return this.value;
     };
 
     /**
@@ -236,7 +215,7 @@
      */
     Quinn.prototype.stepUp = function (count) {
         this.__willChange(_.bind(function () {
-            this.setValue(this.value + this.options.step * (count || 1));
+            this.__setValue(this.value + this.options.step * (count || 1));
         }, this));
 
         return this.value;
@@ -255,7 +234,7 @@
      */
     Quinn.prototype.stepDown = function (count) {
         this.__willChange(_.bind(function () {
-            this.setValue(this.value - this.options.step * (count || 1));
+            this.__setValue(this.value - this.options.step * (count || 1));
         }, this));
 
         return this.value;
@@ -296,7 +275,7 @@
         }
 
         if (this.__willChange()) {
-            this.setValue(this.__valueFromMouse(event.pageX), true);
+            this.__setValue(this.__valueFromMouse(event.pageX), true);
 
             // Allow user to further refine the slider value by dragging
             // without releasing the mouse button. `disableDrag` will take
@@ -375,11 +354,11 @@
      */
     Quinn.prototype.drag = function (event) {
         if (event.type === 'touchmove') {
-            this.setValue(this.__valueFromMouse(
+            this.__setValue(this.__valueFromMouse(
                 event.originalEvent.targetTouches[0].pageX
             ));
         } else {
-            this.setValue(this.__valueFromMouse(event.pageX));
+            this.__setValue(this.__valueFromMouse(event.pageX));
         }
 
         return event.preventDefault();
@@ -471,8 +450,12 @@
         this.previousValues.unshift(this.value);
 
         if (_.isFunction(block)) {
-            block();
-            return this.__hasChanged();
+            if (block() === false) {
+                this.previousValues = _.tail(this.previousValues);
+                return false;
+            } else {
+                return this.__hasChanged();
+            }
         }
 
         return true;
@@ -496,7 +479,7 @@
                 restoreTo           = _.head(this.previousValues);
                 this.previousValues = _.tail(this.previousValues);
 
-                this.setValue(restoreTo, true);
+                this.__setValue(restoreTo, true);
 
                 return false;
             } else {
@@ -506,6 +489,44 @@
                 }
             }
         }
+    };
+
+    /**
+     * ### __setValue
+     *
+     * Internal method which changes the slider value. See setValue.
+     */
+    Quinn.prototype.__setValue = function (newValue, animate, doCallback) {
+        // The default slider value when initialized is "null", so we default
+        // to setting the instance to the lowest available value.
+        if (! _.isNumber(newValue)) {
+            newValue = this.selectable[0];
+        }
+
+        newValue = this.__roundToStep(newValue);
+
+        if (newValue < this.selectable[0]) {
+            newValue = this.selectable[0];
+        } else if (newValue > this.selectable[1]) {
+            newValue = this.selectable[1];
+        }
+
+        if (newValue === this.value) {
+            return false;
+        }
+
+        // Run the onChange callback; if the callback returns false then stop
+        // immediately and do not change the value.
+        if (_.isFunction(this.options.onChange) && doCallback !== false) {
+            if (this.options.onChange(newValue, this) === false ) {
+                return false;
+            }
+        }
+
+        this.value = newValue;
+        this.rePosition(animate);
+
+        return true;
     };
 
     /**

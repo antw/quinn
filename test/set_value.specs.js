@@ -1,7 +1,12 @@
 QUnit.specify('', function () {
-    var wrapper = $('#slider'), slider;
 
     describe('setValue', function () {
+        var wrapper = $('#slider'), slider;
+
+        after(function () {
+            wrapper.html('');
+        });
+
         describe('When setting a value', function () {
             before(function () {
                 slider = new $.Quinn(wrapper);
@@ -13,17 +18,17 @@ QUnit.specify('', function () {
             });
 
             it('should add the old value to previousValues', function () {
-                assert(slider.previousValues).equals([0]);
+                assert(slider.previousValues).isSameAs([0]);
             });
 
             it('should not permit values larger than the selectable range', function () {
-                assert(slider.setValue(101)).equals(50);
-                assert(slider.value).equals(50);
+                assert(slider.setValue(101)).equals(100);
+                assert(slider.value).equals(100);
             });
 
             it('should not permit values smaller than the selectable range', function () {
-                assert(slider.setValue(-1)).equals(50);
-                assert(slider.value).equals(50);
+                assert(slider.setValue(-1)).equals(0);
+                assert(slider.value).equals(0);
             });
 
             it('should run the onChange callback', function () {
@@ -79,7 +84,8 @@ QUnit.specify('', function () {
             });
 
             it('should add the old value to previousValues', function () {
-                assert(slider.previousValues).equals([50]);
+                slider.setValue();
+                assert(slider.previousValues).isSameAs([50]);
             });
         });
 
