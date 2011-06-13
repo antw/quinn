@@ -7,7 +7,7 @@ QUnit.specify('', function () {
             wrapper.html('');
         });
 
-        describe('When setting a value', function () {
+        describe('when setting a value', function () {
             before(function () {
                 slider = new $.Quinn(wrapper);
                 slider.setValue(50);
@@ -56,9 +56,9 @@ QUnit.specify('', function () {
                 slider.setValue(50);
                 assert(onCompleteRun).isTrue();
             });
-        });
+        }); // when setting a value
 
-        describe('When the slider is disabled', function () {
+        describe('when the slider is disabled', function () {
             before(function () {
                 slider = new $.Quinn(wrapper, { disable: true });
             });
@@ -71,9 +71,9 @@ QUnit.specify('', function () {
             it('should not change previousValues', function () {
                 assert(slider.previousValues.length).equals(0);
             });
-        });
+        }); // when the slider is disabled
 
-        describe('When given no argument', function () {
+        describe('when given no argument', function () {
             before(function () {
                 slider = new $.Quinn(wrapper, { value: 50 });
             });
@@ -87,9 +87,9 @@ QUnit.specify('', function () {
                 slider.setValue();
                 assert(slider.previousValues).isSameAs([50]);
             });
-        });
+        }); // when given no argument
 
-        describe('When the value does not match the step', function () {
+        describe('when the value does not match the step', function () {
             before(function () {
                 slider = new $.Quinn(wrapper, { step: 7 });
             });
@@ -106,10 +106,9 @@ QUnit.specify('', function () {
 
                 assert(rounded).isSameAs(rounds);
             });
+        }); // when the value does not match the step
 
-        });
-
-        describe('When the onChange callback returns false', function () {
+        describe('when the onChange callback returns false', function () {
             var onCompleteRun;
 
             before(function () {
@@ -132,9 +131,9 @@ QUnit.specify('', function () {
                 slider.setValue(5);
                 assert(onCompleteRun).isFalse();
             });
-        });
+        }); // when the onChange callback returns false
 
-        describe('When the onComplete callback returns false', function () {
+        describe('when the onComplete callback returns false', function () {
             before(function () {
                 slider = new $.Quinn(wrapper, {
                     onComplete: function () { return false }
@@ -149,9 +148,9 @@ QUnit.specify('', function () {
             it('should not change previousValues', function () {
                 assert(slider.previousValues.length).equals(0);
             });
-        });
+        }); // when the onComplete callback returns false
 
-        describe('When the value is unchanged', function () {
+        describe('when the value is unchanged', function () {
             var onChangeRun, onCompleteRun;
 
             before(function () {
@@ -174,6 +173,22 @@ QUnit.specify('', function () {
             it('should not run onComplete', function () {
                 assert(onCompleteRun).isFalse();
             });
-        });
+        }); // when the value is unchanged
+
+        describe('when using the only option', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { only: [10, 50] });
+            });
+
+            it('should set the given value', function () {
+                assert(slider.setValue(10)).equals(10);
+                assert(slider.value).equals(10);
+            });
+
+            it('should set the nearest value when not exact', function () {
+                assert(slider.setValue(40)).equals(50);
+                assert(slider.value).equals(50);
+            });
+        }); // when using the only option
     });
 });
