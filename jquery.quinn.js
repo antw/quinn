@@ -81,6 +81,9 @@
         return this;
     }
 
+    // The current Quinn version.
+    Quinn.VERSION = '0.2.0';
+
     // ## Rendering
 
     /**

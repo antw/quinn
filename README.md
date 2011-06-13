@@ -31,13 +31,13 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.1.6)][tarball]
+[Everything (0.2.0)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.1.6)][development-js]
+[Development Version (0.2.0)][development-js]
 :   13.3kb, JS only, Uncompressed with comments
 
-[Production Version (0.1.6)][production-js]
+[Production Version (0.2.0)][production-js]
 :   1.54kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -292,6 +292,15 @@ need to alter the CSS. For example:
 History
 -------
 
+#### 0.2.0 _June 14th, 2011_
+
+`stepUp` and `stepDown` have been added which are similar to the methods
+of the same name on HTML 5 range and number inputs. Quinn instances may
+now be created using `new $.Quinn(...)` if you need to hang on to the
+slider instance after creation. Default theme changed to use a modified
+version of Aristo. Fixed an issue when using `selectable` with `step`
+when the selectable options didn't fit the step.
+
 #### 0.1.6 _June 10th, 2011_
 
 The `only` option has been added which restricts the choosable values
@@ -328,7 +337,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.1.6
+[tarball]:        https://github.com/antw/quinn/tarball/v0.2.0
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
