@@ -195,9 +195,13 @@
      * value.
      */
     Quinn.prototype.setValue = function (newValue, animate, doCallback) {
-        this.__willChange(_.bind(function () {
-            return this.__setValue(newValue, animate, doCallback);
-        }, this));
+        if (this.__willChange()) {
+            if (this.__setValue(newValue, animate, doCallback)) {
+                this.__hasChanged();
+            } else {
+                this.__abortChange();
+            }
+        }
 
         return this.value;
     };
@@ -430,25 +434,13 @@
      * Tells the Quinn instance that the user is about to make a change to the
      * slider value. The calling function should check the return value of
      * __willChange -- if false, no changes are permitted to the slider.
-     *
-     * The optional argument is a function which will be run, followed by
-     * __hasChanged(). See stepUp for an example use.
      */
-    Quinn.prototype.__willChange = function (block) {
+    Quinn.prototype.__willChange = function () {
         if (this.isDisabled === true) {
             return false;
         }
 
         this.previousValues.unshift(this.value);
-
-        if (_.isFunction(block)) {
-            if (block() === false) {
-                this.previousValues = _.tail(this.previousValues);
-                return false;
-            } else {
-                return this.__hasChanged();
-            }
-        }
 
         return true;
     };
@@ -460,27 +452,32 @@
      * changes to the slider.
      */
     Quinn.prototype.__hasChanged = function () {
-        var restoreTo;
-
         // Run the onComplete callback; if the callback returns false then
         // we revert the slider change, and restore everything to how it was
         // before. Note that reverting the change will also fire an onChange
         // event when the value is reverted.
         if (_.isFunction(this.options.onComplete)) {
             if (this.options.onComplete(this.value, this) === false ) {
-                restoreTo           = _.head(this.previousValues);
-                this.previousValues = _.tail(this.previousValues);
-
-                this.__setValue(restoreTo, true);
+                this.__setValue(_.head(this.previousValues), true);
+                this.__abortChange();
 
                 return false;
             } else {
                 if (_.head(this.previousValues) === this.value) {
                     // The user reset the slider back to where it was.
-                    this.previousValues = _.tail(this.previousValues);
+                    this.__abortChange();
                 }
             }
         }
+    };
+
+    /**
+     * ### __abortChange
+     *
+     * Aborts a slider change, and restores it to it's previous state.
+     */
+    Quinn.prototype.__abortChange = function () {
+        this.previousValues = _.tail(this.previousValues);
     };
 
     /**
