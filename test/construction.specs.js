@@ -1,4 +1,4 @@
-QUnit.specify('Construction', function () {
+QUnit.specify('', function () {
 
     describe('Constructor', function () {
         var wrapper = $('#slider'), slider;
