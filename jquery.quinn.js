@@ -580,4 +580,7 @@
         return $.each(this, function () { new Quinn($(this), options); });
     };
 
+    // Expose Quinn to the world on $.Quinn.
+    $.Quinn = Quinn;
+
 })(jQuery);

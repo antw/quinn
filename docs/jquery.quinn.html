@@ -1027,12 +1027,23 @@ permitted.</p>
           <a class="pilcrow" href="#section-58">&#182;</a>
         </div>
         <p>The jQuery helper function. Permits $(&hellip;).quinn();</p>
-
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">fn</span><span class="p">.</span><span class="nx">quinn</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span> <span class="k">new</span> <span class="nx">Quinn</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">),</span> <span class="nx">options</span><span class="p">);</span> <span class="p">});</span>
-    <span class="p">};</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-59'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-59">&#182;</a>
+        </div>
+        <p>Expose Quinn to the world on $.Quinn.</p>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">$</span><span class="p">.</span><span class="nx">Quinn</span> <span class="o">=</span> <span class="nx">Quinn</span><span class="p">;</span>
 
 <span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span></pre></div>
       </td>
