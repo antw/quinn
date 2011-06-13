@@ -214,11 +214,7 @@
      * Returns the new slider value
      */
     Quinn.prototype.stepUp = function (count) {
-        this.__willChange(_.bind(function () {
-            this.__setValue(this.value + this.options.step * (count || 1));
-        }, this));
-
-        return this.value;
+        return this.setValue(this.value + this.options.step * (count || 1));
     };
 
     /**
@@ -233,11 +229,7 @@
      * Returns the new slider value
      */
     Quinn.prototype.stepDown = function (count) {
-        this.__willChange(_.bind(function () {
-            this.__setValue(this.value - this.options.step * (count || 1));
-        }, this));
-
-        return this.value;
+        return this.setValue(this.value - this.options.step * (count || 1));
     };
 
     /**
