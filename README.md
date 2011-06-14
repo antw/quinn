@@ -11,18 +11,17 @@ on [GitHub][github]; you can report bugs and discuss features on the
 
 The library requires [jQuery][jq] and [Underscore.js][us].
 
-Quinn has been tested and confirmed working in the following
-environments:
+Quinn has been tested and works in the following environments:
 
  - Chrome 11 and 12
  - Firefox 3.5 and 4.0
  - Safari 4
- - Internet Explorer 8
+ - Opera 11
+ - Internet Explorer 7 and 8
  {:.yes}
 
-Tests in Internet Explorer 7 and 9, and Opera are still pending. There
-are no plans to support Internet Explorer 6. The unit tests can be run
-[in your browser][tests].
+There are no plans to support Internet Explorer 6. The unit tests can
+be run [in your browser][tests].
 
 Quinn was developed by [~antw][antw] as part of Quintel
 Intelligence's [Energy Transition Model][etm] application, and has been

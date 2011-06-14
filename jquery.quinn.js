@@ -64,11 +64,6 @@
         this.render();
         this.__setValue(this.options.value, false, false);
 
-        // Events triggered when the user seeks to update the slider.
-        this.wrapper.
-            delegate('.bar',    'mousedown',   this.clickBar).
-            delegate('.handle',  DRAG_START_E, this.enableDrag);
-
         if (this.options.disable === true) {
             this.disable();
         }
@@ -140,6 +135,17 @@
             marginLeft: (-barWidth + handleDangle).toString() + 'px',
             width: (barWidth - handleWidth).toString() + 'px'
         });
+
+        // Finally, these events are triggered when the user seeks to
+        // update the slider.
+        this.bar.bind('mousedown', this.clickBar);
+        this.handle.bind(DRAG_START_E, this.enableDrag);
+
+        // IE7 isn't triggering when clicking on the bar, but only on
+        // the movable-range. I'm not yet sure why.
+        if ($.browser.msie && $.browser.version < 8.0) {
+            movableRange.bind('mousedown', this.clickBar);
+        }
     };
 
     /**

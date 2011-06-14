@@ -88,14 +88,18 @@
 
     $('pre.no-example:not(.css) code').addClass('javascript');
 
-    $('pre.css code').each(function () {
-        var $this = $(this);
 
-        $('body').append($('<style type="text/css" />').text($this.text()));
-        $this.addClass('css');
-    });
+    // Skip syntax highlighting on IE < 8
+    if (! $.browser.msie || $.browser.version > 7.0) {
+        $('pre.css code').each(function () {
+            var $this = $(this).addClass('css');
 
-    // Do highlighting.
-    hljs.initHighlightingOnLoad();
+            $('body').append($('<style type="text/css"></style>').
+                text($this.text()));
+        });
+
+        // Do highlighting.
+        hljs.initHighlightingOnLoad();
+    }
 
 })(jQuery);
