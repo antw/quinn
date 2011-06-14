@@ -177,12 +177,17 @@ QUnit.specify('', function () {
 
         describe('when using the only option', function () {
             before(function () {
-                slider = new $.Quinn(wrapper, { only: [10, 50] });
+                slider = new $.Quinn(wrapper, { value: 40, only: [10, 20, 50] });
+            });
+
+            it('should set the first value when given no argument', function () {
+                assert(slider.setValue()).equals(10);
+                assert(slider.value).equals(10);
             });
 
             it('should set the given value', function () {
-                assert(slider.setValue(10)).equals(10);
-                assert(slider.value).equals(10);
+                assert(slider.setValue(50)).equals(50);
+                assert(slider.value).equals(50);
             });
 
             it('should set the nearest value when not exact', function () {
