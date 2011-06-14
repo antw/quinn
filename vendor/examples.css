@@ -183,6 +183,9 @@ body {
     background: #edf2f7;
     font: 16px/24px "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
     margin: 0;
+}
+
+#content {
     padding: 48px 96px;
     width: 550px;
 }
