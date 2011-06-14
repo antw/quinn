@@ -21,7 +21,8 @@ environments:
  {:.yes}
 
 Tests in Internet Explorer 7 and 9, and Opera are still pending. There
-are no plans to support Internet Explorer 6.
+are no plans to support Internet Explorer 6. The unit tests can be run
+[in your browser][tests].
 
 Quinn was developed by [~antw][antw] as part of Quintel
 Intelligence's [Energy Transition Model][etm] application, and has been
@@ -331,6 +332,7 @@ Opera and Internet Explorer are not yet complete.
 [twitter]:        http://twitter.com/antw
 [antw]:           http://github.com/antw
 [annotated]:      http://antw.github.com/quinn/docs/jquery.quinn.html
+[tests]:          http://antw.github.com/quinn/test
 [etm]:            http://www.energytransitionmodel.com
 [license]:        http://github.com/antw/quinn/blob/master/LICENSE
 [jq]:             http://jquery.com
