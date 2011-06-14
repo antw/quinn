@@ -31,13 +31,13 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.2.0)][tarball]
+[Everything (0.2.1)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.2.0)][development-js]
+[Development Version (0.2.1)][development-js]
 :   13.3kb, JS only, Uncompressed with comments
 
-[Production Version (0.2.0)][production-js]
+[Production Version (0.2.1)][production-js]
 :   1.54kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -292,7 +292,12 @@ need to alter the CSS. For example:
 History
 -------
 
-#### 0.2.0 _June 14th, 2011_
+#### 0.2.1 _June 14th, 2011_
+
+Quinn has now been tested and fixed for IE7, urgh. Opera has been tested
+and, unsurprisingly, works perfectly.
+
+#### 0.2.0 _June 13th, 2011_
 
 `stepUp` and `stepDown` have been added which are similar to the methods
 of the same name on HTML 5 range and number inputs. Quinn instances may
@@ -338,7 +343,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.2.0
+[tarball]:        https://github.com/antw/quinn/tarball/v0.2.1
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
