@@ -806,8 +806,10 @@ event when the value is reverted.</p>
                 <span class="k">this</span><span class="p">.</span><span class="nx">__abortChange</span><span class="p">();</span>
 
                 <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">head</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValues</span><span class="p">)</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span></pre></div>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">head</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValues</span><span class="p">)</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
     <tr id='section-44'>
@@ -818,9 +820,7 @@ event when the value is reverted.</p>
         <p>The user reset the slider back to where it was.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>                    <span class="k">this</span><span class="p">.</span><span class="nx">__abortChange</span><span class="p">();</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
+        <div class='highlight'><pre>            <span class="k">this</span><span class="p">.</span><span class="nx">__abortChange</span><span class="p">();</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
       </td>

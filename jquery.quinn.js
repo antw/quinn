@@ -471,12 +471,12 @@
                 this.__abortChange();
 
                 return false;
-            } else {
-                if (_.head(this.previousValues) === this.value) {
-                    // The user reset the slider back to where it was.
-                    this.__abortChange();
-                }
             }
+        }
+
+        if (_.head(this.previousValues) === this.value) {
+            // The user reset the slider back to where it was.
+            this.__abortChange();
         }
     };
 
