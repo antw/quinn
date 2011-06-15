@@ -627,13 +627,13 @@ contiues to hold the left mouse button.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">drag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">pageX</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span><span class="p">;</span>
+
         <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;touchmove&#39;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">__setValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">__valueFromMouse</span><span class="p">(</span>
-                <span class="nx">event</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">targetTouches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span>
-            <span class="p">));</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">__setValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">__valueFromMouse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span><span class="p">));</span>
+            <span class="nx">pageX</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">originalEvent</span><span class="p">.</span><span class="nx">targetTouches</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">pageX</span><span class="p">;</span>
         <span class="p">}</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">__setValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">__valueFromMouse</span><span class="p">(</span><span class="nx">pageX</span><span class="p">));</span>
 
         <span class="k">return</span> <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
     <span class="p">};</span></pre></div>
@@ -850,7 +850,16 @@ event when the value is reverted.</p>
 <p>Internal method which changes the slider value. See setValue.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">__setValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">doCallback</span><span class="p">)</span> <span class="p">{</span></pre></div>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">__setValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">doCallback</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__roundToStep</span><span class="p">(</span><span class="nx">newValue</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
     <tr id='section-47'>
@@ -858,20 +867,11 @@ event when the value is reverted.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-47">&#182;</a>
         </div>
-        <p>The default slider value when initialized is &ldquo;null&rdquo;, so we default
+        <p>The default slider value when initialized is &ldquo;null&rdquo;, so default
 to setting the instance to the lowest available value.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
-            <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-        <span class="p">}</span>
-
-        <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__roundToStep</span><span class="p">(</span><span class="nx">newValue</span><span class="p">);</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
-            <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
-            <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <div class='highlight'><pre>            <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">selectable</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>

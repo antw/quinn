@@ -358,13 +358,13 @@
      * contiues to hold the left mouse button.
      */
     Quinn.prototype.drag = function (event) {
+        var pageX = event.pageX;
+
         if (event.type === 'touchmove') {
-            this.__setValue(this.__valueFromMouse(
-                event.originalEvent.targetTouches[0].pageX
-            ));
-        } else {
-            this.__setValue(this.__valueFromMouse(event.pageX));
+            pageX = event.originalEvent.targetTouches[0].pageX;
         }
+
+        this.__setValue(this.__valueFromMouse(pageX));
 
         return event.preventDefault();
     };
@@ -495,18 +495,18 @@
      * Internal method which changes the slider value. See setValue.
      */
     Quinn.prototype.__setValue = function (newValue, animate, doCallback) {
-        // The default slider value when initialized is "null", so we default
-        // to setting the instance to the lowest available value.
-        if (! _.isNumber(newValue)) {
-            newValue = this.selectable[0];
-        }
+        if (_.isNumber(newValue)) {
+            newValue = this.__roundToStep(newValue);
 
-        newValue = this.__roundToStep(newValue);
-
-        if (newValue < this.selectable[0]) {
+            if (newValue < this.selectable[0]) {
+                newValue = this.selectable[0];
+            } else if (newValue > this.selectable[1]) {
+                newValue = this.selectable[1];
+            }
+        } else {
+            // The default slider value when initialized is "null", so default
+            // to setting the instance to the lowest available value.
             newValue = this.selectable[0];
-        } else if (newValue > this.selectable[1]) {
-            newValue = this.selectable[1];
         }
 
         if (newValue === this.value) {
