@@ -1,4 +1,4 @@
-(function ($) {
+(function ($, _) {
 
     // Event names used for setting up drag events.
     var DRAG_E           = 'mousemove',
@@ -604,4 +604,4 @@
     // Expose Quinn to the world on $.Quinn.
     $.Quinn = Quinn;
 
-})(jQuery);
+})(jQuery, _);
