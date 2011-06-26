@@ -51,7 +51,7 @@ Table of Contents
 
 #### Callbacks
 
-[onSetup][onsetup], [onChange][onchange], [onComplete][oncomplete]
+[onSetup][onsetup], [onChange][onchange], [onCommit][oncommit]
 
 #### [Theming][theming]
 
@@ -170,9 +170,9 @@ When the user alters the slider position, the order of events firing is:
  1. **[onBegin][onbegin]**: Each time the user starts changing the slider value.
  2. **[onChange][onchange]**: Repeatedly as the user drags the handle to new
     positions.
- 3. **[onComplete][oncomplete]**: When the user releases the mouse button.
+ 3. **[onCommit][oncommit]**: When the user releases the mouse button.
  4. **[onAbort][onabort]**: When the user releases the mouse button, and the
-    onComplete callback returns false.
+    onCommit callback returns false.
 
 In addition to supplying callbacks when initializing a slider, you may
 bind further callbacks to the Quinn instance:
@@ -236,7 +236,7 @@ handle. This is perfect for "hooking" in to the slider to display the
 value elsewhere in your UI (such as the examples on this page), to
 update a graph in real-time, etc, but is not suitable for persisting the
 slider value to a server unless you like flooding your application with
-tens of HTTP requests per second. Use **onComplete** which is fired only
+tens of HTTP requests per second. Use **onCommit** which is fired only
 after the user has finished dragging the handle.
 
 Explicitly returning false in the callback will prevent the change.
@@ -250,9 +250,9 @@ Explicitly returning false in the callback will prevent the change.
         }
     });
 
-### onComplete `onComplete: function (newValue, quinn)` {#oncomplete}
+### onCommit `onCommit: function (newValue, quinn)` {#oncommit}
 
-**onComplete** is similar to the to the **onChange** event in that it is
+**onCommit** is similar to the to the **onChange** event in that it is
 fired when the slider value is changed by a user. However, unlike
 **onChange** it is fired only after the user has _finished_ changing the
 value. This is defined as clicking the slider bar to change the value,
@@ -261,7 +261,7 @@ or lifting the left mouse button after dragging the slider handle.
     $('.slider').quinn({
         value: 25,
 
-        onComplete: function (newValue, slider) {
+        onCommit: function (newValue, slider) {
             // Disallow selecting a value over 50, but only
             // after the user has finished moving the slider.
             if (newValue > 50) {
@@ -273,8 +273,8 @@ or lifting the left mouse button after dragging the slider handle.
 ### onAbort `onAbort: function (restoredValue, quinn)` {#onabort}
 
 The **onAbort** event is fired once the user has finished adjusting the
-value (like **onComplete**) but the change failed either because the
-**onComplete** callback returned false, or the user set the slider back
+value (like **onCommit**) but the change failed either because the
+**onCommit** callback returned false, or the user set the slider back
 to it's starting value.
 
 Theming
@@ -327,6 +327,11 @@ need to alter the CSS. For example:
 
 History
 -------
+
+#### Git Head (will be 0.3.0)
+
+Events may be bound to the Quinn instance just like DOM events in jQuery
+using `bind`. The onComplete callback has been renamed onCommit.
 
 #### 0.2.1 _June 14th, 2011_
 
@@ -396,6 +401,6 @@ Opera and Internet Explorer are not yet complete.
 [onsetup]:        #onsetup
 [onbegin]:        #onbegin
 [onchange]:       #onchange
-[oncomplete]:     #oncomplete
+[oncommit]:       #oncommit
 [onabort]:        #onbort
 [theming]:        #theming

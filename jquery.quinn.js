@@ -36,11 +36,11 @@
         this.previousValues = [];
 
         this.callbacks = {
-            setup:    [],
-            begin:    [],
-            change:   [],
-            complete: [],
-            abort:    []
+            setup:  [],
+            begin:  [],
+            change: [],
+            commit: [],
+            abort:  []
         };
 
         // For convenience.
@@ -76,11 +76,11 @@
             this.disable();
         }
 
-        this.bind('setup',    this.options.onSetup);
-        this.bind('begin',    this.options.onBegin);
-        this.bind('change',   this.options.onChange);
-        this.bind('complete', this.options.onComplete);
-        this.bind('abort',    this.options.onAbort);
+        this.bind('setup',  this.options.onSetup);
+        this.bind('begin',  this.options.onBegin);
+        this.bind('change', this.options.onChange);
+        this.bind('commit', this.options.onCommit);
+        this.bind('abort',  this.options.onAbort);
 
         // Fire the onSetup callback.
         this.trigger('setup');
@@ -509,11 +509,11 @@
      * changes to the slider.
      */
     Quinn.prototype.__hasChanged = function () {
-        // Run the onComplete callback; if the callback returns false then
-        // we revert the slider change, and restore everything to how it was
+        // Run the onCommit callback; if the callback returns false then we
+        // revert the slider change, and restore everything to how it was
         // before. Note that reverting the change will also fire an onChange
         // event when the value is reverted.
-        if (! this.trigger('complete')) {
+        if (! this.trigger('commit')) {
             this.__setValue(_.head(this.previousValues), true);
             this.__abortChange();
 
@@ -620,7 +620,7 @@
         //   number: the new slider value
         //   Quinn:  the Quinn instance
         //
-        onComplete: null,
+        onCommit: null,
 
         // Run once after the slider has been constructed.
         //
