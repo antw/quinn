@@ -286,7 +286,12 @@
      * the Quinn instance permitting chaining.
      */
     Quinn.prototype.bind = function (event, callback) {
-        if (_.isFunction(callback)) {
+        if (_.isString(event) && _.isFunction(callback)) {
+            if (event.slice(0, 2) === 'on') {
+                // In case the user gave the longer form 'onChange', etc.
+                event = event.slice(2, event.length).toLowerCase();
+            }
+
             this.callbacks[event].push(callback);
         }
 
