@@ -35,6 +35,14 @@
 
         this.previousValues = [];
 
+        this.callbacks = {
+            setup:    [],
+            begin:    [],
+            change:   [],
+            complete: [],
+            abort:    []
+        };
+
         // For convenience.
         this.range      = this.options.range.slice();
         this.selectable = this.options.selectable || this.range;
@@ -68,10 +76,14 @@
             this.disable();
         }
 
+        this.bind('setup',    this.options.onSetup);
+        this.bind('begin',    this.options.onBegin);
+        this.bind('change',   this.options.onChange);
+        this.bind('complete', this.options.onComplete);
+        this.bind('abort',    this.options.onAbort);
+
         // Fire the onSetup callback.
-        if (_.isFunction(this.options.onSetup)) {
-            this.options.onSetup(this.value, this);
-        }
+        this.trigger('setup');
 
         return this;
     }
@@ -268,6 +280,43 @@
     // ## Event Handlers
 
     /**
+     * ### bind
+     *
+     * Binds a `callback` to be run whenever the given `event` occurs. Returns
+     * the Quinn instance permitting chaining.
+     */
+    Quinn.prototype.bind = function (event, callback) {
+        if (_.isFunction(callback)) {
+            this.callbacks[event].push(callback);
+        }
+
+        return this;
+    };
+
+    /**
+     * Runs the callbacks of the given type.
+     *
+     * If any of the callbacks return false, other callbacks will not be run,
+     * and trigger will return false; otherwise true is returned.
+     */
+    Quinn.prototype.trigger = function (event, value) {
+        var callbacks = this.callbacks[event],
+            callback, i = 0;
+
+        if (value === void 0) {
+            value = this.value;
+        }
+
+        while (callback = callbacks[i++]) {
+            if (callback(value, this) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    /**
      * ### clickBar
      *
      * Event handler which is used when the user clicks part of the slider bar
@@ -445,12 +494,11 @@
      * __willChange -- if false, no changes are permitted to the slider.
      */
     Quinn.prototype.__willChange = function () {
-        if (this.isDisabled === true) {
+        if (this.isDisabled === true || ! this.trigger('begin')) {
             return false;
         }
 
         this.previousValues.unshift(this.value);
-
         return true;
     };
 
@@ -465,13 +513,11 @@
         // we revert the slider change, and restore everything to how it was
         // before. Note that reverting the change will also fire an onChange
         // event when the value is reverted.
-        if (_.isFunction(this.options.onComplete)) {
-            if (this.options.onComplete(this.value, this) === false ) {
-                this.__setValue(_.head(this.previousValues), true);
-                this.__abortChange();
+        if (! this.trigger('complete')) {
+            this.__setValue(_.head(this.previousValues), true);
+            this.__abortChange();
 
-                return false;
-            }
+            return false;
         }
 
         if (_.head(this.previousValues) === this.value) {
@@ -487,6 +533,7 @@
      */
     Quinn.prototype.__abortChange = function () {
         this.previousValues = _.tail(this.previousValues);
+        return this.trigger('abort');
     };
 
     /**
@@ -515,10 +562,8 @@
 
         // Run the onChange callback; if the callback returns false then stop
         // immediately and do not change the value.
-        if (_.isFunction(this.options.onChange) && doCallback !== false) {
-            if (this.options.onChange(newValue, this) === false ) {
-                return false;
-            }
+        if (! this.trigger('change', newValue)) {
+            return false;
         }
 
         this.value = newValue;

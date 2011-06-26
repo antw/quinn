@@ -189,6 +189,31 @@ pass <code>false</code> with the <strong>disable</strong> option:</p>
 callback functions which are supplied as part of the options object when
 creating the slider.</p>
 
+<p>When the user alters the slider position, the order of events firing is:</p>
+
+<ol>
+  <li><strong><a href="#onbegin">onBegin</a></strong>: Each time the user starts changing the slider value.</li>
+  <li><strong><a href="#onchange">onChange</a></strong>: Repeatedly as the user drags the handle to new
+positions.</li>
+  <li><strong><a href="#oncomplete">onComplete</a></strong>: When the user releases the mouse button.</li>
+  <li><strong><a href="#onbort">onAbort</a></strong>: When the user releases the mouse button, and the
+onComplete callback returns false.</li>
+</ol>
+
+<p>In addition to supplying callbacks when initializing a slider, you may
+bind further callbacks to the Quinn instance:</p>
+
+<pre class="no-example"><code>var slider = new $.Quinn(element, options);
+
+slider.bind('change', function (value) {
+    console.log(value);
+});
+
+slider.bind('abort', function (value) {
+    console.log('Value reset to ' + value);
+});
+</code></pre>
+
 <h3 id="onsetup">onSetup <code>onSetup: function (currentValue, quinn)</code></h3>
 
 <p><strong>onSetup</strong> is run only once, immediately after the Quinn constructor
@@ -198,6 +223,12 @@ initialization may differ from the one given to the callback since the
 constructor adjusts the slider value to fit with the <strong>range</strong>,
 <strong>selectable</strong>, and <strong>step</strong> options. The value supplied to the
 callback is correct.</p>
+
+<h3 id="onbegin">onBegin <code>onBegin: function (currentValue, quinn)</code></h3>
+
+<p><strong>onBegin</strong> is fired as the user starts to adjust the slider value. This
+happens when they click on the slider bar, or on the handle <em>prior</em> to
+the slider being dragged to a new position.</p>
 
 <h3 id="onchange">onChange <code>onChange: function (newValue, quinn)</code></h3>
 
@@ -267,6 +298,13 @@ or lifting the left mouse button after dragging the slider handle.</p>
     }
 });
 </code></pre>
+
+<h3 id="onabort">onAbort <code>onAbort: function (restoredValue, quinn)</code></h3>
+
+<p>The <strong>onAbort</strong> event is fired once the user has finished adjusting the
+value (like <strong>onComplete</strong>) but the change failed either because the
+<strong>onComplete</strong> callback returned false, or the user set the slider back
+to it’s starting value.</p>
 
 <h2 id="theming">Theming</h2>
 

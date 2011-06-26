@@ -165,6 +165,29 @@ The behavior of the slider may be further customised through the use of
 callback functions which are supplied as part of the options object when
 creating the slider.
 
+When the user alters the slider position, the order of events firing is:
+
+ 1. **[onBegin][onbegin]**: Each time the user starts changing the slider value.
+ 2. **[onChange][onchange]**: Repeatedly as the user drags the handle to new
+    positions.
+ 3. **[onComplete][oncomplete]**: When the user releases the mouse button.
+ 4. **[onAbort][onabort]**: When the user releases the mouse button, and the
+    onComplete callback returns false.
+
+In addition to supplying callbacks when initializing a slider, you may
+bind further callbacks to the Quinn instance:
+
+    var slider = new $.Quinn(element, options);
+
+    slider.bind('change', function (value) {
+        console.log(value);
+    });
+
+    slider.bind('abort', function (value) {
+        console.log('Value reset to ' + value);
+    });
+{:class="no-example"}
+
 ### onSetup `onSetup: function (currentValue, quinn)` {#onsetup}
 
 **onSetup** is run only once, immediately after the Quinn constructor
@@ -174,6 +197,12 @@ initialization may differ from the one given to the callback since the
 constructor adjusts the slider value to fit with the **range**,
 **selectable**, and **step** options. The value supplied to the
 callback is correct.
+
+### onBegin `onBegin: function (currentValue, quinn)` {#onbegin}
+
+**onBegin** is fired as the user starts to adjust the slider value. This
+happens when they click on the slider bar, or on the handle _prior_ to
+the slider being dragged to a new position.
 
 ### onChange `onChange: function (newValue, quinn)` {#onchange}
 
@@ -240,6 +269,13 @@ or lifting the left mouse button after dragging the slider handle.
             }
         }
     });
+
+### onAbort `onAbort: function (restoredValue, quinn)` {#onabort}
+
+The **onAbort** event is fired once the user has finished adjusting the
+value (like **onComplete**) but the change failed either because the
+**onComplete** callback returned false, or the user set the slider back
+to it's starting value.
 
 Theming
 -------
@@ -358,6 +394,8 @@ Opera and Internet Explorer are not yet complete.
 [only]:           #only
 [disable]:        #disable
 [onsetup]:        #onsetup
+[onbegin]:        #onbegin
 [onchange]:       #onchange
 [oncomplete]:     #oncomplete
+[onabort]:        #onbort
 [theming]:        #theming
