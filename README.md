@@ -51,7 +51,8 @@ Table of Contents
 
 #### Callbacks
 
-[onSetup][onsetup], [onChange][onchange], [onCommit][oncommit]
+[onSetup][onsetup], [onBegin][onbegin], [onChange][onchange],
+[onCommit][oncommit], [onAbort][onabort]
 
 #### [Theming][theming]
 
