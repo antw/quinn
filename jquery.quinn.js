@@ -299,6 +299,8 @@
     };
 
     /**
+     * ### trigger
+     *
      * Runs the callbacks of the given type.
      *
      * If any of the callbacks return false, other callbacks will not be run,
