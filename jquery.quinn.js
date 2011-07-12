@@ -457,7 +457,7 @@
             // Mouse is to the right of the bar.
             barPosition = barWidth;
         } else {
-            barPosition = mousePosition - this.bar.offset().left;
+            barPosition = mousePosition - maxLeft;
         }
 
         return barPosition / barWidth * 100;
