@@ -89,7 +89,7 @@
     }
 
     // The current Quinn version.
-    Quinn.VERSION = '0.3.0';
+    Quinn.VERSION = '0.3.1';
 
     // ## Rendering
 
