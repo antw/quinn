@@ -264,9 +264,11 @@
      */
     Quinn.prototype.disable = function () {
         this.isDisabled = true;
+        this.wrapper.addClass('disabled');
 
-        this.wrapper.addClass('disabled').
-            css('opacity', this.options.disabledOpacity);
+        if (this.options.disabledOpacity !== 1.0) {
+            this.wrapper.css('opacity', this.options.disabledOpacity);
+        }
     };
 
     /**
@@ -276,7 +278,11 @@
      */
     Quinn.prototype.enable = function () {
         this.isDisabled = false;
-        this.wrapper.removeClass('disabled').css('opacity', 1.0);
+        this.wrapper.removeClass('disabled');
+
+        if (this.options.disabledOpacity !== 1.0) {
+            this.wrapper.css('opacity', 1.0);
+        }
     };
 
     // ## Event Handlers
