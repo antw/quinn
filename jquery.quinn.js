@@ -193,6 +193,13 @@
         }
     };
 
+    /**
+     * ### __positionActiveBar
+     *
+     * Positions the blue active bar so that it originates at a position where
+     * the value 0 is. Accepts a `value` argument so that it may be used
+     * within a `step` callback in a jQuery `animate` call.
+     */
     Quinn.prototype.__positionActiveBar = function (value) {
         var leftPosition, rightPosition;
 
@@ -486,6 +493,13 @@
         return barPosition / barWidth * 100;
     };
 
+    /**
+     * ### __positionForValue
+     *
+     * Given a slider value, returns the position in pixels where the value is
+     * on the slider bar. For example, in a 200px wide bar whose values are
+     * 1->100, the value 20 is found 40px from the left of the bar.
+     */
     Quinn.prototype.__positionForValue = function (value) {
         var barWidth = this.bar.width(),
             delta    = this.range[1] - this.range[0];
