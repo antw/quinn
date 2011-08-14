@@ -75,11 +75,10 @@ minimum value represented on the slider, and the second is the maximum.
     // Our volume knobs go up to eleven.
     $('.slider').quinn({ range: [ 0, 11 ] });
 
-Negative values are perfectly acceptable, but the "active bar" (the blue
-background) doesn't yet handle this correctly -- it ought to originate
-at zero rather than always on the left.
+Negative values are perfectly acceptable, and the "active bar" (the
+blue background) will always be anchored at zero.
 
-    $('.slider').quinn({ range: [ -100, 0 ] });
+    $('.slider').quinn({ range: [ -100, 100 ] });
 
 ### Initial Values `value: number` {#value}
 
