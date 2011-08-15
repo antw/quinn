@@ -282,11 +282,11 @@ update the slider.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-15">&#182;</a>
         </div>
-        <p>IE7 isn&rsquo;t triggering when clicking on the bar, but only on
+        <p>IE7/8 isn&rsquo;t triggering when clicking on the bar, but only on
 the movable-range. I&rsquo;m not yet sure why.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">msie</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">version</span> <span class="o">&lt;</span> <span class="mf">8.0</span><span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">msie</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">version</span> <span class="o">&lt;</span> <span class="mf">9.0</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">movableRange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">clickBar</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>

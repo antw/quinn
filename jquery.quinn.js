@@ -152,9 +152,9 @@
         this.bar.bind('mousedown', this.clickBar);
         this.handle.bind(DRAG_START_E, this.enableDrag);
 
-        // IE7 isn't triggering when clicking on the bar, but only on
+        // IE7/8 isn't triggering when clicking on the bar, but only on
         // the movable-range. I'm not yet sure why.
-        if ($.browser.msie && $.browser.version < 8.0) {
+        if ($.browser.msie && $.browser.version < 9.0) {
             movableRange.bind('mousedown', this.clickBar);
         }
     };
