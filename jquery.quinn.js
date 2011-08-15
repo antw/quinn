@@ -502,9 +502,16 @@
      */
     Quinn.prototype.__positionForValue = function (value) {
         var barWidth = this.bar.width(),
-            delta    = this.range[1] - this.range[0];
+            delta    = this.range[1] - this.range[0],
+            position = (((value - this.range[0]) / delta)) * barWidth;
 
-        return ((Math.abs(this.range[0]) + value) / delta) * barWidth;
+        if (position < 0) {
+            return 0;
+        } else if (position > barWidth) {
+            return barWidth;
+        } else {
+            return position;
+        }
     };
 
     /**
