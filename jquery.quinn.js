@@ -510,7 +510,7 @@
         } else if (position > barWidth) {
             return barWidth;
         } else {
-            return position;
+            return Math.round(position);
         }
     };
 
