@@ -31,13 +31,13 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.3.7)][tarball]
+[Everything (0.3.8)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.3.7)][development-js]
+[Development Version (0.3.8)][development-js]
 :   13.3kb, JS only, Uncompressed with comments
 
-[Production Version (0.3.7)][production-js]
+[Production Version (0.3.8)][production-js]
 :   1.54kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -328,7 +328,7 @@ need to alter the CSS. For example:
 History
 -------
 
-#### HEAD
+#### 0.3.8 _September 29th, 2011_
 
 Added `width` and `handleWidth` to manually set the width of these
 elements. Useful when using Quinn on a wrapper element which hasn't
@@ -421,7 +421,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.3.7
+[tarball]:        https://github.com/antw/quinn/tarball/v0.3.8
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
