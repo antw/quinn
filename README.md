@@ -328,6 +328,12 @@ need to alter the CSS. For example:
 History
 -------
 
+#### HEAD
+
+Added `width` and `handleWidth` to manually set the width of these
+elements. Useful when using Quinn on a wrapper element which hasn't
+yet been added to the DOM.
+
 #### 0.3.7 _August 18th, 2011_
 
 Fix a bug with Firefox 6 where elements positioned absolutely with

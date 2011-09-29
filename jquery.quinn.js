@@ -103,7 +103,7 @@
      * but should be called again if the slider is resized.
      */
     Quinn.prototype.render = function () {
-        var barWidth = this.wrapper.width(),
+        var barWidth = this.options.width || this.wrapper.width(),
             movableRange, handleWidth, handleDangle;
 
         function addRoundingElements(element) {
@@ -131,7 +131,7 @@
         // elements widths and positions as necessary ...
 
         this.bar.css({ width: barWidth.toString() + 'px' });
-        handleWidth = this.handle.width();
+        handleWidth = this.options.handleWidth || this.handle.width();
 
         // The "dangle" allows the handle to appear slightly to the left of
         // the slider bar.
@@ -666,6 +666,16 @@
         // Explorer versions when using transparent PNGs. Setting this to 1.0
         // will tell Quinn not to fade the slider when disabled.
         disabledOpacity: 0.5,
+
+        // If using Quinn on an element which isn't attached to the DOM, the
+        // library won't be able to determine it's width; supply it as a
+        // number (in pixels).
+        width: null,
+
+        // If using Quinn on an element which isn't attached to the DOM, the
+        // library won't be able to determine the width of the handle; suppl
+        // it as a number (in pixels).
+        handleWidth: null,
 
         // A callback which is run when changing the slider value. Additional
         // callbacks may be added with Quinn#bind('change').

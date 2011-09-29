@@ -205,7 +205,7 @@ but should be called again if the slider is resized.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">barWidth</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">width</span><span class="p">(),</span>
+        <span class="kd">var</span> <span class="nx">barWidth</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">width</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">width</span><span class="p">(),</span>
             <span class="nx">movableRange</span><span class="p">,</span> <span class="nx">handleWidth</span><span class="p">,</span> <span class="nx">handleDangle</span><span class="p">;</span>
 
         <span class="kd">function</span> <span class="nx">addRoundingElements</span><span class="p">(</span><span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
@@ -240,7 +240,7 @@ elements widths and positions as necessary &hellip;</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>        <span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">.</span><span class="nx">css</span><span class="p">({</span> <span class="nx">width</span><span class="o">:</span> <span class="nx">barWidth</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span> <span class="p">});</span>
-        <span class="nx">handleWidth</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handle</span><span class="p">.</span><span class="nx">width</span><span class="p">();</span></pre></div>
+        <span class="nx">handleWidth</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">handleWidth</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">handle</span><span class="p">.</span><span class="nx">width</span><span class="p">();</span></pre></div>
       </td>
     </tr>
     <tr id='section-13'>
@@ -325,7 +325,7 @@ they accurately represent the value of the slider.</p>
         </div>
         <p>&ldquo;now&rdquo; is the current &ldquo;left&rdquo; position of the handle.
 Convert that to the equivalent value. For example, if
-the slider is 0->200, and now is 20, the equivalent
+the slider is 0-&gt;200, and now is 20, the equivalent
 value is 40.</p>
       </td>
       <td class=code>
@@ -857,7 +857,7 @@ the bar&rsquo;s width.</p>
 
 <p>Given a slider value, returns the position in pixels where the value is
 on the slider bar. For example, in a 200px wide bar whose values are
-1->100, the value 20 is found 40px from the left of the bar.</p>
+1-&gt;100, the value 20 is found 40px from the left of the bar.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">__positionForValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
@@ -1161,6 +1161,32 @@ will tell Quinn not to fade the slider when disabled.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-64">&#182;</a>
         </div>
+        <p>If using Quinn on an element which isn&rsquo;t attached to the DOM, the
+library won&rsquo;t be able to determine it&rsquo;s width; supply it as a
+number (in pixels).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="nx">width</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-65'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-65">&#182;</a>
+        </div>
+        <p>If using Quinn on an element which isn&rsquo;t attached to the DOM, the
+library won&rsquo;t be able to determine the width of the handle; suppl
+it as a number (in pixels).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="nx">handleWidth</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-66'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-66">&#182;</a>
+        </div>
         <p>A callback which is run when changing the slider value. Additional
 callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
 
@@ -1172,10 +1198,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onChange</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-65'>
+    <tr id='section-67'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-65">&#182;</a>
+          <a class="pilcrow" href="#section-67">&#182;</a>
         </div>
         <p>Run after the user has finished making a change.</p>
 
@@ -1187,10 +1213,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onCommit</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-66'>
+    <tr id='section-68'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-66">&#182;</a>
+          <a class="pilcrow" href="#section-68">&#182;</a>
         </div>
         <p>Run once after the slider has been constructed.</p>
 
@@ -1202,10 +1228,10 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
         <div class='highlight'><pre>        <span class="nx">onSetup</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-67'>
+    <tr id='section-69'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-67">&#182;</a>
+          <a class="pilcrow" href="#section-69">&#182;</a>
         </div>
         <p>When using animations (such as clicking on the bar), how long
 should the duration be? Any jQuery effect duration value is
@@ -1215,10 +1241,10 @@ permitted.</p>
         <div class='highlight'><pre>        <span class="nx">effectSpeed</span><span class="o">:</span> <span class="s1">&#39;fast&#39;</span><span class="p">,</span></pre></div>
       </td>
     </tr>
-    <tr id='section-68'>
+    <tr id='section-70'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-68">&#182;</a>
+          <a class="pilcrow" href="#section-70">&#182;</a>
         </div>
         <p>Set to false to disable all animation on the slider.</p>
       </td>
@@ -1227,21 +1253,21 @@ permitted.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-69'>
+    <tr id='section-71'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-69">&#182;</a>
+          <a class="pilcrow" href="#section-71">&#182;</a>
         </div>
-        <hr />
+        <hr>
       </td>
       <td class=code>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-70'>
+    <tr id='section-72'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-70">&#182;</a>
+          <a class="pilcrow" href="#section-72">&#182;</a>
         </div>
         <p>The jQuery helper function. Permits $(&hellip;).quinn();</p>
       </td>
@@ -1251,10 +1277,10 @@ permitted.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-71'>
+    <tr id='section-73'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-71">&#182;</a>
+          <a class="pilcrow" href="#section-73">&#182;</a>
         </div>
         <p>Expose Quinn to the world on $.Quinn.</p>
 
