@@ -598,6 +598,8 @@
      * Internal method which changes the slider value. See setValue.
      */
     Quinn.prototype.__setValue = function (newValue, animate, doCallback) {
+        var originalValue = this.value;
+
         if (_.isNumber(newValue)) {
             newValue = this.__roundToStep(newValue);
 
@@ -612,17 +614,19 @@
             newValue = this.selectable[0];
         }
 
-        if (newValue === this.value) {
-            return false;
-        }
-
-        // Run the onChange callback; if the callback returns false then stop
-        // immediately and do not change the value.
-        if (! this.trigger('change', newValue)) {
+        if (newValue === originalValue) {
             return false;
         }
 
         this.value = newValue;
+
+        // Run the onChange callback; if the callback returns false then stop
+        // immediately and do not change the value.
+        if (! this.trigger('change', newValue)) {
+            this.value = originalValue;
+            return false;
+        }
+
         this.rePosition(animate);
 
         return true;
