@@ -152,6 +152,14 @@ selectable range supplied and might break your data validation later).</p>
 <pre><code>$('.slider').quinn({ selectable: [5, 80], step: 20 });
 </code></pre>
 
+<h3 id="values">Ranges <code>values: [value, value]</code></h3>
+
+<p>Instead of a Quinn slider having a single value, it may instead be used
+to represent a range of values, with a lower and upper value.</p>
+
+<pre><code>$('.slider').quinn({ values: [25, 75] });
+</code></pre>
+
 <h3 id="effects">Effects <code>effects: bool</code> <code>effectSpeed: number</code></h3>
 
 <p>Some Quinn actions make use of jQuery effects. For example, clicking on

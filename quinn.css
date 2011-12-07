@@ -145,3 +145,25 @@
 .quinn .handle:focus {
   background-position: 0 -60px;
 }
+
+/**
+ * Range sliders
+ * -------------
+ *
+ * Styles specific to sliders which instead of having a single value,
+ * represent a range by having two values (a minimum and maximum).
+ */
+
+.quinn.range .handle {
+  background-position: -102px 0;
+  height: 25px;
+  width: 17px;
+}
+
+.quinn.range .handle:active, .quinn .handle.active {
+  background-position: -102px -30px;
+}
+
+.quinn.range .handle:focus {
+  background-position: -102px -60px;
+}
