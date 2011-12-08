@@ -32,6 +32,7 @@
         this.wrapper    = wrapper;
         this.options    = _.extend({}, Quinn.defaults, options);
         this.isDisabled = false;
+        this.isRange    = false;
 
         this.previousValues = [];
 
@@ -42,6 +43,11 @@
             commit: [],
             abort:  []
         };
+
+        if (this.options.values) {
+            this.options.value = this.options.values;
+            this.isRange = true;
+        }
 
         // For convenience.
         this.range      = this.options.range.slice();
@@ -119,6 +125,12 @@
         this.bar       = $('<div class="bar" />');
         this.activeBar = $('<div class="active-bar" />');
         this.handle    = $('<span class="handle" />');
+
+        this.handles = [{
+            value:   null,
+            index:   0,
+            element: this.handle
+        }];
 
         addRoundingElements(this.bar);
         addRoundingElements(this.activeBar);
@@ -547,6 +559,24 @@
     };
 
     /**
+     * #### __sanitizeValue
+     *
+     * Given a numberic value, snaps it to the nearest step, and ensures that
+     * it is within the selectable minima and maxima.
+     */
+    Quinn.prototype.__sanitizeValue = function (value) {
+        value = this.__roundToStep(value);
+
+        if (value < this.selectable[0]) {
+            return this.selectable[0];
+        } else if (value > this.selectable[1]) {
+            return this.selectable[1];
+        }
+
+        return value;
+    };
+
+    /**
      * ### __willChange
      *
      * Tells the Quinn instance that the user is about to make a change to the
@@ -602,33 +632,73 @@
      * Internal method which changes the slider value. See setValue.
      */
     Quinn.prototype.__setValue = function (newValue, animate, doCallback) {
-        var originalValue = this.value;
+        var originalValue = this.value, i, length, handle;
 
-        if (_.isNumber(newValue)) {
-            newValue = this.__roundToStep(newValue);
+        if (this.isRange) {
 
-            if (newValue < this.selectable[0]) {
-                newValue = this.selectable[0];
-            } else if (newValue > this.selectable[1]) {
-                newValue = this.selectable[1];
+            // RANGE-BASED SLIDERS
+
+            if (_.isArray(newValue)) {
+                if (this.value != null) {
+                    originalValue = _.clone(originalValue);
+
+                    if (newValue.length != originalValue.length) {
+                        return false;
+                    }
+                } else {
+                    // Value is uninitialized when called for the first time.
+                    this.value = [];
+                }
+
+                // Don't mutate the original array.
+                newValue = _.clone(newValue);
+
+                for (i = 0, length = newValue.length; i < length; i++) {
+                    newValue[i] = this.__sanitizeValue(newValue[i]);
+                }
+            } else {
+                // The default slider value when initialized is "null", so
+                // default to setting the range to the slider minimum and
+                // maximum permitted value.
+                newValue = _.clone(this.selectable);
             }
+
+            if (_.isEqual(originalValue, newValue)) {
+                // No values were changed.
+                return false;
+            }
+
+            this.value = newValue;
+
         } else {
-            // The default slider value when initialized is "null", so default
-            // to setting the instance to the lowest available value.
-            newValue = this.selectable[0];
-        }
 
-        if (newValue === originalValue) {
-            return false;
-        }
+            // SINGLE VALUE SLIDERS
 
-        this.value = newValue;
+            if (_.isNumber(newValue)) {
+                newValue = [ this.__sanitizeValue(newValue) ];
+            } else {
+                // The default slider value when initialized is "null", so default
+                // to setting the range to the slider minimum permitted value.
+                newValue = [ this.selectable[0] ];
+            }
+
+            if (originalValue === newValue[0]) {
+                // No values were changed.
+                return false;
+            }
+
+            this.value = newValue[0];
+        }
 
         // Run the onChange callback; if the callback returns false then stop
         // immediately and do not change the value.
-        if (! this.trigger('change', newValue)) {
+        if (! this.trigger('change', this.value)) {
             this.value = originalValue;
             return false;
+        }
+
+        for (i = 0, length = this.handles.length; i < length; i++) {
+            this.handles[i] = newValue[i];
         }
 
         this.rePosition(animate);
