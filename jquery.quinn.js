@@ -46,8 +46,7 @@
             abort:  []
         };
 
-        if (this.options.values) {
-            this.options.value = this.options.values;
+        if (_.isArray(this.options.value)) {
             this.isRange = true;
         }
 
@@ -120,14 +119,12 @@
             element.append($('<div class="right" />'));
         }
 
-        if (this.options.values) {
-            this.wrapper.addClass('range');
-        }
-
         this.bar       = $('<div class="bar" />');
         this.activeBar = $('<div class="active-bar" />');
 
         if (this.isRange) {
+            this.wrapper.addClass('range');
+
             for (i = 0, length = this.options.value.length; i < length; i++) {
                 this.handles.push({
                     value:   this.options.value[i],

@@ -130,12 +130,12 @@ selectable range supplied and might break your data validation later).
 
     $('.slider').quinn({ selectable: [5, 80], step: 20 });
 
-### Ranges `values: [value, value]` {#values}
+### Ranges `value: [value, value]` {#values}
 
 Instead of a Quinn slider having a single value, it may instead be used
 to represent a range of values, with a lower and upper value.
 
-    $('.slider').quinn({ values: [25, 75] });
+    $('.slider').quinn({ value: [25, 75] });
 
 ### Effects `effects: bool` `effectSpeed: number` {#effects}
 
