@@ -29,10 +29,12 @@
 
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
-        this.wrapper    = wrapper;
-        this.options    = _.extend({}, Quinn.defaults, options);
-        this.isDisabled = false;
-        this.isRange    = false;
+        this.wrapper        = wrapper;
+        this.options        = _.extend({}, Quinn.defaults, options);
+        this.isDisabled     = false;
+        this.isRange        = false;
+        this.activeHandle   = null;
+        this.handles        = [];
 
         this.previousValues = [];
 
@@ -110,7 +112,7 @@
      */
     Quinn.prototype.render = function () {
         var barWidth = this.options.width || this.wrapper.width(),
-            movableRange, handleWidth, handleDangle;
+            movableRange, handleWidth, handleDangle, i, length;
 
         function addRoundingElements(element) {
             element.append($('<div class="left" />'));
@@ -124,13 +126,22 @@
 
         this.bar       = $('<div class="bar" />');
         this.activeBar = $('<div class="active-bar" />');
-        this.handle    = $('<span class="handle" />');
 
-        this.handles = [{
-            value:   null,
-            index:   0,
-            element: this.handle
-        }];
+        if (this.isRange) {
+            for (i = 0, length = this.options.value.length; i < length; i++) {
+                this.handles.push({
+                    value:   this.options.value[i],
+                    index:   i,
+                    element: $('<span class="handle" />')
+                });
+            }
+        } else {
+            this.handles.push({
+                value:   this.options.value,
+                index:   0,
+                element: $('<span class="handle" />')
+            });
+        }
 
         addRoundingElements(this.bar);
         addRoundingElements(this.activeBar);
@@ -141,13 +152,21 @@
         this.wrapper.html(this.bar);
         this.wrapper.addClass('quinn');
 
-        this.wrapper.append(movableRange.append(this.handle));
+        this.wrapper.append(movableRange);
+
+        // Add each of the handles to the bar, and bind the click events.
+        for (i = 0, length = this.handles.length; i < length; i++) {
+            this.handles[i].element.bind(DRAG_START_E, this.enableDrag);
+            movableRange.append(this.handles[i].element);
+        }
 
         // The slider depends on some absolute positioning, so  adjust the
         // elements widths and positions as necessary ...
 
         this.bar.css({ width: barWidth.toString() + 'px' });
-        handleWidth = this.options.handleWidth || this.handle.width();
+
+        handleWidth = this.options.handleWidth ||
+                      this.handles[0].element.width();
 
         // The "dangle" allows the handle to appear slightly to the left of
         // the slider bar.
@@ -166,7 +185,6 @@
         // Finally, these events are triggered when the user seeks to
         // update the slider.
         this.bar.bind('mousedown', this.clickBar);
-        this.handle.bind(DRAG_START_E, this.enableDrag);
 
         // IE7/8 isn't triggering when clicking on the bar, but only on
         // the movable-range. I'm not yet sure why.
@@ -184,28 +202,35 @@
     Quinn.prototype.rePosition = function (animate) {
         var opts       = this.options,
             delta      = this.range[1] - this.range[0],
-            percent    = (this.value - this.range[0]) / delta * 100,
-            percentStr = percent.toString() + '%';
 
-        this.handle.stop(true);
+            handle, percent, percentStr, i, length;
+
         this.activeBar.stop(true);
 
-        if (animate && opts.effects) {
-            this.handle.animate({ left: percentStr }, {
-                duration: opts.effectSpeed,
-                step: _.bind(function (now) {
-                    // "now" is the current "left" position of the handle.
-                    // Convert that to the equivalent value. For example, if
-                    // the slider is 0->200, and now is 20, the equivalent
-                    // value is 40.
-                    this.__positionActiveBar((now / 100) *
-                        (this.range[1] - this.range[0]) + this.range[0]);
-                }, this)
-            });
+        for (i = 0, length = this.handles.length; i < length; i++) {
+            handle = this.handles[i];
 
-        } else {
-            this.handle.css('left', percentStr);
-            this.__positionActiveBar(this.value);
+            percent    = (handle.value - this.range[0]) / delta * 100;
+            percentStr = percent.toString() + '%';
+
+            handle.element.stop(true);
+
+            if (animate && opts.effects) {
+                handle.element.animate({ left: percentStr }, {
+                    duration: opts.effectSpeed,
+                    step: _.bind(function (now) {
+                        // "now" is the current "left" position of the handle.
+                        // Convert that to the equivalent value. For example,
+                        // if the slider is 0->200, and now is 20, the
+                        // equivalent value is 40.
+                        this.__positionActiveBar((now / 100) *
+                            (this.range[1] - this.range[0]) + this.range[0]);
+                    }, this)
+                });
+            } else {
+                handle.element.css('left', percentStr);
+                this.__positionActiveBar(this.value);
+            }
         }
     };
 
@@ -219,7 +244,10 @@
     Quinn.prototype.__positionActiveBar = function (value) {
         var leftPosition, rightPosition;
 
-        if (value < 0) {
+        if (this.isRange) {
+            leftPosition  = this.__positionForValue(this.handles[0].value);
+            rightPosition = this.__positionForValue(this.handles[1].value);
+        } else if (value < 0) {
             // position with the left edge underneath the handle, and the
             // right edge at 0
             leftPosition  = this.__positionForValue(value);
@@ -380,6 +408,7 @@
         }
 
         if (this.__willChange()) {
+            this.__activateHandleWithEvent(event);
             this.__setValue(this.__valueFromMouse(event.pageX), true);
 
             // Allow user to further refine the slider value by dragging
@@ -407,6 +436,8 @@
      * (see `clickBar`).
      */
     Quinn.prototype.enableDrag = function (event, skipPreamble) {
+        var handle;
+
         // Only enable dragging when the left mouse button is used.
         if (! IS_TOUCH_ENABLED && event.which !== 1) {
             return true;
@@ -416,7 +447,7 @@
             return false;
         }
 
-        this.handle.addClass('active');
+        this.__activateHandleWithEvent(event);
 
         // These events are bound for the duration of the drag operation and
         // keep track of the value changes made, with the events being removed
@@ -445,7 +476,7 @@
             unbind(DRAG_E + '.quinn').
             unbind('mouseenter.quinn');
 
-        this.handle.removeClass('active');
+        this.activeHandle.element.removeClass('active');
         this.__hasChanged();
 
         return event.preventDefault();
@@ -458,7 +489,7 @@
      * contiues to hold the left mouse button.
      */
     Quinn.prototype.drag = function (event) {
-        var pageX = event.pageX;
+        var pageX = event.pageX, newValue;
 
         if (event.type === 'touchmove') {
             pageX = event.originalEvent.targetTouches[0].pageX;
@@ -470,6 +501,30 @@
     };
 
     // ## Psuedo-Private Methods
+
+    /**
+     * Given a click or drag event, determines the closest handle and
+     * activates it. Does nothing if a handle is already active.
+     */
+    Quinn.prototype.__activateHandleWithEvent = function (event) {
+        var pageX = event.pageX, value;
+
+        if (this.activeHandle) {
+            return false;
+        }
+
+        if (event.type === 'touchmove') {
+            pageX = event.originalEvent.targetTouches[0].pageX;
+        }
+
+        value = this.__valueFromMouse(pageX);
+
+        this.activeHandle = _.min(this.handles, function (handle) {
+            return Math.abs(handle.value - value);
+        });
+
+        this.activeHandle.element.addClass('active');
+    };
 
     /**
      * ### __valueFromMouse
@@ -599,6 +654,8 @@
      * changes to the slider.
      */
     Quinn.prototype.__hasChanged = function () {
+        this.activeHandle = null;
+
         // Run the onCommit callback; if the callback returns false then we
         // revert the slider change, and restore everything to how it was
         // before. Note that reverting the change will also fire an onChange
@@ -622,7 +679,9 @@
      * Aborts a slider change, and restores it to it's previous state.
      */
     Quinn.prototype.__abortChange = function () {
+        this.activeHandle   = null;
         this.previousValues = _.tail(this.previousValues);
+
         return this.trigger('abort');
     };
 
@@ -632,7 +691,7 @@
      * Internal method which changes the slider value. See setValue.
      */
     Quinn.prototype.__setValue = function (newValue, animate, doCallback) {
-        var originalValue = this.value, i, length, handle;
+        var originalValue = this.value, numberValue, i, length, handle;
 
         if (this.isRange) {
 
@@ -656,6 +715,31 @@
                 for (i = 0, length = newValue.length; i < length; i++) {
                     newValue[i] = this.__sanitizeValue(newValue[i]);
                 }
+            } else if (_.isNumber(newValue)) {
+                if (! this.activeHandle) {
+                    // Number values are only accepted during drag events,
+                    // when the activeHandle has been set.
+                    return false;
+                }
+
+                newValue = this.__sanitizeValue(newValue);
+
+                if (this.activeHandle.index === 1) {
+                    if (newValue <= this.handles[0].value) {
+                        newValue = this.handles[0].value +
+                            this.options.step;
+                    }
+                } else {
+                    if (newValue >= this.handles[1].value) {
+                        newValue = this.handles[1].value -
+                            this.options.step;
+                    }
+                }
+
+                numberValue = newValue;
+
+                newValue = _.clone(this.value);
+                newValue[this.activeHandle.index] = numberValue;
             } else {
                 // The default slider value when initialized is "null", so
                 // default to setting the range to the slider minimum and
@@ -699,7 +783,7 @@
         }
 
         for (i = 0, length = this.handles.length; i < length; i++) {
-            this.handles[i] = newValue[i];
+            this.handles[i].value = newValue[i];
         }
 
         this.rePosition(animate);

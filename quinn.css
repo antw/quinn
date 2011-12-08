@@ -161,7 +161,7 @@
   width: 19px;
 }
 
-.quinn.range .handle:active, .quinn.range .handle.active {
+.quinn.range .handle.active {
   background-position: -100px -30px;
 }
 
