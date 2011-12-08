@@ -96,7 +96,7 @@
     }
 
     // The current Quinn version.
-    Quinn.VERSION = '0.3.9';
+    Quinn.VERSION = '0.4.0';
 
     // ## Rendering
 
@@ -198,15 +198,12 @@
      */
     Quinn.prototype.rePosition = function (animate) {
         var opts   = this.options,
-            delta  = this.range[1] - this.range[0],
-            active = this.activeHandle,
-
-            handle, percent, percentStr, i, length;
+            delta  = this.range[1] - this.range[0];
 
         this.activeBar.stop(true);
 
-        for (i = 0, length = this.handles.length; i < length; i++) {
-            handle = this.handles[i];
+        _.each(this.handles, _.bind(function(handle, i) {
+            var percent, percentStr;
 
             percent    = (handle.value - this.range[0]) / delta * 100;
             percentStr = percent.toString() + '%';
@@ -217,9 +214,9 @@
                 handle.element.animate({ left: percentStr }, {
                     duration: opts.effectSpeed,
                     step: _.bind(function (now) {
-                        if (active !== handle) {
-                            return true;
-                        }
+                        //if (active.index !== handle.index) {
+                            //return true;
+                        //}
 
                         // "now" is the current "left" position of the handle.
                         // Convert that to the equivalent value. For example,
@@ -227,14 +224,18 @@
                         // equivalent value is 40.
                         this.__positionActiveBar((now / 100) *
                             (this.range[1] - this.range[0]) + this.range[0],
-                            active);
+                            handle);
+
+                        return true;
                     }, this)
                 });
             } else {
+                // TODO being in the loop results in an unnecessary
+                //      additional call to positionActiveBar
                 handle.element.css('left', percentStr);
                 this.__positionActiveBar(this.value);
             }
-        }
+        }, this));
     };
 
     /**
@@ -244,25 +245,19 @@
      * the value 0 is. Accepts a `value` argument so that it may be used
      * within a `step` callback in a jQuery `animate` call.
      */
-    Quinn.prototype.__positionActiveBar = function (value, activeHandle) {
-        var leftPosition, rightPosition, swap;
+    Quinn.prototype.__positionActiveBar = function (value, handle) {
+        var leftPosition = null, rightPosition = null;
 
         if (this.isRange) {
-            if (activeHandle) {
-                leftPosition  = this.__positionForValue(value);
-                rightPosition = this.__positionForValue(
-                    this.handles[ 1 ^ activeHandle.index ].value)
-
-                if (leftPosition > rightPosition) {
-                    swap          = leftPosition;
-                    leftPosition  = rightPosition;
-                    rightPosition = swap;
+            if (handle) {
+                if (handle.index === 0) {
+                    leftPosition  = this.__positionForValue(value);
+                } else {
+                    rightPosition = this.__positionForValue(value);
                 }
-
-                console.log(leftPosition, rightPosition);
             } else {
-                leftPosition  = this.__positionForValue(this.handles[0].value);
-                rightPosition = this.__positionForValue(this.handles[1].value);
+                leftPosition  = this.__positionForValue(value[0]);
+                rightPosition = this.__positionForValue(value[1]);
             }
         } else if (value < 0) {
             // position with the left edge underneath the handle, and the
@@ -278,8 +273,13 @@
 
         rightPosition = this.bar.width() - rightPosition;
 
-        this.activeBar.css('left', leftPosition.toString() + 'px');
-        this.activeBar.css('right', rightPosition.toString() + 'px');
+        if (leftPosition !== null) {
+            this.activeBar.css('left', leftPosition.toString() + 'px');
+        }
+
+        if (rightPosition !== null) {
+            this.activeBar.css('right', rightPosition.toString() + 'px');
+        }
     };
 
     // ## Slider Manipulation
