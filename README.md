@@ -57,6 +57,8 @@ Table of Contents
 
 #### [Theming][theming]
 
+#### [History][history]
+
 Options
 -------
 
@@ -461,3 +463,4 @@ Opera and Internet Explorer are not yet complete.
 [oncommit]:       #oncommit
 [onabort]:        #onbort
 [theming]:        #theming
+[history]:        #history
