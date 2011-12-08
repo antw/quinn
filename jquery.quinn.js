@@ -214,9 +214,9 @@
                 handle.element.animate({ left: percentStr }, {
                     duration: opts.effectSpeed,
                     step: _.bind(function (now) {
-                        //if (active.index !== handle.index) {
-                            //return true;
-                        //}
+                        if (active.index !== handle.index) {
+                            return true;
+                        }
 
                         // "now" is the current "left" position of the handle.
                         // Convert that to the equivalent value. For example,
