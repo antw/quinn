@@ -197,8 +197,9 @@
      * they accurately represent the value of the slider.
      */
     Quinn.prototype.rePosition = function (animate) {
-        var opts       = this.options,
-            delta      = this.range[1] - this.range[0],
+        var opts   = this.options,
+            delta  = this.range[1] - this.range[0],
+            active = this.activeHandle,
 
             handle, percent, percentStr, i, length;
 
@@ -216,12 +217,17 @@
                 handle.element.animate({ left: percentStr }, {
                     duration: opts.effectSpeed,
                     step: _.bind(function (now) {
+                        if (active !== handle) {
+                            return true;
+                        }
+
                         // "now" is the current "left" position of the handle.
                         // Convert that to the equivalent value. For example,
                         // if the slider is 0->200, and now is 20, the
                         // equivalent value is 40.
                         this.__positionActiveBar((now / 100) *
-                            (this.range[1] - this.range[0]) + this.range[0]);
+                            (this.range[1] - this.range[0]) + this.range[0],
+                            active);
                     }, this)
                 });
             } else {
@@ -238,12 +244,26 @@
      * the value 0 is. Accepts a `value` argument so that it may be used
      * within a `step` callback in a jQuery `animate` call.
      */
-    Quinn.prototype.__positionActiveBar = function (value) {
-        var leftPosition, rightPosition;
+    Quinn.prototype.__positionActiveBar = function (value, activeHandle) {
+        var leftPosition, rightPosition, swap;
 
         if (this.isRange) {
-            leftPosition  = this.__positionForValue(this.handles[0].value);
-            rightPosition = this.__positionForValue(this.handles[1].value);
+            if (activeHandle) {
+                leftPosition  = this.__positionForValue(value);
+                rightPosition = this.__positionForValue(
+                    this.handles[ 1 ^ activeHandle.index ].value)
+
+                if (leftPosition > rightPosition) {
+                    swap          = leftPosition;
+                    leftPosition  = rightPosition;
+                    rightPosition = swap;
+                }
+
+                console.log(leftPosition, rightPosition);
+            } else {
+                leftPosition  = this.__positionForValue(this.handles[0].value);
+                rightPosition = this.__positionForValue(this.handles[1].value);
+            }
         } else if (value < 0) {
             // position with the left edge underneath the handle, and the
             // right edge at 0
