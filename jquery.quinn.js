@@ -300,6 +300,11 @@
      * Returns the new slider value
      */
     Quinn.prototype.stepUp = function (count) {
+        if (this.isRange) {
+            // Cannot step a range-based slider.
+            return this.value;
+        }
+
         return this.setValue(this.value + this.options.step * (count || 1));
     };
 
