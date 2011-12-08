@@ -46,7 +46,8 @@ Table of Contents
 #### Options
 
 [Minima and Maxima][range], [Initial Values][value],
-[Steps][step], [Selectable Ranges][selectable], [Effects][effects],
+[Steps][step], [Selectable Ranges][selectable],
+[Multiple Values][values], [Effects][effects],
 [Specific Values][only], [Disabling the Slider][disable]
 
 #### Callbacks
@@ -130,10 +131,11 @@ selectable range supplied and might break your data validation later).
 
     $('.slider').quinn({ selectable: [5, 80], step: 20 });
 
-### Ranges `value: [value, value]` {#values}
+### Multiple Values `value: [value, value]` {#values}
 
 Instead of a Quinn slider having a single value, it may instead be used
-to represent a range of values, with a lower and upper value.
+to represent a range of values, with a lower and upper value. Simply
+supply an array with to numeric values.
 
     $('.slider').quinn({ value: [25, 75] });
 
@@ -335,6 +337,11 @@ need to alter the CSS. For example:
 History
 -------
 
+#### Git HEAD
+
+Quinn ranges may now also represent a [range of values][values] by
+providing a two-element array as the value option.
+
 #### 0.3.9 _October 4th, 2011_
 
 During `onChange` callbacks, `quinn.value` will now be the new value of
@@ -444,6 +451,7 @@ Opera and Internet Explorer are not yet complete.
 [value]:          #value
 [step]:           #step
 [selectable]:     #selectable
+[values]:         #values
 [effects]:        #effects
 [only]:           #only
 [disable]:        #disable

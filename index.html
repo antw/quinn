@@ -62,7 +62,8 @@ open-sourced with their kind permission. Quinn is released under the
 <h4 id="options">Options</h4>
 
 <p><a href="#range">Minima and Maxima</a>, <a href="#value">Initial Values</a>,
-<a href="#step">Steps</a>, <a href="#selectable">Selectable Ranges</a>, <a href="#effects">Effects</a>,
+<a href="#step">Steps</a>, <a href="#selectable">Selectable Ranges</a>,
+<a href="#values">Multiple Values</a>, <a href="#effects">Effects</a>,
 <a href="#only">Specific Values</a>, <a href="#disable">Disabling the Slider</a></p>
 
 <h4 id="callbacks">Callbacks</h4>
@@ -152,10 +153,11 @@ selectable range supplied and might break your data validation later).</p>
 <pre><code>$('.slider').quinn({ selectable: [5, 80], step: 20 });
 </code></pre>
 
-<h3 id="values">Ranges <code>value: [value, value]</code></h3>
+<h3 id="values">Multiple Values <code>value: [value, value]</code></h3>
 
 <p>Instead of a Quinn slider having a single value, it may instead be used
-to represent a range of values, with a lower and upper value.</p>
+to represent a range of values, with a lower and upper value. Simply
+supply an array with to numeric values.</p>
 
 <pre><code>$('.slider').quinn({ value: [25, 75] });
 </code></pre>
@@ -362,6 +364,11 @@ $('.slider').quinn({
 </code></pre>
 
 <h2 id="history">History</h2>
+
+<h4 id="git-head">Git HEAD</h4>
+
+<p>Quinn ranges may now also represent a <a href="#values">range of values</a> by
+providing a two-element array as the value option.</p>
 
 <h4 id="october-4th-2011">0.3.9 <em>October 4th, 2011</em></h4>
 
