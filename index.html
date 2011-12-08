@@ -49,11 +49,11 @@ open-sourced with their kind permission. Quinn is released under the
 <h2 id="downloads">Downloads</h2>
 
 <dl>
-  <dt><a href="https://github.com/antw/quinn/tarball/v0.3.9">Everything (0.3.9)</a></dt>
+  <dt><a href="https://github.com/antw/quinn/tarball/v0.4.0">Everything (0.4.0)</a></dt>
   <dd>Tarball containing JS, CSS, and images</dd>
-  <dt><a href="http://antw.github.com/quinn/jquery.quinn.js">Development Version (0.3.9)</a></dt>
+  <dt><a href="http://antw.github.com/quinn/jquery.quinn.js">Development Version (0.4.0)</a></dt>
   <dd>13.3kb, JS only, Uncompressed with comments</dd>
-  <dt><a href="http://antw.github.com/quinn/jquery.quinn.min.js">Production Version (0.3.9)</a></dt>
+  <dt><a href="http://antw.github.com/quinn/jquery.quinn.min.js">Production Version (0.4.0)</a></dt>
   <dd>1.54kb, JS only, Minified and Gzipped</dd>
 </dl>
 
@@ -159,7 +159,7 @@ selectable range supplied and might break your data validation later).</p>
 
 <p>Instead of a Quinn slider having a single value, it may instead be used
 to represent a range of values, with a lower and upper value. Simply
-supply an array with to numeric values.</p>
+supply an array with two numeric values.</p>
 
 <pre><code>$('.slider').quinn({ value: [25, 75] });
 </code></pre>
@@ -367,10 +367,13 @@ $('.slider').quinn({
 
 <h2 id="history">History</h2>
 
-<h4 id="git-head">Git HEAD</h4>
+<h4 id="december-8th-2022">0.4.0 <em>December 8th, 2022</em></h4>
 
 <p>Quinn ranges may now also represent a <a href="#values">range of values</a> by
-providing a two-element array as the value option.</p>
+providing a two-element array as the value option. Note that this
+will be the last major Quinn release which will use the current
+“change” and “commit” callback names; 0.5 will change these to
+“drag” and “change” respectively.</p>
 
 <h4 id="october-4th-2011">0.3.9 <em>October 4th, 2011</em></h4>
 

@@ -31,13 +31,13 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.3.9)][tarball]
+[Everything (0.4.0)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.3.9)][development-js]
+[Development Version (0.4.0)][development-js]
 :   13.3kb, JS only, Uncompressed with comments
 
-[Production Version (0.3.9)][production-js]
+[Production Version (0.4.0)][production-js]
 :   1.54kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -137,7 +137,7 @@ selectable range supplied and might break your data validation later).
 
 Instead of a Quinn slider having a single value, it may instead be used
 to represent a range of values, with a lower and upper value. Simply
-supply an array with to numeric values.
+supply an array with two numeric values.
 
     $('.slider').quinn({ value: [25, 75] });
 
@@ -339,10 +339,13 @@ need to alter the CSS. For example:
 History
 -------
 
-#### Git HEAD
+#### 0.4.0 _December 8th, 2022_
 
 Quinn ranges may now also represent a [range of values][values] by
-providing a two-element array as the value option.
+providing a two-element array as the value option. Note that this
+will be the last major Quinn release which will use the current
+"change" and "commit" callback names; 0.5 will change these to
+"drag" and "change" respectively.
 
 #### 0.3.9 _October 4th, 2011_
 
@@ -442,7 +445,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.3.9
+[tarball]:        https://github.com/antw/quinn/tarball/v0.4.0
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
