@@ -677,8 +677,9 @@
             if (_.isNumber(newValue)) {
                 newValue = [ this.__sanitizeValue(newValue) ];
             } else {
-                // The default slider value when initialized is "null", so default
-                // to setting the range to the slider minimum permitted value.
+                // The default slider value when initialized is "null", so
+                // default to setting the range to the slider minimum
+                // permitted value.
                 newValue = [ this.selectable[0] ];
             }
 
