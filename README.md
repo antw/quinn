@@ -35,10 +35,10 @@ Downloads
 :   Tarball containing JS, CSS, and images
 
 [Development Version (0.4.0)][development-js]
-:   13.3kb, JS only, Uncompressed with comments
+:   28.4kb, JS only, Uncompressed with comments
 
 [Production Version (0.4.0)][production-js]
-:   1.54kb, JS only, Minified and Gzipped
+:   2.4kb, JS only, Minified and Gzipped
 
 Table of Contents
 -----------------
