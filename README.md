@@ -341,7 +341,7 @@ History
 
 #### 0.4.1 _January 20th, 2012_
 
-Fixed for occasional errors when clicking on the bar of sliders when
+Fix for an occasional error when clicking on the bar of sliders when
 animation is enabled.
 
 #### 0.4.0 _December 8th, 2011_
