@@ -31,13 +31,13 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.4.0)][tarball]
+[Everything (0.4.1)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.4.0)][development-js]
+[Development Version (0.4.1)][development-js]
 :   28.4kb, JS only, Uncompressed with comments
 
-[Production Version (0.4.0)][production-js]
+[Production Version (0.4.1)][production-js]
 :   2.4kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -339,7 +339,12 @@ need to alter the CSS. For example:
 History
 -------
 
-#### 0.4.0 _December 8th, 2022_
+#### 0.4.1 _January 20th, 2012_
+
+Fixed for occasional errors when clicking on the bar of sliders when
+animation is enabled.
+
+#### 0.4.0 _December 8th, 2011_
 
 Quinn ranges may now also represent a [range of values][values] by
 providing a two-element array as the value option. Note that this
@@ -445,7 +450,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.4.0
+[tarball]:        https://github.com/antw/quinn/tarball/v0.4.1
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
