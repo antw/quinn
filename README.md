@@ -31,13 +31,13 @@ open-sourced with their kind permission. Quinn is released under the
 Downloads
 ---------
 
-[Everything (0.4.1)][tarball]
+[Everything (0.4.2)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (0.4.1)][development-js]
+[Development Version (0.4.2)][development-js]
 :   28.4kb, JS only, Uncompressed with comments
 
-[Production Version (0.4.1)][production-js]
+[Production Version (0.4.2)][production-js]
 :   2.4kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -339,7 +339,7 @@ need to alter the CSS. For example:
 History
 -------
 
-#### Git HEAD
+#### 0.4.2 _February 10th, 2012_
 
 Changed the way touch-support was detected to fix clicking on the handle
 not working correctly in Chrome 17.
@@ -455,7 +455,7 @@ Opera and Internet Explorer are not yet complete.
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 
-[tarball]:        https://github.com/antw/quinn/tarball/v0.4.1
+[tarball]:        https://github.com/antw/quinn/tarball/v0.4.2
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
