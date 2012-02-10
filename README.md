@@ -339,6 +339,11 @@ need to alter the CSS. For example:
 History
 -------
 
+#### Git HEAD
+
+Changed the way touch-support was detected to fix clicking on the handle
+not working correctly in Chrome 17.
+
 #### 0.4.1 _January 20th, 2012_
 
 Fix for an occasional error when clicking on the bar of sliders when

@@ -40,13 +40,13 @@
         <span class="nx">DRAG_END_E</span>       <span class="o">=</span> <span class="s1">&#39;mouseup&#39;</span><span class="p">,</span>
         <span class="nx">IS_TOUCH_ENABLED</span> <span class="o">=</span>  <span class="kc">false</span><span class="p">;</span>
 
-    <span class="k">try</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;ontouchstart&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">)</span> <span class="p">{</span>
         <span class="nb">document</span><span class="p">.</span><span class="nx">createEvent</span><span class="p">(</span><span class="s2">&quot;TouchEvent&quot;</span><span class="p">);</span>
         <span class="nx">DRAG_E</span>           <span class="o">=</span> <span class="s1">&#39;touchmove&#39;</span><span class="p">;</span>
         <span class="nx">DRAG_START_E</span>     <span class="o">=</span> <span class="s1">&#39;touchstart&#39;</span><span class="p">;</span>
         <span class="nx">DRAG_END_E</span>       <span class="o">=</span> <span class="s1">&#39;touchend&#39;</span><span class="p">;</span>
         <span class="nx">IS_TOUCH_ENABLED</span> <span class="o">=</span>  <span class="kc">true</span><span class="p">;</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{}</span></pre></div>
+    <span class="p">}</span></pre></div>
       </td>
     </tr>
     <tr id='section-Quinn'>

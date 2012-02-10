@@ -6,13 +6,13 @@
         DRAG_END_E       = 'mouseup',
         IS_TOUCH_ENABLED =  false;
 
-    try {
+    if ('ontouchstart' in document.documentElement) {
         document.createEvent("TouchEvent");
         DRAG_E           = 'touchmove';
         DRAG_START_E     = 'touchstart';
         DRAG_END_E       = 'touchend';
         IS_TOUCH_ENABLED =  true;
-    } catch (e) {}
+    }
 
     /**
      * ## Quinn
