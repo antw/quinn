@@ -67,6 +67,8 @@
         return $this.quinn(options);
     };
 
+    $('p.github').remove();
+
     $('pre:not(.no-example)').each(function () {
         var $this = $(this),
 

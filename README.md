@@ -1,6 +1,11 @@
 Quinn
 =====
 
+Are you viewing this README on Github? Head to the
+[Quinn homepage][home] where all of the examples below are fully
+interactive.
+{:.github}
+
 [Quinn][github] is a jQuery-based library which creates sliders (aka.
 ranges, aka. track  bars) for HTML applications. The project is hosted
 on [GitHub][github]; you can report bugs and discuss features on the
@@ -446,6 +451,7 @@ separate `onComplete` events.
 Initial release on GitHub. Supports most planned features, but tests in
 Opera and Internet Explorer are not yet complete.
 
+[home]:           http://antw.github.com/quinn
 [github]:         http://github.com/antw/quinn
 [issues]:         http://github.com/antw/quinn/issues
 [twitter]:        http://twitter.com/antw
