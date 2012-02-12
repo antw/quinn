@@ -31,12 +31,12 @@
 
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
-        this.wrapper        = wrapper;
-        this.options        = _.extend({}, Quinn.defaults, options);
-        this.isDisabled     = false;
-        this.isRange        = false;
-        this.activeHandle   = null;
-        this.handles        = [];
+        this.wrapper      = wrapper;
+        this.options      = _.extend({}, Quinn.defaults, options);
+        this.isDisabled   = false;
+        this.isRange      = false;
+        this.activeHandle = null;
+        this.handles      = [];
 
         this.previousValues = [];
 
@@ -77,8 +77,23 @@
         // by developers later.
         this.wrapper.data('quinn', this);
 
+        // Create the handles.
+        if (this.isRange) {
+            this.wrapper.addClass('range');
+
+            for (i = 0, length = this.options.value.length; i < length; i++) {
+                this.handles.push(createHandle(i, this.options.value[i]));
+            }
+        } else {
+            this.handles.push(createHandle(0, this.options.value));
+        }
+
         // Create the slider DOM elements, and set the initial value.
-        this.render();
+        this.renderer = new this.options.renderer(this, this.options);
+
+        this.sendRenderer('render');
+        this.bar = $('.bar', this.wrapper);
+
         this.__setValue(this.options.value, false, false);
 
         if (this.options.disable === true) {
@@ -103,180 +118,22 @@
     // ## Rendering
 
     /**
-     * ### render
+     * If a renderer is set, runs the member function using the given
+     * arguments.
      *
-     * Quinn is initialized with an empty wrapper element; render adds the
-     * necessary DOM elements in order to display the slider UI.
+     * For example:
      *
-     * render() is called automatically when creating a new Quinn instance,
-     * but should be called again if the slider is resized.
+     *   this.sendRenderer('redraw', 42, 1337);
+     *
+     * Runs the "redraw" method on this.renderer, passing two arguments.
      */
-    Quinn.prototype.render = function () {
-        var barWidth = this.options.width || this.wrapper.width(),
-            movableRange, handleWidth, handleDangle, i, length;
+    Quinn.prototype.sendRenderer = function () {
+        var given = Array.prototype.slice.call(arguments, 0),
+            meth  = this.renderer && this.renderer[ given[0] ],
+            args  = given.slice(1);
 
-        function addRoundingElements(element) {
-            element.append($('<div class="left" />'));
-            element.append($('<div class="main" />'));
-            element.append($('<div class="right" />'));
-        }
-
-        this.bar       = $('<div class="bar" />');
-        this.activeBar = $('<div class="active-bar" />');
-
-        if (this.isRange) {
-            this.wrapper.addClass('range');
-
-            for (i = 0, length = this.options.value.length; i < length; i++) {
-                this.handles.push({
-                    value:   this.options.value[i],
-                    index:   i,
-                    element: $('<span class="handle" />')
-                });
-            }
-        } else {
-            this.handles.push({
-                value:   this.options.value,
-                index:   0,
-                element: $('<span class="handle" />')
-            });
-        }
-
-        addRoundingElements(this.bar);
-        addRoundingElements(this.activeBar);
-
-        movableRange = $('<div class="movable-range" />');
-
-        this.bar.append(this.activeBar);
-        this.wrapper.html(this.bar);
-        this.wrapper.addClass('quinn');
-
-        this.wrapper.append(movableRange);
-
-        // Add each of the handles to the bar, and bind the click events.
-        for (i = 0, length = this.handles.length; i < length; i++) {
-            this.handles[i].element.bind(DRAG_START_E, this.enableDrag);
-            movableRange.append(this.handles[i].element);
-        }
-
-        // The slider depends on some absolute positioning, so  adjust the
-        // elements widths and positions as necessary ...
-
-        this.bar.css({ width: barWidth.toString() + 'px' });
-
-        handleWidth = this.options.handleWidth ||
-                      this.handles[0].element.width();
-
-        // The "dangle" allows the handle to appear slightly to the left of
-        // the slider bar.
-
-        handleDangle = Math.round(handleWidth * 0.25);
-
-        this.bar.css({
-            marginLeft: handleDangle.toString() + 'px',
-            width:      (barWidth - (handleDangle * 2)).toString() + 'px'
-        });
-
-        this.wrapper.find('.movable-range').css({
-            width: (barWidth - handleWidth).toString() + 'px'
-        });
-
-        // Finally, these events are triggered when the user seeks to
-        // update the slider.
-        this.bar.bind('mousedown', this.clickBar);
-
-        // IE7/8 isn't triggering when clicking on the bar, but only on
-        // the movable-range. I'm not yet sure why.
-        if ($.browser.msie && $.browser.version < 9.0) {
-            movableRange.bind('mousedown', this.clickBar);
-        }
-    };
-
-    /**
-     * ### rePosition
-     *
-     * Moves the slider handle and the active-bar background elements so that
-     * they accurately represent the value of the slider.
-     */
-    Quinn.prototype.rePosition = function (animate) {
-        var opts   = this.options,
-            delta  = this.range[1] - this.range[0];
-
-        this.activeBar.stop(true);
-
-        _.each(this.handles, _.bind(function(handle, i) {
-            var percent, percentStr;
-
-            percent    = (handle.value - this.range[0]) / delta * 100;
-            percentStr = percent.toString() + '%';
-
-            handle.element.stop(true);
-
-            if (animate && opts.effects) {
-                handle.element.animate({ left: percentStr }, {
-                    duration: opts.effectSpeed,
-                    step: _.bind(function (now) {
-                        // "now" is the current "left" position of the handle.
-                        // Convert that to the equivalent value. For example,
-                        // if the slider is 0->200, and now is 20, the
-                        // equivalent value is 40.
-                        this.__positionActiveBar((now / 100) *
-                            (this.range[1] - this.range[0]) + this.range[0],
-                            handle);
-
-                        return true;
-                    }, this)
-                });
-            } else {
-                // TODO being in the loop results in an unnecessary
-                //      additional call to positionActiveBar
-                handle.element.css('left', percentStr);
-                this.__positionActiveBar(this.value);
-            }
-        }, this));
-    };
-
-    /**
-     * ### __positionActiveBar
-     *
-     * Positions the blue active bar so that it originates at a position where
-     * the value 0 is. Accepts a `value` argument so that it may be used
-     * within a `step` callback in a jQuery `animate` call.
-     */
-    Quinn.prototype.__positionActiveBar = function (value, handle) {
-        var leftPosition = null, rightPosition = null;
-
-        if (this.isRange) {
-            if (handle) {
-                if (handle.index === 0) {
-                    leftPosition  = this.__positionForValue(value);
-                } else {
-                    rightPosition = this.__positionForValue(value);
-                }
-            } else {
-                leftPosition  = this.__positionForValue(value[0]);
-                rightPosition = this.__positionForValue(value[1]);
-            }
-        } else if (value < 0) {
-            // position with the left edge underneath the handle, and the
-            // right edge at 0
-            leftPosition  = this.__positionForValue(value);
-            rightPosition = this.__positionForValue(0);
-        } else {
-            // position with the right edge underneath the handle, and the
-            // left edge at 0
-            leftPosition  = this.__positionForValue(0);
-            rightPosition = this.__positionForValue(value);
-        }
-
-        rightPosition = this.bar.width() - rightPosition;
-
-        if (leftPosition !== null) {
-            this.activeBar.css('left', leftPosition.toString() + 'px');
-        }
-
-        if (rightPosition !== null) {
-            this.activeBar.css('right', rightPosition.toString() + 'px');
+        if (_.isFunction(meth)) {
+            return meth.apply(this.renderer, args);
         }
     };
 
@@ -585,27 +442,6 @@
     };
 
     /**
-     * ### __positionForValue
-     *
-     * Given a slider value, returns the position in pixels where the value is
-     * on the slider bar. For example, in a 200px wide bar whose values are
-     * 1->100, the value 20 is found 40px from the left of the bar.
-     */
-    Quinn.prototype.__positionForValue = function (value) {
-        var barWidth = this.bar.width(),
-            delta    = this.range[1] - this.range[0],
-            position = (((value - this.range[0]) / delta)) * barWidth;
-
-        if (position < 0) {
-            return 0;
-        } else if (position > barWidth) {
-            return barWidth;
-        } else {
-            return Math.round(position);
-        }
-    };
-
-    /**
      * ### __roundToStep
      *
      * Given a number, rounds it to the nearest step.
@@ -806,10 +642,238 @@
             this.handles[i].value = newValue[i];
         }
 
-        this.rePosition(animate);
+        this.sendRenderer('redraw', animate);
 
         return true;
     };
+
+    /**
+     * ## Renderer
+     *
+     * Handles creation of the DOM nodes used by Quinn, as well as redrawing
+     * those elements when the slider value is changed.
+     *
+     * You may write your own renderer class and provide it to Quinn using the
+     * `rendered: myRenderer` option.
+     *
+     * Your class needs to define only two public methods:
+     *
+     * render:
+     *   Creates the DOM elements for displaying the slider, and inserts them
+     *   into the tree.
+     *
+     * redraw:
+     *   Alters DOM elements (normally CSS) so that the visual representation
+     *   of the slider matches the value.
+     */
+    Quinn.Renderer = function (quinn, options) {
+        this.quinn   = quinn;
+        this.wrapper = quinn.wrapper;
+        this.options = options;
+    }
+
+    /**
+     * ### render
+     *
+     * Quinn is initialized with an empty wrapper element; render adds the
+     * necessary DOM elements in order to display the slider UI.
+     *
+     * render() is called automatically when creating a new Quinn instance,
+     * but should be called again if the slider is resized.
+     */
+    Quinn.Renderer.prototype.render = function () {
+        var barWidth = this.options.width || this.wrapper.width(),
+            movableRange, handleWidth, handleDangle, i, length;
+
+        function addRoundingElements(element) {
+            element.append($('<div class="left" />'));
+            element.append($('<div class="main" />'));
+            element.append($('<div class="right" />'));
+        }
+
+        this.bar       = $('<div class="bar" />');
+        this.activeBar = $('<div class="active-bar" />');
+
+        if (this.quinn.isRange) {
+            this.wrapper.addClass('range');
+
+            for (i = 0, length = this.options.value.length; i < length; i++) {
+                this.quinn.handles[i].element = $('<span class="handle" />');
+            }
+        } else {
+            this.quinn.handles[0].element = $('<span class="handle" />');
+        }
+
+        addRoundingElements(this.bar);
+        addRoundingElements(this.activeBar);
+
+        movableRange = $('<div class="movable-range" />');
+
+        this.bar.append(this.activeBar);
+        this.wrapper.html(this.bar);
+        this.wrapper.addClass('quinn');
+
+        this.wrapper.append(movableRange);
+
+        // Add each of the handles to the bar, and bind the click events.
+        for (i = 0, length = this.quinn.handles.length; i < length; i++) {
+            this.quinn.handles[i].element.bind(DRAG_START_E,
+                                               this.quinn.enableDrag);
+            movableRange.append(this.quinn.handles[i].element);
+        }
+
+        // The slider depends on some absolute positioning, so  adjust the
+        // elements widths and positions as necessary ...
+
+        this.bar.css({ width: barWidth.toString() + 'px' });
+
+        handleWidth = this.options.handleWidth ||
+                      this.quinn.handles[0].element.width();
+
+        // The "dangle" allows the handle to appear slightly to the left of
+        // the slider bar.
+
+        handleDangle = Math.round(handleWidth * 0.25);
+
+        this.bar.css({
+            marginLeft: handleDangle.toString() + 'px',
+            width:      (barWidth - (handleDangle * 2)).toString() + 'px'
+        });
+
+        this.wrapper.find('.movable-range').css({
+            width: (barWidth - handleWidth).toString() + 'px'
+        });
+
+        // Finally, these events are triggered when the user seeks to
+        // update the slider.
+        this.bar.bind('mousedown', this.quinn.clickBar);
+
+        // IE7/8 isn't triggering when clicking on the bar, but only on
+        // the movable-range. I'm not yet sure why.
+        if ($.browser.msie && $.browser.version < 9.0) {
+            movableRange.bind('mousedown', this.quinn.clickBar);
+        }
+    };
+
+    /**
+     * ### redraw
+     *
+     * Moves the slider handle and the active-bar background elements so that
+     * they accurately represent the value of the slider.
+     */
+    Quinn.Renderer.prototype.redraw = function (animate) {
+        var opts  = this.options,
+            range = this.quinn.range,
+            delta = range[1] - range[0];
+
+        this.activeBar.stop(true);
+
+        _.each(this.quinn.handles, _.bind(function(handle, i) {
+            var percent, percentStr;
+
+            percent    = (handle.value - range[0]) / delta * 100;
+            percentStr = percent.toString() + '%';
+
+            handle.element.stop(true);
+
+            if (animate && opts.effects) {
+                handle.element.animate({ left: percentStr }, {
+                    duration: opts.effectSpeed,
+                    step: _.bind(function (now) {
+                        // "now" is the current "left" position of the handle.
+                        // Convert that to the equivalent value. For example,
+                        // if the slider is 0->200, and now is 20, the
+                        // equivalent value is 40.
+                        this.__redrawActiveBar((now / 100) *
+                            (range[1] - range[0]) + range[0], handle);
+
+                        return true;
+                    }, this)
+                });
+            } else {
+                // TODO being in the loop results in an unnecessary
+                //      additional call to positionActiveBar
+                handle.element.css('left', percentStr);
+                this.__redrawActiveBar(this.quinn.value);
+            }
+        }, this));
+    };
+
+    /**
+     * ### redrawActiveBar
+     *
+     * Positions the blue active bar so that it originates at a position where
+     * the value 0 is. Accepts a `value` argument so that it may be used
+     * within a `step` callback in a jQuery `animate` call.
+     */
+    Quinn.Renderer.prototype.__redrawActiveBar = function (value, handle) {
+        var leftPosition = null,
+            rightPosition = null;
+
+        if (this.quinn.isRange) {
+            if (handle) {
+                if (handle.index === 0) {
+                    leftPosition  = this.__positionForValue(value);
+                } else {
+                    rightPosition = this.__positionForValue(value);
+                }
+            } else {
+                leftPosition  = this.__positionForValue(value[0]);
+                rightPosition = this.__positionForValue(value[1]);
+            }
+        } else if (value < 0) {
+            // position with the left edge underneath the handle, and the
+            // right edge at 0
+            leftPosition  = this.__positionForValue(value);
+            rightPosition = this.__positionForValue(0);
+        } else {
+            // position with the right edge underneath the handle, and the
+            // left edge at 0
+            leftPosition  = this.__positionForValue(0);
+            rightPosition = this.__positionForValue(value);
+        }
+
+        rightPosition = this.bar.width() - rightPosition;
+
+        if (leftPosition !== null) {
+            this.activeBar.css('left', leftPosition.toString() + 'px');
+        }
+
+        if (rightPosition !== null) {
+            this.activeBar.css('right', rightPosition.toString() + 'px');
+        }
+    };
+
+    /**
+     * ### __positionForValue
+     *
+     * Given a slider value, returns the position in pixels where the value is
+     * on the slider bar. For example, in a 200px wide bar whose values are
+     * 1->100, the value 20 is found 40px from the left of the bar.
+     */
+    Quinn.Renderer.prototype.__positionForValue = function (value) {
+        var barWidth = this.bar.width(),
+            delta    = this.quinn.range[1] - this.quinn.range[0],
+            position = (((value - this.quinn.range[0]) / delta)) * barWidth;
+
+        if (position < 0) {
+            return 0;
+        } else if (position > barWidth) {
+            return barWidth;
+        } else {
+            return Math.round(position);
+        }
+    };
+
+    /**
+     * ## Handle
+     *
+     * A handle is the "thing" which the user may click and drag in order to
+     * alter the value of the slider.
+     */
+    function createHandle (id, initialValue) {
+        return { id: id, value: initialValue, element: null };
+    }
 
     /**
      * ### Options
@@ -884,6 +948,17 @@
         //   Quinn:  the Quinn instance
         //
         onSetup: null,
+
+        // An optional class which is used to render the Quinn DOM elements
+        // and redraw them when the slider value is changed. This should be
+        // the class; Quinn will create the instance, passing the wrapper
+        // element and the options used when $(...).quinn() is called.
+        //
+        // Arguments:
+        //   Quinn:  the Quinn instance
+        //   object: the options passed to $.fn.quinn
+        //
+        renderer: Quinn.Renderer,
 
         // When using animations (such as clicking on the bar), how long
         // should the duration be? Any jQuery effect duration value is
