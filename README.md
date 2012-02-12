@@ -18,8 +18,8 @@ The library requires [jQuery][jq] and [Underscore.js][us].
 
 Quinn has been tested and works in the following environments:
 
- - Chrome 11 and 12
- - Firefox 3.5 and 4.0
+ - Chrome 11 and newer
+ - Firefox 3.5 and newer
  - Safari 4
  - Opera 11
  - Internet Explorer 7 and 8
