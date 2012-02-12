@@ -325,6 +325,10 @@ p code, pre code, h3 code, h4 em {
     color: #5f676c;
 }
 
+p code {
+  font-size: 14px;
+}
+
 /* Example Widgets */
 
 .example {
