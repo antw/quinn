@@ -50,7 +50,7 @@
         };
     }
 
-    // Wraps around the onChange and onSetup callbacks given in the
+    // Wraps around the onDrag and onSetup callbacks given in the
     // example to ensure that the value shown in the interactive example
     // is updated as the slider is moved.
 
@@ -60,8 +60,8 @@
         options = options || {};
 
         options = _.extend(options, {
-            onChange: wrapCallback(options.onChange, 1),
-            onSetup:  wrapCallback(options.onSetup,  1)
+            onDrag:  wrapCallback(options.onDrag,  1),
+            onSetup: wrapCallback(options.onSetup, 1)
         });
 
         return $this.quinn(options);

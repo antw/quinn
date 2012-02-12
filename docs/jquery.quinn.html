@@ -81,8 +81,8 @@ width, padding etc.</p>
         <span class="k">this</span><span class="p">.</span><span class="nx">callbacks</span> <span class="o">=</span> <span class="p">{</span>
             <span class="nx">setup</span><span class="o">:</span>  <span class="p">[],</span>
             <span class="nx">begin</span><span class="o">:</span>  <span class="p">[],</span>
+            <span class="nx">drag</span><span class="o">:</span>   <span class="p">[],</span>
             <span class="nx">change</span><span class="o">:</span> <span class="p">[],</span>
-            <span class="nx">commit</span><span class="o">:</span> <span class="p">[],</span>
             <span class="nx">abort</span><span class="o">:</span>  <span class="p">[]</span>
         <span class="p">};</span>
 
@@ -156,8 +156,8 @@ by developers later.</p>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;setup&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onSetup</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;begin&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onBegin</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;drag&#39;</span><span class="p">,</span>   <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onDrag</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onChange</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onCommit</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;abort&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onAbort</span><span class="p">);</span></pre></div>
       </td>
     </tr>
@@ -489,8 +489,8 @@ left edge at 0</p>
 
 <p>Updates the value of the slider to <code>newValue</code>. If the <code>animate</code>
 argument is truthy, the change in value will be animated when updating
-the slider position. The onChange callback may be skipped if
-<code>doCallback</code> is falsey.</p>
+the slider position. The onDrag callback may be skipped if <code>doCallback</code>
+is falsey.</p>
 
 <p>This is the public version of __setValue which is a public API method;
 use this in your application code when you need to change the slider
@@ -638,7 +638,7 @@ the Quinn instance permitting chaining.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-32">&#182;</a>
         </div>
-        <p>In case the user gave the longer form &lsquo;onChange&rsquo;, etc.</p>
+        <p>In case the user gave the longer form &lsquo;onDrag&rsquo;, etc.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>                <span class="nx">event</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nx">event</span><span class="p">.</span><span class="nx">length</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">();</span>
@@ -1097,13 +1097,13 @@ changes to the slider.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-55">&#182;</a>
         </div>
-        <p>Run the onCommit callback; if the callback returns false then we
+        <p>Run the onChange callback; if the callback returns false then we
 revert the slider change, and restore everything to how it was
 before. Note that reverting the change will also fire an onChange
 event when the value is reverted.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;commit&#39;</span><span class="p">))</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">__setValue</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">head</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValues</span><span class="p">),</span> <span class="kc">true</span><span class="p">);</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">__abortChange</span><span class="p">();</span>
 
@@ -1321,11 +1321,11 @@ permitted value.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-68">&#182;</a>
         </div>
-        <p>Run the onChange callback; if the callback returns false then stop
-immediately and do not change the value.</p>
+        <p>Run the onDrag callback; if the callback returns false then stop
+immediately and do not alter the value.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;drag&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">originalValue</span><span class="p">;</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
@@ -1474,14 +1474,14 @@ it as a number (in pixels).</p>
           <a class="pilcrow" href="#section-79">&#182;</a>
         </div>
         <p>A callback which is run when changing the slider value. Additional
-callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
+callbacks may be added with Quinn::bind(&lsquo;drag&rsquo;).</p>
 
 <p>Arguments:
   number: the altered slider value
   Quinn:  the Quinn instance</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="nx">onChange</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
+        <div class='highlight'><pre>        <span class="nx">onDrag</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
     <tr id='section-80'>
@@ -1496,7 +1496,7 @@ callbacks may be added with Quinn#bind(&lsquo;change&rsquo;).</p>
   Quinn:  the Quinn instance</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="nx">onCommit</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
+        <div class='highlight'><pre>        <span class="nx">onChange</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span></pre></div>
       </td>
     </tr>
     <tr id='section-81'>

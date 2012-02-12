@@ -43,8 +43,8 @@
         this.callbacks = {
             setup:  [],
             begin:  [],
+            drag:   [],
             change: [],
-            commit: [],
             abort:  []
         };
 
@@ -87,8 +87,8 @@
 
         this.bind('setup',  this.options.onSetup);
         this.bind('begin',  this.options.onBegin);
+        this.bind('drag',   this.options.onDrag);
         this.bind('change', this.options.onChange);
-        this.bind('commit', this.options.onCommit);
         this.bind('abort',  this.options.onAbort);
 
         // Fire the onSetup callback.
@@ -287,8 +287,8 @@
      *
      * Updates the value of the slider to `newValue`. If the `animate`
      * argument is truthy, the change in value will be animated when updating
-     * the slider position. The onChange callback may be skipped if
-     * `doCallback` is falsey.
+     * the slider position. The onDrag callback may be skipped if `doCallback`
+     * is falsey.
      *
      * This is the public version of __setValue which is a public API method;
      * use this in your application code when you need to change the slider
@@ -380,7 +380,7 @@
     Quinn.prototype.bind = function (event, callback) {
         if (_.isString(event) && _.isFunction(callback)) {
             if (event.slice(0, 2) === 'on') {
-                // In case the user gave the longer form 'onChange', etc.
+                // In case the user gave the longer form 'onDrag', etc.
                 event = event.slice(2, event.length).toLowerCase();
             }
 
@@ -676,11 +676,11 @@
     Quinn.prototype.__hasChanged = function () {
         this.activeHandle = null;
 
-        // Run the onCommit callback; if the callback returns false then we
+        // Run the onChange callback; if the callback returns false then we
         // revert the slider change, and restore everything to how it was
         // before. Note that reverting the change will also fire an onChange
         // event when the value is reverted.
-        if (! this.trigger('commit')) {
+        if (! this.trigger('change')) {
             this.__setValue(_.head(this.previousValues), true);
             this.__abortChange();
 
@@ -795,9 +795,9 @@
             this.value = newValue[0];
         }
 
-        // Run the onChange callback; if the callback returns false then stop
-        // immediately and do not change the value.
-        if (! this.trigger('change', this.value)) {
+        // Run the onDrag callback; if the callback returns false then stop
+        // immediately and do not alter the value.
+        if (! this.trigger('drag', this.value)) {
             this.value = originalValue;
             return false;
         }
@@ -861,13 +861,13 @@
         handleWidth: null,
 
         // A callback which is run when changing the slider value. Additional
-        // callbacks may be added with Quinn#bind('change').
+        // callbacks may be added with Quinn::bind('drag').
         //
         // Arguments:
         //   number: the altered slider value
         //   Quinn:  the Quinn instance
         //
-        onChange: null,
+        onDrag: null,
 
         // Run after the user has finished making a change.
         //
@@ -875,7 +875,7 @@
         //   number: the new slider value
         //   Quinn:  the Quinn instance
         //
-        onCommit: null,
+        onChange: null,
 
         // Run once after the slider has been constructed.
         //

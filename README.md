@@ -52,8 +52,8 @@ Table of Contents
 
 #### Callbacks
 
-[onSetup][onsetup], [onBegin][onbegin], [onChange][onchange],
-[onCommit][oncommit], [onAbort][onabort]
+[onSetup][onsetup], [onBegin][onbegin], [onDrag][ondrag],
+[onChange][onchange], [onAbort][onabort]
 
 #### [Theming][theming]
 
@@ -178,19 +178,20 @@ creating the slider.
 
 When the user alters the slider position, the order of events firing is:
 
- 1. **[onBegin][onbegin]**: Each time the user starts changing the slider value.
- 2. **[onChange][onchange]**: Repeatedly as the user drags the handle to new
+ 1. **[onBegin][onbegin]**: Each time the user starts changing the slider
+    value.
+ 2. **[onDrag][ondrag]**: Repeatedly as the user drags the handle to new
     positions.
- 3. **[onCommit][oncommit]**: When the user releases the mouse button.
+ 3. **[onChange][onchange]**: When the user releases the mouse button.
  4. **[onAbort][onabort]**: When the user releases the mouse button, and the
-    onCommit callback returns false.
+    onChange callback returns false.
 
 In addition to supplying callbacks when initializing a slider, you may
 bind further callbacks to the Quinn instance:
 
     var slider = new $.Quinn(element, options);
 
-    slider.bind('change', function (value) {
+    slider.bind('drag', function (value) {
         console.log(value);
     });
 
@@ -215,13 +216,11 @@ callback is correct.
 happens when they click on the slider bar, or on the handle _prior_ to
 the slider being dragged to a new position.
 
-### onChange `onChange: function (newValue, quinn)` {#onchange}
+### onDrag `onDrag: function (newValue, quinn)` {#ondrag}
 
-The **onChange** callback is run each time the slider value changes. The
+The **onDrag** callback is run each time the slider value changes. The
 function is supplied with two arguments: the new slider value, and the
-Quinn instance. The previous value of the slider can be retrieved with
-`quinn.value` since the value attribute is only updated after the
-callback has completed.
+Quinn instance.
 
     function changeValueColour (value) {
         var h = (128 - value * 1.28).toFixed(),
@@ -231,7 +230,7 @@ callback has completed.
     }
 
     $('.slider').quinn({
-        onChange: function (newValue, slider) {
+        onDrag: function (newValue, slider) {
             changeValueColour(newValue);
         },
 
@@ -241,19 +240,19 @@ callback has completed.
         }
     });
 
-Be aware that the **onChange** callback is run every time the slider
-value changes, which can be extremely frequent when dragging the slider
+Be aware that the **onDrag** callback is run every time the slider value
+changes, which can be extremely frequent when dragging the slider
 handle. This is perfect for "hooking" in to the slider to display the
 value elsewhere in your UI (such as the examples on this page), to
 update a graph in real-time, etc, but is not suitable for persisting the
 slider value to a server unless you like flooding your application with
-tens of HTTP requests per second. Use **onCommit** which is fired only
+tens of HTTP requests per second. Use **onChange** which is fired only
 after the user has finished dragging the handle.
 
 Explicitly returning false in the callback will prevent the change.
 
     $('.slider').quinn({
-        onChange: function (newValue, slider) {
+        onDrag: function (newValue, slider) {
             // Prevent selection of 41 to 59.
             if (newValue > 40 && newValue < 60) {
                 return false;
@@ -261,18 +260,18 @@ Explicitly returning false in the callback will prevent the change.
         }
     });
 
-### onCommit `onCommit: function (newValue, quinn)` {#oncommit}
+### onChange `onChange: function (newValue, quinn)` {#onchange}
 
-**onCommit** is similar to the to the **onChange** event in that it is
+**onChange** is similar to the to the **onDrag** event in that it is
 fired when the slider value is changed by a user. However, unlike
-**onChange** it is fired only after the user has _finished_ changing the
+**onDrag** it is fired only after the user has _finished_ changing the
 value. This is defined as clicking the slider bar to change the value,
 or lifting the left mouse button after dragging the slider handle.
 
     $('.slider').quinn({
         value: 25,
 
-        onCommit: function (newValue, slider) {
+        onChange: function (newValue, slider) {
             // Disallow selecting a value over 50, but only
             // after the user has finished moving the slider.
             if (newValue > 50) {
@@ -284,8 +283,8 @@ or lifting the left mouse button after dragging the slider handle.
 ### onAbort `onAbort: function (restoredValue, quinn)` {#onabort}
 
 The **onAbort** event is fired once the user has finished adjusting the
-value (like **onCommit**) but the change failed either because the
-**onCommit** callback returned false, or the user set the slider back
+value (like **onChange**) but the change failed either because the
+**onChange** callback returned false, or the user set the slider back
 to it's starting value.
 
 Theming
@@ -325,7 +324,7 @@ need to alter the CSS. For example:
     $('.slider').quinn({
         value: 25,
 
-        onChange: function (newValue, slider) {
+        onDrag: function (newValue, slider) {
             changeValueColour(newValue);
         },
 
@@ -338,6 +337,10 @@ need to alter the CSS. For example:
 
 History
 -------
+
+#### Git HEAD
+
+`onChange` is now `onDrag`, and `onCommit` is now `onChange`.
 
 #### 0.4.2 _February 10th, 2012_
 
@@ -472,8 +475,8 @@ Opera and Internet Explorer are not yet complete.
 [disable]:        #disable
 [onsetup]:        #onsetup
 [onbegin]:        #onbegin
+[ondrag]:         #ondrag
 [onchange]:       #onchange
-[oncommit]:       #oncommit
 [onabort]:        #onbort
 [theming]:        #theming
 [history]:        #history
