@@ -1,3 +1,5 @@
+// vim: set sw=4 ts=4 et:
+
 (function ($, _) {
 
     // Event names used for setting up drag events.
