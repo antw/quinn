@@ -580,7 +580,7 @@
 
                 newValue = this.__sanitizeValue(newValue);
 
-                if (this.activeHandle.index === 1) {
+                if (this.activeHandle.id === 1) {
                     if (newValue <= this.handles[0].value) {
                         newValue = this.handles[0].value +
                             this.options.step;
@@ -595,7 +595,7 @@
                 numberValue = newValue;
 
                 newValue = _.clone(this.value);
-                newValue[this.activeHandle.index] = numberValue;
+                newValue[this.activeHandle.id] = numberValue;
             } else {
                 // The default slider value when initialized is "null", so
                 // default to setting the range to the slider minimum and
@@ -717,8 +717,9 @@
 
         // Add each of the handles to the bar, and bind the click events.
         for (i = 0, length = this.quinn.handles.length; i < length; i++) {
-            this.quinn.handles[i].element.bind(DRAG_START_E,
-                                               this.quinn.enableDrag);
+            this.quinn.handles[i].element.bind(
+                DRAG_START_E, this.quinn.enableDrag);
+
             movableRange.append(this.quinn.handles[i].element);
         }
 
@@ -812,7 +813,7 @@
 
         if (this.quinn.isRange) {
             if (handle) {
-                if (handle.index === 0) {
+                if (handle.id === 0) {
                     leftPosition  = this.__positionForValue(value);
                 } else {
                     rightPosition = this.__positionForValue(value);

@@ -971,7 +971,7 @@ when the activeHandle has been set.</p>
 
                 <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__sanitizeValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">);</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
                     <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">&lt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
                         <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">value</span> <span class="o">+</span>
                             <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
@@ -986,7 +986,7 @@ when the activeHandle has been set.</p>
                 <span class="nx">numberValue</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">;</span>
 
                 <span class="nx">newValue</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
-                <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">.</span><span class="nx">index</span><span class="p">]</span> <span class="o">=</span> <span class="nx">numberValue</span><span class="p">;</span>
+                <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">numberValue</span><span class="p">;</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
@@ -1179,8 +1179,9 @@ but should be called again if the slider is resized.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">length</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">handles</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">element</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">DRAG_START_E</span><span class="p">,</span>
-                                               <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">element</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span>
+                <span class="nx">DRAG_START_E</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">enableDrag</span><span class="p">);</span>
+
             <span class="nx">movableRange</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">element</span><span class="p">);</span>
         <span class="p">}</span></pre></div>
       </td>
@@ -1336,7 +1337,7 @@ within a <code>step</code> callback in a jQuery <code>animate</code> call.</p>
 
         <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">isRange</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">handle</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">handle</span><span class="p">.</span><span class="nx">index</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">handle</span><span class="p">.</span><span class="nx">id</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
                     <span class="nx">leftPosition</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
                 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
                     <span class="nx">rightPosition</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
