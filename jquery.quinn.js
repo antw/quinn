@@ -27,7 +27,7 @@
      * width, padding etc.
      */
     function Quinn (wrapper, options) {
-        var selectMin, selectMax;
+        var selectMin, selectMax, length, i;
 
         _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
 
