@@ -16,14 +16,14 @@
 }
 
 /* Slider height */
-.quinn, .quinn .bar, .quinn .active-bar, .quinn .movable-range {
+.quinn, .quinn .bar, .quinn .active-bar {
   height: 5px;
 }
 
 /* Float clearing */
 
 .quinn {
-  padding-right: 5px;
+  padding: 10px 5px 10px 0;
   zoom: 1;
 }
 
@@ -124,11 +124,6 @@
  * The slider handle is the main button on which the user may click and
  * drag in order to adjust the slider value.
  */
-
-.quinn .movable-range {
-  float: left;
-  position: absolute;
-}
 
 .quinn .handle {
   background-position: 0 0;

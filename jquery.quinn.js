@@ -681,7 +681,7 @@
      */
     Quinn.Renderer.prototype.render = function () {
         var barWidth = this.options.width || this.wrapper.width(),
-            movableRange, i, length;
+            i, length;
 
         function addRoundingElements(element) {
             element.append($('<div class="left" />'));
@@ -705,20 +705,16 @@
         addRoundingElements(this.bar);
         addRoundingElements(this.activeBar);
 
-        movableRange = $('<div class="movable-range" />');
-
         this.bar.append(this.activeBar);
         this.wrapper.html(this.bar);
         this.wrapper.addClass('quinn');
-
-        this.wrapper.append(movableRange);
 
         // Add each of the handles to the bar, and bind the click events.
         for (i = 0, length = this.quinn.handles.length; i < length; i++) {
             this.quinn.handles[i].element.bind(
                 DRAG_START_E, this.quinn.enableDrag);
 
-            movableRange.append(this.quinn.handles[i].element);
+            this.bar.append(this.quinn.handles[i].element);
         }
 
         // The slider depends on some absolute positioning, so  adjust the
@@ -726,17 +722,9 @@
 
         this.bar.css({ width: barWidth.toString() + 'px' });
 
-        // TODO 5px is hard-coded for the standard Quinn theme. Following the
-        //      removal of the handleWidth option, perhaps it might be
-        //      prudent to add a "movementAdjust" option...
-        this.wrapper.find('.movable-range').css({
-            width: (barWidth - 5).toString() + 'px'
-        });
-
         // Finally, these events are triggered when the user seeks to
         // update the slider.
-        movableRange.bind('mousedown', this.quinn.clickBar);
-        this.bar.bind('mousedown', this.quinn.clickBar);
+        this.wrapper.bind('mousedown', this.quinn.clickBar);
     };
 
     /**

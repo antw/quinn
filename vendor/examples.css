@@ -353,13 +353,12 @@ li code, p code {
   border-right: 1px solid #d9e0e4;
   float: left;
   margin: -24px 0;
-  padding: 32px 24px 29px 5px;
+  padding: 22px 24px 19px 5px;
   width: 370px;
 }
 
 .example .widget .slider {
   height: 5px;
-  width: 365px;
 }
 
 .example .value {
