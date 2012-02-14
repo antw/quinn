@@ -94,7 +94,7 @@ and 100. By supplying a <strong>range</strong> option, you can change these valu
 <strong>range</strong> should be an array of two values, where the first value is the
 minimum value represented on the slider, and the second is the maximum.</p>
 
-<pre><code>// Our volume knobs go up to eleven.
+<pre><code>/* Our volume knobs go up to eleven. */
 $('.slider').quinn({ range: [ 0, 11 ] });
 </code></pre>
 
@@ -266,7 +266,7 @@ $('.slider').quinn({
     },
 
     onSetup: function (value, slider) {
-        // Set the initial colour.
+        /* Set the initial colour. */
         changeValueColour(value);
     }
 });
@@ -285,7 +285,7 @@ after the user has finished dragging the handle.</p>
 
 <pre><code>$('.slider').quinn({
     onDrag: function (newValue, slider) {
-        // Prevent selection of 41 to 59.
+        /* Prevent selection of 41 to 59. */
         if (newValue &gt; 40 &amp;&amp; newValue &lt; 60) {
             return false;
         }
@@ -305,8 +305,8 @@ or lifting the left mouse button after dragging the slider handle.</p>
     value: 25,
 
     onChange: function (newValue, slider) {
-        // Disallow selecting a value over 50, but only
-        // after the user has finished moving the slider.
+        /* Disallow selecting a value over 50, but only
+           after the user has finished moving the slider. */
         if (newValue &gt; 50) {
             return false;
         }
@@ -362,7 +362,7 @@ $('.slider').quinn({
     },
 
     onSetup: function (value, slider) {
-        // Set the initial colour.
+        /* Set the initial colour. */
         changeValueColour(value);
     }
 });

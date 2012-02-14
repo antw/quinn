@@ -80,7 +80,7 @@ and 100. By supplying a **range** option, you can change these values:
 **range** should be an array of two values, where the first value is the
 minimum value represented on the slider, and the second is the maximum.
 
-    // Our volume knobs go up to eleven.
+    /* Our volume knobs go up to eleven. */
     $('.slider').quinn({ range: [ 0, 11 ] });
 
 Negative values are perfectly acceptable, and the "active bar" (the
@@ -240,7 +240,7 @@ Quinn instance.
         },
 
         onSetup: function (value, slider) {
-            // Set the initial colour.
+            /* Set the initial colour. */
             changeValueColour(value);
         }
     });
@@ -258,7 +258,7 @@ Explicitly returning false in the callback will prevent the change.
 
     $('.slider').quinn({
         onDrag: function (newValue, slider) {
-            // Prevent selection of 41 to 59.
+            /* Prevent selection of 41 to 59. */
             if (newValue > 40 && newValue < 60) {
                 return false;
             }
@@ -277,8 +277,8 @@ or lifting the left mouse button after dragging the slider handle.
         value: 25,
 
         onChange: function (newValue, slider) {
-            // Disallow selecting a value over 50, but only
-            // after the user has finished moving the slider.
+            /* Disallow selecting a value over 50, but only
+               after the user has finished moving the slider. */
             if (newValue > 50) {
                 return false;
             }
@@ -334,7 +334,7 @@ need to alter the CSS. For example:
         },
 
         onSetup: function (value, slider) {
-            // Set the initial colour.
+            /* Set the initial colour. */
             changeValueColour(value);
         }
     });
