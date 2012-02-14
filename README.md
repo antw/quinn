@@ -345,7 +345,11 @@ History
 
 #### Git HEAD
 
-`onChange` is now `onDrag`, and `onCommit` is now `onChange`.
+* `onChange` is now `onDrag`, and `onCommit` is now `onChange`.
+* Quinn's styling rules [have been changed][style-change]. If you use the
+  default Quinn theme with no changes you should be able to simple drop the
+  new Stylesheet into your assets or public directory. If you customise the
+  theme see the [above referenced commit][style-change] for more information.
 
 #### 0.4.2 _February 10th, 2012_
 
@@ -463,6 +467,7 @@ Opera and Internet Explorer are not yet complete.
 [jq]:             http://jquery.com
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
+[style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
 [tarball]:        https://github.com/antw/quinn/tarball/v0.4.2
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js

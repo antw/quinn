@@ -259,8 +259,12 @@ h4 em:before {
     content: " — ";
 }
 
-h4 + p {
+h4 + p, h4 + ul {
     padding-left: 24px;
+}
+
+h4 + ul li {
+    margin-bottom: 6px;
 }
 
 h4 + p a {
@@ -325,7 +329,7 @@ p code, pre code, h3 code, h4 em {
     color: #5f676c;
 }
 
-p code {
+li code, p code {
   font-size: 14px;
 }
 
