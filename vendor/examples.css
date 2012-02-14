@@ -418,11 +418,10 @@ ul.yes li:before {
 /* Rainbow theme adjustment. */
 
 .example.rainbow .widget {
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 }
 
 .example.rainbow .slider {
-  padding-top: 0px;
   margin-top: -1px;
 }
 
