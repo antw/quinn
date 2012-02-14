@@ -680,8 +680,9 @@
      * but should be called again if the slider is resized.
      */
     Quinn.Renderer.prototype.render = function () {
-        var barWidth = this.options.width || this.wrapper.width(),
-            i, length;
+        var i, length;
+
+        this.width = this.options.width || this.wrapper.width();
 
         function addRoundingElements(element) {
             element.append($('<div class="left" />'));
@@ -720,7 +721,7 @@
         // The slider depends on some absolute positioning, so  adjust the
         // elements widths and positions as necessary ...
 
-        this.bar.css({ width: barWidth.toString() + 'px' });
+        this.bar.css({ width: this.width.toString() + 'px' });
 
         // Finally, these events are triggered when the user seeks to
         // update the slider.
@@ -734,10 +735,9 @@
      * they accurately represent the value of the slider.
      */
     Quinn.Renderer.prototype.redraw = function (animate) {
-        var opts     = this.options,
-            range    = this.quinn.range,
-            delta    = range[1] - range[0]
-            barWidth = this.bar.width();
+        var opts  = this.options,
+            range = this.quinn.range,
+            delta = range[1] - range[0];
 
         this.activeBar.stop(true);
 
@@ -749,13 +749,13 @@
             // Convert the value percentage to pixels so that we can position
             // the handle accounting for the movementAdjust option.
             percent = (handle.value - range[0]) / delta;
-            inPixels = ((barWidth - 5) * percent).toString() + 'px'
+            inPixels = ((this.width - 5) * percent).toString() + 'px'
 
             if (animate && opts.effects) {
                 handle.element.animate({ left: inPixels }, {
                     duration: opts.effectSpeed,
                     step: _.bind(function (now) {
-                        now = now / barWidth;
+                        now = now / this.width;
 
                         // "now" is the current "left" position of the handle.
                         // Convert that to the equivalent value. For example,
@@ -831,14 +831,13 @@
      * 1->100, the value 20 is found 40px from the left of the bar.
      */
     Quinn.Renderer.prototype.__positionForValue = function (value) {
-        var barWidth = this.bar.width(),
-            delta    = this.quinn.range[1] - this.quinn.range[0],
-            position = (((value - this.quinn.range[0]) / delta)) * barWidth;
+        var delta    = this.quinn.range[1] - this.quinn.range[0],
+            position = (((value - this.quinn.range[0]) / delta)) * this.width;
 
         if (position < 0) {
             return 0;
-        } else if (position > barWidth) {
-            return barWidth;
+        } else if (position > this.width) {
+            return this.width;
         } else {
             return Math.round(position);
         }
