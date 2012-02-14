@@ -746,29 +746,34 @@
      * they accurately represent the value of the slider.
      */
     Quinn.Renderer.prototype.redraw = function (animate) {
-        var opts  = this.options,
-            range = this.quinn.range,
-            delta = range[1] - range[0];
+        var opts     = this.options,
+            range    = this.quinn.range,
+            delta    = range[1] - range[0]
+            barWidth = this.bar.width();
 
         this.activeBar.stop(true);
 
         _.each(this.quinn.handles, _.bind(function(handle, i) {
-            var percent, percentStr;
-
-            percent    = (handle.value - range[0]) / delta * 100;
-            percentStr = percent.toString() + '%';
+            var percent, inPixels;
 
             handle.element.stop(true);
 
+            // Convert the value percentage to pixels so that we can position
+            // the handle accounting for the movementAdjust option.
+            percent = (handle.value - range[0]) / delta;
+            inPixels = ((barWidth - 5) * percent).toString() + 'px'
+
             if (animate && opts.effects) {
-                handle.element.animate({ left: percentStr }, {
+                handle.element.animate({ left: inPixels }, {
                     duration: opts.effectSpeed,
                     step: _.bind(function (now) {
+                        now = now / barWidth;
+
                         // "now" is the current "left" position of the handle.
                         // Convert that to the equivalent value. For example,
                         // if the slider is 0->200, and now is 20, the
                         // equivalent value is 40.
-                        this.__redrawActiveBar((now / 100) *
+                        this.__redrawActiveBar(now *
                             (range[1] - range[0]) + range[0], handle);
 
                         return true;
@@ -777,7 +782,7 @@
             } else {
                 // TODO being in the loop results in an unnecessary
                 //      additional call to positionActiveBar
-                handle.element.css('left', percentStr);
+                handle.element.css('left', inPixels);
                 this.__redrawActiveBar(this.quinn.value);
             }
         }, this));
@@ -793,6 +798,8 @@
     Quinn.Renderer.prototype.__redrawActiveBar = function (value, handle) {
         var leftPosition = null,
             rightPosition = null;
+
+        this.activeBar.stop();
 
         if (this.quinn.isRange) {
             if (handle) {
