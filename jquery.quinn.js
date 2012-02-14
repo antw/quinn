@@ -683,7 +683,7 @@
      */
     Quinn.Renderer.prototype.render = function () {
         var barWidth = this.options.width || this.wrapper.width(),
-            movableRange, handleWidth, handleDangle, i, length;
+            movableRange, i, length;
 
         function addRoundingElements(element) {
             element.append($('<div class="left" />'));
@@ -728,21 +728,11 @@
 
         this.bar.css({ width: barWidth.toString() + 'px' });
 
-        handleWidth = this.options.handleWidth ||
-                      this.quinn.handles[0].element.width();
-
-        // The "dangle" allows the handle to appear slightly to the left of
-        // the slider bar.
-
-        handleDangle = Math.round(handleWidth * 0.25);
-
-        this.bar.css({
-            marginLeft: handleDangle.toString() + 'px',
-            width:      (barWidth - (handleDangle * 2)).toString() + 'px'
-        });
-
+        // TODO 5px is hard-coded for the standard Quinn theme. Following the
+        //      removal of the handleWidth option, perhaps it might be
+        //      prudent to add a "movementAdjust" option...
         this.wrapper.find('.movable-range').css({
-            width: (barWidth - handleWidth).toString() + 'px'
+            width: (barWidth - 5).toString() + 'px'
         });
 
         // Finally, these events are triggered when the user seeks to

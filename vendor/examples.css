@@ -345,12 +345,17 @@ p code {
   /* width is 487px */
 }
 
-.example .slider {
+.example .widget {
   border-right: 1px solid #d9e0e4;
   float: left;
   margin: -24px 0;
-  padding: 24px 24px 24px 0;
-  width: 375px;
+  padding: 32px 24px 29px 5px;
+  width: 370px;
+}
+
+.example .widget .slider {
+  height: 5px;
+  width: 365px;
 }
 
 .example .value {
@@ -387,7 +392,7 @@ p code {
 
 .example .slider .bar {
     /* reduces page "jumping" while the images load. */
-    min-height: 18px;
+    min-height: 5px;
 }
 
 .example.hide-code pre {
@@ -409,6 +414,15 @@ ul.yes li:before {
 
 /* Rainbow theme adjustment. */
 
+.example.rainbow .widget {
+  padding-bottom: 30px;
+}
+
 .example.rainbow .slider {
-    padding-top: 23px;
+  padding-top: 0px;
+  margin-top: -1px;
+}
+
+.example.rainbow .slider .handle {
+  margin-left: -9px;
 }

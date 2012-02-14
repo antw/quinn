@@ -84,7 +84,8 @@
 
         exampleEl = $('<div class="example" id="' + exampleID + '"></div>');
 
-        exampleEl.append($('<div class="slider"></div>'));
+        exampleEl.append($('<div class="widget"></div>').append(
+            $('<div class="slider"></div>')));
         exampleEl.append($('<div class="value"></div>'));
         exampleEl.append($('<pre></pre>').append(
             $('<code class="javascript"></code>').html($this.html())

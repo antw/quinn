@@ -17,13 +17,20 @@
 
 /* Slider height */
 .quinn, .quinn .bar, .quinn .active-bar, .quinn .movable-range {
-  height: 18px;
+  height: 5px;
 }
 
 /* Float clearing */
 
 .quinn {
-  overflow: hidden;
+  padding-right: 5px;
+  zoom: 1;
+}
+
+.quinn:after {
+  content: ""
+  display: table;
+  clear: both;
 }
 
 /**
@@ -48,31 +55,31 @@
 .quinn .bar .left, .quinn .bar .main, .quinn .bar .right,
 .quinn .active-bar .left, .quinn .active-bar .main,
 .quinn .active-bar .right {
-  height: 18px;
+  height: 5px;
   position: absolute;
   z-index: 1;
 }
 
 .quinn .bar .left, .quinn .bar .right,
 .quinn .active-bar .left, .quinn .active-bar .right {
-  height: 18px;
+  height: 5px;
   width: 4px
 }
 
 .quinn .bar .left, .quinn .active-bar .left {
-  background-position: -50px -17px;
+  background-position: -50px -25px;
   left: 0;
 }
 
 .quinn .bar .main, .quinn .active-bar .main {
-  background-position: 0 -142px;
+  background-position: 0 -150px;
   background-repeat: repeat-x;
   left: 4px;
   right: 4px;
 }
 
 .quinn .bar .right, .quinn .active-bar .right {
-  background-position: -56px -17px;
+  background-position: -56px -25px;
   right: 0px;
 }
 
@@ -97,16 +104,16 @@
 }
 
 .quinn .active-bar .left {
-  background-position: -70px -17px;
+  background-position: -70px -25px;
 }
 
 .quinn .active-bar .main {
-  background-position: 0 -192px;
+  background-position: 0 -200px;
   right: 4px;
 }
 
 .quinn .active-bar .right {
-  background-position: -76px -17px;
+  background-position: -76px -25px;
   right: 0px;
 }
 
@@ -126,11 +133,12 @@
 .quinn .handle {
   background-position: 0 0;
   cursor: default;
-  height: 22px;
+  height: 21px;
   left: 0%;
+  margin: -8px 0 0 -8px;
   outline: none;
   position: absolute;
-  width: 22px;
+  width: 21px;
   z-index: 5;
 }
 
@@ -157,7 +165,7 @@
 .quinn.range .handle {
   background-position: -100px 0;
   height: 26px;
-  margin-top: -1px;
+  margin-top: -9px;
   width: 19px;
 }
 
