@@ -336,7 +336,7 @@
             // the button is doing.
             bind('mouseenter.quinn', this.disableDrag);
 
-        return event.preventDefault();
+        return false;
     };
 
     /**
@@ -735,13 +735,8 @@
 
         // Finally, these events are triggered when the user seeks to
         // update the slider.
-        if ($.browser.msie && $.browser.version < 8.0) {
-            // IE7 won't trigger an event if the event is bound to the bar
-            // since movableRange obscures it.
-            movableRange.bind('mousedown', this.quinn.clickBar);
-        } else {
-            this.bar.bind('mousedown', this.quinn.clickBar);
-        }
+        movableRange.bind('mousedown', this.quinn.clickBar);
+        this.bar.bind('mousedown', this.quinn.clickBar);
     };
 
     /**
