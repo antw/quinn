@@ -11,7 +11,7 @@
             return function () {};
         } else {
             // Yes, yes. I know.
-            return function () { eval(code); };
+            return new Function(code);
         }
     }
 
