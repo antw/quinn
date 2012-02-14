@@ -527,8 +527,7 @@ order to adjust the slider value.</p>
 (see <code>clickBar</code>).</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enableDrag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">skipPreamble</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">handle</span><span class="p">;</span></pre></div>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">enableDrag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">skipPreamble</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
     <tr id='section-28'>
@@ -1224,7 +1223,7 @@ elements widths and positions as necessary &hellip;</p>
 update the slider.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">clickBar</span><span class="p">);</span></pre></div>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">msie</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">version</span> <span class="o">&lt;</span> <span class="mf">8.0</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
     <tr id='section-64'>
@@ -1232,12 +1231,13 @@ update the slider.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-64">&#182;</a>
         </div>
-        <p>IE7/8 isn&rsquo;t triggering when clicking on the bar, but only on
-the movable-range. I&rsquo;m not yet sure why.</p>
+        <p>IE7 won&rsquo;t trigger an event if the event is bound to the bar
+since movableRange obscures it.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">msie</span> <span class="o">&amp;&amp;</span> <span class="nx">$</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">version</span> <span class="o">&lt;</span> <span class="mf">9.0</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">movableRange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">clickBar</span><span class="p">);</span>
+        <div class='highlight'><pre>            <span class="nx">movableRange</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">clickBar</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;mousedown&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">clickBar</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
       </td>

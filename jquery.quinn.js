@@ -313,8 +313,6 @@
      * (see `clickBar`).
      */
     Quinn.prototype.enableDrag = function (event, skipPreamble) {
-        var handle;
-
         // Only enable dragging when the left mouse button is used.
         if (! IS_TOUCH_ENABLED && event.which !== 1) {
             return true;
@@ -737,12 +735,12 @@
 
         // Finally, these events are triggered when the user seeks to
         // update the slider.
-        this.bar.bind('mousedown', this.quinn.clickBar);
-
-        // IE7/8 isn't triggering when clicking on the bar, but only on
-        // the movable-range. I'm not yet sure why.
-        if ($.browser.msie && $.browser.version < 9.0) {
+        if ($.browser.msie && $.browser.version < 8.0) {
+            // IE7 won't trigger an event if the event is bound to the bar
+            // since movableRange obscures it.
             movableRange.bind('mousedown', this.quinn.clickBar);
+        } else {
+            this.bar.bind('mousedown', this.quinn.clickBar);
         }
     };
 
