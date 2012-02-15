@@ -214,6 +214,42 @@
     };
 
     /**
+     * ### stepUp
+     *
+     * Increases the value of the slider by `step`. Does nothing if the slider
+     * is alredy at its maximum value.
+     *
+     * The optional argument is an integer which indicates the number of steps
+     * by which to increase the value.
+     *
+     * Returns the new slider value
+     */
+    Quinn.prototype.stepUp = function (count) {
+        if (this.model.values.length > 1) {
+            // Cannot step a range-based slider.
+            return this.model.value;
+        }
+
+        return this.setValue(
+            this.model.value + this.options.step * (count || 1));
+    };
+
+    /**
+     * ### stepDown
+     *
+     * Decreases the value of the slider by `step`. Does nothing if the slider
+     * is alredy at its minimum value.
+     *
+     * The optional argument is an integer which indicates the number of steps
+     * by which to decrease the value.
+     *
+     * Returns the new slider value
+     */
+    Quinn.prototype.stepDown = function (count) {
+        return this.stepUp(-(count || 1));
+    };
+
+    /**
      * ### willChange
      *
      * Tells the Quinn instance that the user is about to make a change to the

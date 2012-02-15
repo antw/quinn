@@ -1,294 +1,275 @@
 QUnit.specify('', function () {
     var wrapper = $('#slider'), slider;
 
-    // describe('stepUp', function () {
-        // var wrapper = $('#slider'), slider, onChangeRun, onCommitRun;
+    describe('stepUp', function () {
+        var wrapper = $('#slider'), slider, onDragRun, onChangeRun;
 
-        // after(function () {
-            // wrapper.html('');
-        // });
+        after(function () {
+            wrapper.html('');
+        });
 
-        // describe('When step: 1', function () {
-            // before(function () {
-                // onChangeRun = false;
-                // onCommitRun = false;
+        describe('When step: 1', function () {
+            before(function () {
+                onDragRun   = false;
+                onChangeRun = false;
 
-                // slider = new $.Quinn(wrapper, {
-                    // onChange: function () { onChangeRun = true },
-                    // onCommit: function () { onCommitRun = true },
-                // });
-            // });
+                slider = new $.Quinn(wrapper, {
+                    onDrag:   function () { onDragRun   = true },
+                    onChange: function () { onChangeRun = true },
+                });
+            });
 
-            // it('should increment the slider value by 1', function () {
-                // assert(slider.stepUp()).equals(1);
-                // assert(slider.value).equals(1);
-            // });
+            it('should increment the slider value by 1', function () {
+                assert(slider.stepUp()).equals(1);
+                assert(slider.model.value).equals(1);
+            });
 
-            // it('should increment by multiples of the step', function () {
-                // assert(slider.stepUp(2)).equals(2);
-                // assert(slider.value).equals(2);
-            // });
+            it('should increment by multiples of the step', function () {
+                assert(slider.stepUp(2)).equals(2);
+                assert(slider.model.value).equals(2);
+            });
 
-            // it('should add the old value to previousValues', function () {
-                // slider.stepUp();
-                // assert(slider.previousValues).isSameAs([0]);
-            // });
+            it('should run onDrag', function () {
+                slider.stepUp();
+                assert(onDragRun).isTrue();
+            });
 
-            // it('should run onChange', function () {
-                // slider.stepUp();
-                // assert(onChangeRun).isTrue();
-            // });
+            it('should run onChange', function () {
+                slider.stepUp();
+                assert(onChangeRun).isTrue();
+            });
+        });
 
-            // it('should run onCommit', function () {
-                // slider.stepUp();
-                // assert(onCommitRun).isTrue();
-            // });
-        // });
+        describe('When step: 10', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { step: 10 });
+            });
 
-        // describe('When step: 10', function () {
-            // before(function () {
-                // slider = new $.Quinn(wrapper, { step: 10 });
-            // });
+            it('should increment the slider value by 10', function () {
+                assert(slider.stepUp()).equals(10);
+                assert(slider.model.value).equals(10);
+            });
 
-            // it('should increment the slider value by 10', function () {
-                // assert(slider.stepUp()).equals(10);
-                // assert(slider.value).equals(10);
-            // });
+            it('should increment by multiples of the step', function () {
+                assert(slider.stepUp(2)).equals(20);
+                assert(slider.model.value).equals(20);
+            });
+        });
 
-            // it('should increment by multiples of the step', function () {
-                // assert(slider.stepUp(2)).equals(20);
-                // assert(slider.value).equals(20);
-            // });
-        // });
+        describe('When already at maximum value', function () {
+            before(function () {
+                onDragRun   = false;
+                onChangeRun = false;
 
-        // describe('When already at maximum value', function () {
-            // before(function () {
-                // onChangeRun = false;
-                // onCommitRun = false;
+                slider = new $.Quinn(wrapper, { value: 100 });
+            });
 
-                // slider = new $.Quinn(wrapper, { value: 100 });
-            // });
+            it('should not change the slider value', function () {
+                assert(slider.stepUp()).equals(100);
+                assert(slider.model.value).equals(100);
+            });
 
-            // it('should not change the slider value', function () {
-                // assert(slider.stepUp()).equals(100);
-                // assert(slider.value).equals(100);
-            // });
+            it('should not run onDrag', function () {
+                slider.stepUp();
+                assert(onDragRun).isFalse();
+            });
 
-            // it('should not run onChange', function () {
-                // slider.stepUp();
-                // assert(onChangeRun).isFalse();
-            // });
+            it('should not run onChange', function () {
+                slider.stepUp();
+                assert(onChangeRun).isFalse();
+            });
+        });
 
-            // it('should not run onCommit', function () {
-                // slider.stepUp();
-                // assert(onCommitRun).isFalse();
-            // });
-        // });
+        describe('When nearly at maximum value', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { value: 99 });
+            });
 
-        // describe('When nearly at maximum value', function () {
-            // before(function () {
-                // slider = new $.Quinn(wrapper, { value: 99 });
-            // });
+            it('should not change the slider value', function () {
+                assert(slider.stepUp(2)).equals(100);
+                assert(slider.model.value).equals(100);
+            });
+        });
 
-            // it('should not change the slider value', function () {
-                // assert(slider.stepUp(2)).equals(100);
-                // assert(slider.value).equals(100);
-            // });
-        // });
+        describe('when the slider is disabled', function () {
+            before(function () {
+                onDragRun   = false;
+                onChangeRun = false;
 
-        // describe('when the slider is disabled', function () {
-            // before(function () {
-                // onChangeRun = false;
-                // onCommitRun = false;
+                slider = new $.Quinn(wrapper, { disable: true });
+            });
 
-                // slider = new $.Quinn(wrapper, { disable: true });
-            // });
+            it('should not change the slider value', function () {
+                assert(slider.stepUp()).equals(0);
+                assert(slider.model.value).equals(0);
+            });
 
-            // it('should not change the slider value', function () {
-                // assert(slider.stepUp()).equals(0);
-                // assert(slider.value).equals(0);
-            // });
+            it('should not run onDrag', function () {
+                slider.stepUp();
+                assert(onDragRun).isFalse();
+            });
 
-            // it('should not change previousValues', function () {
-                // slider.stepUp();
-                // assert(slider.previousValues.length).equals(0);
-            // });
+            it('should not run onChange', function () {
+                slider.stepUp();
+                assert(onChangeRun).isFalse();
+            });
+        });
 
-            // it('should not run onChange', function () {
-                // slider.stepUp();
-                // assert(onChangeRun).isFalse();
-            // });
+        describe('when using a range-based slider', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { value: [25, 75] });
+            });
 
-            // it('should not run onCommit', function () {
-                // slider.stepUp();
-                // assert(onCommitRun).isFalse();
-            // });
-        // });
+            it('should return the original value', function () {
+                var originalValue = _.clone(slider.model.value),
+                    equality = _.isEqual(slider.stepUp(), originalValue);
 
-        // describe('when using a range-based slider', function () {
-            // before(function () {
-                // slider = new $.Quinn(wrapper, { value: [25, 75] });
-            // });
+                assert(equality).isTrue();
+            });
 
-            // it('should return the original value', function () {
-                // var originalValue = _.clone(slider.value),
-                    // equality = _.isEqual(slider.stepUp(), originalValue);
+            it('should not change the value', function () {
+                var originalValue = _.clone(slider.model.value);
 
-                // assert(equality).isTrue();
-            // });
+                slider.stepUp()
+                assert(_.isEqual(slider.model.value, originalValue)).isTrue();
+            });
+        });
+    });
 
-            // it('should not change the value', function () {
-                // var originalValue = _.clone(slider.value);
+    describe('stepDown', function () {
+        var wrapper = $('#slider'), slider, onDragRun, onChangeRun;
 
-                // slider.stepUp()
-                // assert(_.isEqual(slider.value, originalValue)).isTrue();
-            // });
-        // });
-    // });
+        after(function () {
+            wrapper.html('');
+        });
 
-    // describe('stepDown', function () {
-        // var wrapper = $('#slider'), slider, onChangeRun, onCommitRun;
+        describe('When step: 1', function () {
+            before(function () {
+                onDragRun   = false;
+                onChangeRun = false;
 
-        // after(function () {
-            // wrapper.html('');
-        // });
+                slider = new $.Quinn(wrapper, {
+                    value:    100,
+                    onDrag:   function () { onDragRun   = true },
+                    onChange: function () { onChangeRun = true },
+                });
+            });
 
-        // describe('When step: 1', function () {
-            // before(function () {
-                // onChangeRun = false;
-                // onCommitRun = false;
+            it('should decrement the slider value by 1', function () {
+                assert(slider.stepDown()).equals(99);
+                assert(slider.model.value).equals(99);
+            });
 
-                // slider = new $.Quinn(wrapper, {
-                    // value:      100,
-                    // onChange: function () { onChangeRun = true },
-                    // onCommit: function () { onCommitRun = true },
-                // });
-            // });
+            it('should increment by multiples of the step', function () {
+                assert(slider.stepDown(2)).equals(98);
+                assert(slider.model.value).equals(98);
+            });
 
-            // it('should decrement the slider value by 1', function () {
-                // assert(slider.stepDown()).equals(99);
-                // assert(slider.value).equals(99);
-            // });
+            it('should run onDrag', function () {
+                slider.stepDown();
+                assert(onDragRun).isTrue();
+            });
 
-            // it('should increment by multiples of the step', function () {
-                // assert(slider.stepDown(2)).equals(98);
-                // assert(slider.value).equals(98);
-            // });
+            it('should run onChange', function () {
+                slider.stepDown();
+                assert(onChangeRun).isTrue();
+            });
+        });
 
-            // it('should add the old value to previousValues', function () {
-                // slider.stepDown();
-                // assert(slider.previousValues).isSameAs([100]);
-            // });
+        describe('When step: 10', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { value: 100, step: 10 });
+            });
 
-            // it('should run onChange', function () {
-                // slider.stepDown();
-                // assert(onChangeRun).isTrue();
-            // });
+            it('should increment the slider value by 10', function () {
+                assert(slider.stepDown()).equals(90);
+                assert(slider.model.value).equals(90);
+            });
 
-            // it('should run onCommit', function () {
-                // slider.stepDown();
-                // assert(onCommitRun).isTrue();
-            // });
-        // });
+            it('should increment by multiples of the step', function () {
+                assert(slider.stepDown(2)).equals(80);
+                assert(slider.model.value).equals(80);
+            });
+        });
 
-        // describe('When step: 10', function () {
-            // before(function () {
-                // slider = new $.Quinn(wrapper, { value: 100, step: 10 });
-            // });
+        describe('When already at minumum value', function () {
+            before(function () {
+                onDragRun   = false;
+                onChangeRun = false;
 
-            // it('should increment the slider value by 10', function () {
-                // assert(slider.stepDown()).equals(90);
-                // assert(slider.value).equals(90);
-            // });
+                slider = new $.Quinn(wrapper);
+            });
 
-            // it('should increment by multiples of the step', function () {
-                // assert(slider.stepDown(2)).equals(80);
-                // assert(slider.value).equals(80);
-            // });
-        // });
+            it('should not change the slider value', function () {
+                assert(slider.stepDown()).equals(0);
+                assert(slider.model.value).equals(0);
+            });
 
-        // describe('When already at minumum value', function () {
-            // before(function () {
-                // onChangeRun = false;
-                // onCommitRun = false;
+            it('should not run onDrag', function () {
+                slider.stepDown();
+                assert(onDragRun).isFalse();
+            });
 
-                // slider = new $.Quinn(wrapper);
-            // });
+            it('should not run onChange', function () {
+                slider.stepDown();
+                assert(onChangeRun).isFalse();
+            });
+        });
 
-            // it('should not change the slider value', function () {
-                // assert(slider.stepDown()).equals(0);
-                // assert(slider.value).equals(0);
-            // });
+        describe('When nearly at minimum value', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { value: 1 });
+            });
 
-            // it('should not run onChange', function () {
-                // slider.stepDown();
-                // assert(onChangeRun).isFalse();
-            // });
+            it('should not change the slider value', function () {
+                assert(slider.stepDown(2)).equals(0);
+                assert(slider.model.value).equals(0);
+            });
+        });
 
-            // it('should not run onCommit', function () {
-                // slider.stepDown();
-                // assert(onCommitRun).isFalse();
-            // });
-        // });
+        describe('when the slider is disabled', function () {
+            before(function () {
+                onDragRun   = false;
+                onChangeRun = false;
 
-        // describe('When nearly at minimum value', function () {
-            // before(function () {
-                // slider = new $.Quinn(wrapper, { value: 1 });
-            // });
+                slider = new $.Quinn(wrapper, { value: 100, disable: true });
+            });
 
-            // it('should not change the slider value', function () {
-                // assert(slider.stepDown(2)).equals(0);
-                // assert(slider.value).equals(0);
-            // });
-        // });
+            it('should not change the slider value', function () {
+                assert(slider.stepDown()).equals(100);
+                assert(slider.model.value).equals(100);
+            });
 
-        // describe('when the slider is disabled', function () {
-            // before(function () {
-                // onChangeRun = false;
-                // onCommitRun = false;
+            it('should not run onDrag', function () {
+                slider.stepDown();
+                assert(onDragRun).isFalse();
+            });
 
-                // slider = new $.Quinn(wrapper, { value: 100, disable: true });
-            // });
+            it('should not run onChange', function () {
+                slider.stepDown();
+                assert(onChangeRun).isFalse();
+            });
+        });
 
-            // it('should not change the slider value', function () {
-                // assert(slider.stepDown()).equals(100);
-                // assert(slider.value).equals(100);
-            // });
+        describe('when using a range-based slider', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { value: [25, 75] });
+            });
 
-            // it('should not change previousValues', function () {
-                // assert(slider.previousValues.length).equals(0);
-            // });
+            it('should return the original value', function () {
+                var originalValue = _.clone(slider.model.value),
+                    equality = _.isEqual(slider.stepDown(), originalValue);
 
-            // it('should not run onChange', function () {
-                // slider.stepDown();
-                // assert(onChangeRun).isFalse();
-            // });
+                assert(equality).isTrue();
+            });
 
-            // it('should not run onCommit', function () {
-                // slider.stepDown();
-                // assert(onCommitRun).isFalse();
-            // });
-        // });
+            it('should not change the value', function () {
+                var originalValue = _.clone(slider.model.value);
 
-        // describe('when using a range-based slider', function () {
-            // before(function () {
-                // slider = new $.Quinn(wrapper, { value: [25, 75] });
-            // });
-
-            // it('should return the original value', function () {
-                // var originalValue = _.clone(slider.value),
-                    // equality = _.isEqual(slider.stepDown(), originalValue);
-
-                // assert(equality).isTrue();
-            // });
-
-            // it('should not change the value', function () {
-                // var originalValue = _.clone(slider.value);
-
-                // slider.stepDown()
-                // assert(_.isEqual(slider.value, originalValue)).isTrue();
-            // });
-        // });
-    // });
+                slider.stepDown()
+                assert(_.isEqual(slider.model.value, originalValue)).isTrue();
+            });
+        });
+    });
 
 });
