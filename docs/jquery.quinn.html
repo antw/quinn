@@ -42,7 +42,6 @@
         <span class="nx">IS_TOUCH_ENABLED</span> <span class="o">=</span>  <span class="kc">false</span><span class="p">;</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="s1">&#39;ontouchstart&#39;</span> <span class="k">in</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nb">document</span><span class="p">.</span><span class="nx">createEvent</span><span class="p">(</span><span class="s2">&quot;TouchEvent&quot;</span><span class="p">);</span>
         <span class="nx">DRAG_E</span>           <span class="o">=</span> <span class="s1">&#39;touchmove&#39;</span><span class="p">;</span>
         <span class="nx">DRAG_START_E</span>     <span class="o">=</span> <span class="s1">&#39;touchstart&#39;</span><span class="p">;</span>
         <span class="nx">DRAG_END_E</span>       <span class="o">=</span> <span class="s1">&#39;touchend&#39;</span><span class="p">;</span>
@@ -82,11 +81,11 @@ width, padding etc.</p>
         <span class="k">this</span><span class="p">.</span><span class="nx">leftExtent</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">range</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">rightExtent</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">range</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;setup&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onSetup</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;begin&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onBegin</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;drag&#39;</span><span class="p">,</span>   <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onDrag</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onChange</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;abort&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onAbort</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;setup&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onSetup</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;begin&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onBegin</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;drag&#39;</span><span class="p">,</span>   <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onDrag</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onChange</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;abort&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">onAbort</span><span class="p">);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">renderer</span><span class="p">.</span><span class="nx">render</span><span class="p">();</span>
@@ -120,18 +119,18 @@ width, padding etc.</p>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-bind'>
+    <tr id='section-on'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-bind">&#182;</a>
+          <a class="pilcrow" href="#section-on">&#182;</a>
         </div>
-        <h3>bind</h3>
+        <h3>on</h3>
 
 <p>Binds a <code>callback</code> to be run whenever the given <code>event</code> occurs. Returns
 the Quinn instance permitting chaining.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">bind</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">on</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isString</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">callback</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">[</span><span class="nx">event</span><span class="p">])</span> <span class="p">{</span>
                 <span class="k">this</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">[</span><span class="nx">event</span><span class="p">]</span> <span class="o">=</span> <span class="p">[];</span>
@@ -1060,7 +1059,7 @@ the model if the developer specified different <code>range</code> and
 
         <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-        <span class="nx">quinn</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;redraw&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">redraw</span><span class="p">);</span></pre></div>
+        <span class="nx">quinn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;redraw&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">redraw</span><span class="p">);</span></pre></div>
       </td>
     </tr>
     <tr id='section-48'>
@@ -1068,16 +1067,16 @@ the model if the developer specified different <code>range</code> and
         <div class="pilwrap">
           <a class="pilcrow" href="#section-48">&#182;</a>
         </div>
-        <p>quinn.bind(&lsquo;change&rsquo;, this.redraw);
-quinn.bind(&lsquo;enabled&rsquo;,  this.enable);
-quinn.bind(&lsquo;disabled&rsquo;, this.disable);</p>
+        <p>quinn.on(&lsquo;change&rsquo;, this.redraw);
+quinn.on(&lsquo;enabled&rsquo;,  this.enable);
+quinn.on(&lsquo;disabled&rsquo;, this.disable);</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="nx">quinn</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;handleOn&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">handleIndex</span><span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="nx">quinn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;handleOn&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">handleIndex</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="nx">handleIndex</span><span class="p">].</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span>
         <span class="p">},</span> <span class="k">this</span><span class="p">));</span>
 
-        <span class="nx">quinn</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;handleOff&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">handleIndex</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">quinn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;handleOff&#39;</span><span class="p">,</span> <span class="nx">_</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">handleIndex</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="nx">handleIndex</span><span class="p">].</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span>
         <span class="p">},</span> <span class="k">this</span><span class="p">));</span>
     <span class="p">}</span></pre></div>
@@ -1482,7 +1481,7 @@ it as a number (in pixels).</p>
           <a class="pilcrow" href="#section-71">&#182;</a>
         </div>
         <p>A callback which is run when changing the slider value. Additional
-callbacks may be added with Quinn::bind(&lsquo;drag&rsquo;).</p>
+callbacks may be added with Quinn::on(&lsquo;drag&rsquo;).</p>
 
 <p>Arguments:
   number: the altered slider value

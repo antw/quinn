@@ -370,6 +370,9 @@ History
 * Two new events have been added: `enabled` and `disabled`, triggered when the
   slider is enabled and disabled.
 
+* Matching the change in jQuery and Backbone, the `bind` method has been
+  renamed to `on`.
+
 #### 0.4.2 _February 10th, 2012_
 
 Changed the way touch-support was detected to fix clicking on the handle

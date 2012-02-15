@@ -43,11 +43,11 @@
         this.leftExtent    = this.options.range[0];
         this.rightExtent   = this.options.range[1];
 
-        this.bind('setup',  this.options.onSetup);
-        this.bind('begin',  this.options.onBegin);
-        this.bind('drag',   this.options.onDrag);
-        this.bind('change', this.options.onChange);
-        this.bind('abort',  this.options.onAbort);
+        this.on('setup',  this.options.onSetup);
+        this.on('begin',  this.options.onBegin);
+        this.on('drag',   this.options.onDrag);
+        this.on('change', this.options.onChange);
+        this.on('abort',  this.options.onAbort);
 
         if (_.isFunction(this.renderer.render)) {
             this.renderer.render();
@@ -64,12 +64,12 @@
     // ### Event Handling
 
     /**
-     * ### bind
+     * ### on
      *
      * Binds a `callback` to be run whenever the given `event` occurs. Returns
      * the Quinn instance permitting chaining.
      */
-    Quinn.prototype.bind = function (event, callback) {
+    Quinn.prototype.on = function (event, callback) {
         if (_.isString(event) && _.isFunction(callback)) {
             if (! this.callbacks[event]) {
                 this.callbacks[event] = [];
@@ -695,17 +695,17 @@
 
         this.activeHandle = null;
 
-        quinn.bind('redraw', this.redraw);
+        quinn.on('redraw', this.redraw);
 
-        // quinn.bind('change', this.redraw);
-        // quinn.bind('enabled',  this.enable);
-        // quinn.bind('disabled', this.disable);
+        // quinn.on('change', this.redraw);
+        // quinn.on('enabled',  this.enable);
+        // quinn.on('disabled', this.disable);
 
-        quinn.bind('handleOn', _.bind(function (handleIndex) {
+        quinn.on('handleOn', _.bind(function (handleIndex) {
             this.handles[handleIndex].addClass('active');
         }, this));
 
-        quinn.bind('handleOff', _.bind(function (handleIndex) {
+        quinn.on('handleOff', _.bind(function (handleIndex) {
             this.handles[handleIndex].removeClass('active');
         }, this));
     }
@@ -933,7 +933,7 @@
         handleWidth: null,
 
         // A callback which is run when changing the slider value. Additional
-        // callbacks may be added with Quinn::bind('drag').
+        // callbacks may be added with Quinn::on('drag').
         //
         // Arguments:
         //   number: the altered slider value
