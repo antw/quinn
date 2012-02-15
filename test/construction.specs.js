@@ -13,31 +13,27 @@ QUnit.specify('', function () {
             });
 
             it('should set the  value to 0', function () {
-                assert(slider.value).equals(0);
+                assert(slider.model.value).equals(0);
             });
 
             it('should set the lower range value to 0', function () {
-                assert(slider.range[0]).equals(0);
+                assert(slider.leftExtent).equals(0);
             });
 
             it('should set the upper range value to 100', function () {
-                assert(slider.range[1]).equals(100);
+                assert(slider.rightExtent).equals(100);
             });
 
             it('should set the lower selectable value to 0', function () {
-                assert(slider.selectable[0]).equals(0);
+                assert(slider.model.minimum).equals(0);
             });
 
             it('should set the upper selectable value to 100', function () {
-                assert(slider.selectable[1]).equals(100);
+                assert(slider.model.maximum).equals(100);
             });
 
             it('should not be disabled', function () {
-                assert(slider.isDisabled).isFalse();
-            });
-
-            it('should bind the instance to the DOMElement', function () {
-                assert($('#slider').data('quinn')).equals(slider);
+                assert(slider.disabled).isFalse();
             });
         }); // With default settings
 
@@ -47,23 +43,23 @@ QUnit.specify('', function () {
             });
 
             it('should set the value to 20', function () {
-                assert(slider.value).equals(20);
+                assert(slider.model.value).equals(20);
             });
 
             it('should set the lower range value to 20', function () {
-                assert(slider.range[0]).equals(20);
+                assert(slider.leftExtent).equals(20);
             });
 
             it('should set the upper range value to 40', function () {
-                assert(slider.range[1]).equals(40);
+                assert(slider.rightExtent).equals(40);
             });
 
             it('should set the lower selectable value to 20', function () {
-                assert(slider.selectable[0]).equals(20);
+                assert(slider.model.minimum).equals(20);
             });
 
             it('should set the upper selectable value to 40', function () {
-                assert(slider.selectable[1]).equals(40);
+                assert(slider.model.maximum).equals(40);
             });
         }); // With range: [20, 40]
 
@@ -73,23 +69,23 @@ QUnit.specify('', function () {
             });
 
             it('should set the value to 20', function () {
-                assert(slider.value).equals(20);
+                assert(slider.model.value).equals(20);
             });
 
             it('should set the lower range value to 0', function () {
-                assert(slider.range[0]).equals(0);
+                assert(slider.leftExtent).equals(0);
             });
 
             it('should set the upper range value to 100', function () {
-                assert(slider.range[1]).equals(100);
+                assert(slider.rightExtent).equals(100);
             });
 
             it('should set the lower selectable value to 20', function () {
-                assert(slider.selectable[0]).equals(20);
+                assert(slider.model.minimum).equals(20);
             });
 
             it('should set the upper selectable value to 40', function () {
-                assert(slider.selectable[1]).equals(40);
+                assert(slider.model.maximum).equals(40);
             });
         }); // With selectable: [20, 40]
 
@@ -99,24 +95,24 @@ QUnit.specify('', function () {
             });
 
             it('should set the value to 0', function () {
-                assert(slider.value).equals(0);
+                assert(slider.model.value).equals(0);
             });
 
             it('should set the lower range value to 0', function () {
-                assert(slider.range[0]).equals(0);
+                assert(slider.leftExtent).equals(0);
             });
 
             it('should set the upper range value to 100', function () {
-                assert(slider.range[1]).equals(100);
+                assert(slider.rightExtent).equals(100);
             });
 
             it('should set the lower selectable value to 0', function () {
-                assert(slider.selectable[0]).equals(0);
+                assert(slider.model.minimum).equals(0);
             });
 
             it('should set the upper selectable value to 90', function () {
                 // 100 isn't divisible by the step.
-                assert(slider.selectable[1]).equals(90);
+                assert(slider.model.maximum).equals(90);
             });
         }); // With selectable: [20, 40]
 
@@ -126,7 +122,7 @@ QUnit.specify('', function () {
             });
 
             it('should set the value to 50', function () {
-                assert(slider.value).equals(50);
+                assert(slider.model.value).equals(50);
             });
         }); // With value: 50
 
@@ -136,7 +132,7 @@ QUnit.specify('', function () {
             });
 
             it('should set the value to 0', function () {
-                assert(slider.value).equals(0);
+                assert(slider.model.value).equals(0);
             });
         }); // With value: -1
 
@@ -146,7 +142,7 @@ QUnit.specify('', function () {
             });
 
             it('should set the value to 100', function () {
-                assert(slider.value).equals(100);
+                assert(slider.model.value).equals(100);
             });
         }); // With value: 500
 
@@ -156,7 +152,7 @@ QUnit.specify('', function () {
             });
 
             it('should disable the slider', function () {
-                assert(slider.isDisabled).isTrue();
+                assert(slider.disabled).isTrue();
             });
         }); // With disable: true
 
