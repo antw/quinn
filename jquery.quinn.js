@@ -765,7 +765,7 @@
         // update the slider.
         this.wrapper.on('mousedown', this.quinn.clickBar);
 
-        this.redraw({ animate: false });
+        this.redraw(false);
     };
 
     /**
