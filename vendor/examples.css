@@ -264,7 +264,19 @@ h4 + p, h4 + ul {
 }
 
 h4 + ul li {
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+}
+
+h4 + ul li p, h4 + ul li pre {
+    margin: 10px 0;
+}
+
+h4 + ul li pre {
+    margin-bottom: 14px;
+}
+
+h4 + ul li pre code {
+    font-size: 13px;
 }
 
 h4 + p a {

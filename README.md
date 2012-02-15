@@ -345,11 +345,30 @@ History
 
 #### Git HEAD
 
+* Quinn has been heavily refactored. Instead of a single class trying to do
+  everything there now exists a `Model` on which values are set, and is
+  responsible for ensuring the the values set are valid. A `Renderer` has
+  been added which is solely responsible for creating the visual
+  representation of the slider. The default Renderer creates the same HTML
+  as before, but supplying your own renderer allows you to create completely
+  custom sliders (you could even write a `CanvasRenderer` if you so desired).
+
 * `onChange` is now `onDrag`, and `onCommit` is now `onChange`.
+
 * Quinn's styling rules [have been changed][style-change]. If you use the
   default Quinn theme with no changes you should be able to simple drop the
   new Stylesheet into your assets or public directory. If you customise the
   theme see the [above referenced commit][style-change] for more information.
+
+* The Quinn instance is no longer attached to the DOM node using
+  `jQuery.fn.data`. If you need to keep hold of the instance (for example, to
+  alter the value elsewhere) you should use the constructor manually:
+
+      new $.Quinn($('element'), options);
+  {:class="no-example"}
+
+* Two new events have been added: `enabled` and `disabled`, triggered when the
+  slider is enabled and disabled.
 
 #### 0.4.2 _February 10th, 2012_
 

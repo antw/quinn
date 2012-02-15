@@ -42,7 +42,7 @@
                 text = '???';
             }
 
-            if (slider.range[1] === 1.21) {
+            if (slider.model.maximum === 1.21) {
                 text += ' GW';
             }
 

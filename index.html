@@ -373,11 +373,36 @@ $('.slider').quinn({
 <h4 id="git-head">Git HEAD</h4>
 
 <ul>
-  <li><code>onChange</code> is now <code>onDrag</code>, and <code>onCommit</code> is now <code>onChange</code>.</li>
-  <li>Quinn’s styling rules <a href="https://github.com/antw/quinn/commit/ea29f2f">have been changed</a>. If you use the
+  <li>
+    <p>Quinn has been heavily refactored. Instead of a single class trying to do
+everything there now exists a <code>Model</code> on which values are set, and is
+responsible for ensuring the the values set are valid. A <code>Renderer</code> has
+been added which is solely responsible for creating the visual
+representation of the slider. The default Renderer creates the same HTML
+as before, but supplying your own renderer allows you to create completely
+custom sliders (you could even write a <code>CanvasRenderer</code> if you so desired).</p>
+  </li>
+  <li>
+    <p><code>onChange</code> is now <code>onDrag</code>, and <code>onCommit</code> is now <code>onChange</code>.</p>
+  </li>
+  <li>
+    <p>Quinn’s styling rules <a href="https://github.com/antw/quinn/commit/ea29f2f">have been changed</a>. If you use the
 default Quinn theme with no changes you should be able to simple drop the
 new Stylesheet into your assets or public directory. If you customise the
-theme see the <a href="https://github.com/antw/quinn/commit/ea29f2f">above referenced commit</a> for more information.</li>
+theme see the <a href="https://github.com/antw/quinn/commit/ea29f2f">above referenced commit</a> for more information.</p>
+  </li>
+  <li>
+    <p>The Quinn instance is no longer attached to the DOM node using
+<code>jQuery.fn.data</code>. If you need to keep hold of the instance (for example, to
+alter the value elsewhere) you should use the constructor manually:</p>
+
+    <pre class="no-example"><code>new $.Quinn($('element'), options);
+</code></pre>
+  </li>
+  <li>
+    <p>Two new events have been added: <code>enabled</code> and <code>disabled</code>, triggered when the
+slider is enabled and disabled.</p>
+  </li>
 </ul>
 
 <h4 id="february-10th-2012">0.4.2 <em>February 10th, 2012</em></h4>

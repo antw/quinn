@@ -1,6 +1,7 @@
 // vim: set sw=4 ts=4 et:
 
 (function ($, _) {
+    "use strict";
 
     // Event names used for setting up drag events.
     var DRAG_E           = 'mousemove',
@@ -27,78 +28,21 @@
      * width, padding etc.
      */
     function Quinn (wrapper, options) {
-        var selectMin, selectMax, length, i;
+        _.bindAll(this, 'clickBar', 'startDrag', 'drag', 'endDrag');
 
-        _.bindAll(this, 'clickBar', 'enableDrag', 'disableDrag', 'drag');
+        this.wrapper       = wrapper;
+        this.options       = _.extend({}, Quinn.defaults, options);
+        this.callbacks     = {};
 
-        this.wrapper      = wrapper;
-        this.options      = _.extend({}, Quinn.defaults, options);
-        this.isDisabled   = false;
-        this.isRange      = false;
-        this.activeHandle = null;
-        this.handles      = [];
+        this.disabled      = false;
+        this.activeHandle  = null;
+        this.previousValue = null;
 
-        this.previousValues = [];
+        this.model         = new Model(this);
+        this.renderer      = new this.options.renderer(this);
 
-        this.callbacks = {
-            setup:  [],
-            begin:  [],
-            drag:   [],
-            change: [],
-            abort:  []
-        };
-
-        if (_.isArray(this.options.value)) {
-            this.isRange = true;
-        }
-
-        // For convenience.
-        this.range      = this.options.range.slice();
-        this.selectable = this.options.selectable || this.range;
-
-        // The "selectable" values need to be fixed so that they match up with
-        // the "step" option. For example, if given a step of 2, the values
-        // need to be adjusted so that odd values are not possible...
-
-        selectMin = this.__roundToStep(this.selectable[0]);
-        selectMax = this.__roundToStep(this.selectable[1]);
-
-        if (selectMin < this.selectable[0]) {
-            selectMin += this.options.step;
-        }
-
-        if (selectMax > this.selectable[1]) {
-            selectMax -= this.options.step;
-        }
-
-        this.selectable = [ selectMin, selectMax ];
-
-        // Attaches the instance to the DOM node so that it can be accessed
-        // by developers later.
-        this.wrapper.data('quinn', this);
-
-        // Create the handles.
-        if (this.isRange) {
-            this.wrapper.addClass('range');
-
-            for (i = 0, length = this.options.value.length; i < length; i++) {
-                this.handles.push(createHandle(i, this.options.value[i]));
-            }
-        } else {
-            this.handles.push(createHandle(0, this.options.value));
-        }
-
-        // Create the slider DOM elements, and set the initial value.
-        this.renderer = new this.options.renderer(this, this.options);
-
-        this.sendRenderer('render');
-        this.bar = $('.bar', this.wrapper);
-
-        this.__setValue(this.options.value, false, false);
-
-        if (this.options.disable === true) {
-            this.disable();
-        }
+        this.leftExtent    = this.options.range[0];
+        this.rightExtent   = this.options.range[1];
 
         this.bind('setup',  this.options.onSetup);
         this.bind('begin',  this.options.onBegin);
@@ -106,127 +50,19 @@
         this.bind('change', this.options.onChange);
         this.bind('abort',  this.options.onAbort);
 
-        // Fire the onSetup callback.
-        this.trigger('setup');
+        if (_.isFunction(this.renderer.render)) {
+            this.renderer.render();
+        }
 
-        return this;
+        if (this.options.disable === true) {
+            this.disable();
+        }
+
+        // Finish off by triggering the setup callback.
+        this.trigger('setup', this.model.value);
     }
 
-    // The current Quinn version.
-    Quinn.VERSION = '0.4.2';
-
-    // ## Rendering
-
-    /**
-     * If a renderer is set, runs the member function using the given
-     * arguments.
-     *
-     * For example:
-     *
-     *   this.sendRenderer('redraw', 42, 1337);
-     *
-     * Runs the "redraw" method on this.renderer, passing two arguments.
-     */
-    Quinn.prototype.sendRenderer = function () {
-        var given = Array.prototype.slice.call(arguments, 0),
-            meth  = this.renderer && this.renderer[ given[0] ],
-            args  = given.slice(1);
-
-        if (_.isFunction(meth)) {
-            return meth.apply(this.renderer, args);
-        }
-    };
-
-    // ## Slider Manipulation
-
-    /**
-     * ### setValue
-     *
-     * Updates the value of the slider to `newValue`. If the `animate`
-     * argument is truthy, the change in value will be animated when updating
-     * the slider position. The onDrag callback may be skipped if `doCallback`
-     * is falsey.
-     *
-     * This is the public version of __setValue which is a public API method;
-     * use this in your application code when you need to change the slider
-     * value.
-     */
-    Quinn.prototype.setValue = function (newValue, animate, doCallback) {
-        if (this.__willChange()) {
-            if (this.__setValue(newValue, animate, doCallback)) {
-                this.__hasChanged();
-            } else {
-                this.__abortChange();
-            }
-        }
-
-        return this.value;
-    };
-
-    /**
-     * ### stepUp
-     *
-     * Increases the value of the slider by `step`. Does nothing if the slider
-     * is alredy at its maximum value.
-     *
-     * The optional argument is an integer which indicates the number of steps
-     * by which to increase the value.
-     *
-     * Returns the new slider value
-     */
-    Quinn.prototype.stepUp = function (count) {
-        if (this.isRange) {
-            // Cannot step a range-based slider.
-            return this.value;
-        }
-
-        return this.setValue(this.value + this.options.step * (count || 1));
-    };
-
-    /**
-     * ### stepDown
-     *
-     * Decreases the value of the slider by `step`. Does nothing if the slider
-     * is alredy at its minimum value.
-     *
-     * The optional argument is an integer which indicates the number of steps
-     * by which to decrease the value.
-     *
-     * Returns the new slider value
-     */
-    Quinn.prototype.stepDown = function (count) {
-        return this.stepUp(-(count || 1));
-    };
-
-    /**
-     * ### disable
-     *
-     * Disables the slider so that a user may not change it's value.
-     */
-    Quinn.prototype.disable = function () {
-        this.isDisabled = true;
-        this.wrapper.addClass('disabled');
-
-        if (this.options.disabledOpacity !== 1.0) {
-            this.wrapper.css('opacity', this.options.disabledOpacity);
-        }
-    };
-
-    /**
-     * ### enable
-     *
-     * Enables the slider so that a user may change it's value.
-     */
-    Quinn.prototype.enable = function () {
-        this.isDisabled = false;
-        this.wrapper.removeClass('disabled');
-
-        if (this.options.disabledOpacity !== 1.0) {
-            this.wrapper.css('opacity', 1.0);
-        }
-    };
-
-    // ## Event Handlers
+    // ### Event Handling
 
     /**
      * ### bind
@@ -236,9 +72,8 @@
      */
     Quinn.prototype.bind = function (event, callback) {
         if (_.isString(event) && _.isFunction(callback)) {
-            if (event.slice(0, 2) === 'on') {
-                // In case the user gave the longer form 'onDrag', etc.
-                event = event.slice(2, event.length).toLowerCase();
+            if (! this.callbacks[event]) {
+                this.callbacks[event] = [];
             }
 
             this.callbacks[event].push(callback);
@@ -250,13 +85,13 @@
     /**
      * ### trigger
      *
-     * Runs the callbacks of the given type.
+     * Runs the callbacks of the given evengt type.
      *
      * If any of the callbacks return false, other callbacks will not be run,
      * and trigger will return false; otherwise true is returned.
      */
     Quinn.prototype.trigger = function (event, value) {
-        var callbacks = this.callbacks[event],
+        var callbacks = this.callbacks[event] || [],
             callback, i = 0;
 
         if (value === void 0) {
@@ -272,157 +107,186 @@
         return true;
     };
 
+    // ## Values, and Domain Logic
+
     /**
-     * ### clickBar
+     * ### enable
      *
-     * Event handler which is used when the user clicks part of the slider bar
-     * to instantly change the value.
+     * Enables the slider so that a user may change its value. Triggers the
+     * "enabled" event unless the instance was already enabled.
      */
-    Quinn.prototype.clickBar = function (event) {
-        // Ignore the click if the left mouse button wasn't used.
-        if (! IS_TOUCH_ENABLED && event.which !== 1) {
-            return true;
+    Quinn.prototype.enable = function () {
+        if (this.disabled) {
+            this.disabled = false;
+            this.trigger('enabled');
         }
+    };
 
-        if (this.__willChange()) {
-            this.__activateHandleWithEvent(event);
-            this.__setValue(this.__valueFromMouse(event.pageX), true);
+    /**
+     * ### disable
+     *
+     * Disables the slider so that a user may not change its value. Triggers
+     * the "disabled" event unless the instance was already disabled.
+     */
+    Quinn.prototype.disable = function () {
+        if (! this.disabled) {
+            this.disabled = true;
+            this.trigger('disabled');
+        }
+    };
 
-            // Allow user to further refine the slider value by dragging
-            // without releasing the mouse button. `disableDrag` will take
-            // care of committing the final updated value. This doesn't
-            // work nicely on touch devices, so we don't do this there.
-            if (IS_TOUCH_ENABLED) {
-                this.__hasChanged();
+    /**
+     * ### setValue
+     *
+     * Updates the value of the slider to `newValue`. If the `animate`
+     * argument is truthy, the change in value will be animated when updating
+     * the slider position. The onDrag callback may be skipped if `doCallback`
+     * is falsey.
+     */
+    Quinn.prototype.setValue = function (newValue, animate, doCallback) {
+        if (this.willChange()) {
+            if (this.setTentativeValue(newValue, doCallback)) {
+                this.hasChanged();
             } else {
-                this.enableDrag(event, true);
+                this.abortChange();
             }
         }
 
-        return event.preventDefault();
+        return this.value;
     };
 
     /**
-     * ### enableDrag
+     * ### setTentativeValue
      *
-     * Begins a drag event which permits a user to move the slider handle in
-     * order to adjust the slider value.
-     *
-     * When `skipPreamble` is true, enableDrag will not run the
-     * `__willChange()` on the assumption that it has already been run
-     * (see `clickBar`).
+     * Used internally to set the model value while ensuring that the necessary
+     * callbacks are fired.
      */
-    Quinn.prototype.enableDrag = function (event, skipPreamble) {
-        // Only enable dragging when the left mouse button is used.
-        if (! IS_TOUCH_ENABLED && event.which !== 1) {
-            return true;
+    Quinn.prototype.setTentativeValue = function (newValue, doCb) {
+        var preDragValue = this.model.value,
+            scalar, prevScalar, nextScalar;
+
+        // If the slider is a range (more than one value), but only a number
+        // was given, we need to alter the given value so that we set the
+        // other values also.
+        if (this.model.values.length > 1 && _.isNumber(newValue)) {
+            if (this.activeHandle != null) {
+                scalar   = this.model.sanitizeValue(newValue);
+                newValue = _.clone(this.model.values);
+
+                // Ensure that the handle doesn't "cross over" a higher or
+                // lower handle.
+
+                prevScalar = newValue[this.activeHandle - 1];
+                nextScalar = newValue[this.activeHandle + 1];
+
+                if (prevScalar != null && scalar <= prevScalar) {
+                    scalar = prevScalar + this.options.step;
+                }
+
+                if (nextScalar != null && scalar >= nextScalar) {
+                    scalar = nextScalar - this.options.step;
+                }
+
+                newValue[this.activeHandle] = scalar;
+            } else {
+                // Without an active handle, we don't know which value we are
+                // supposed to set.
+                return false;
+            }
         }
 
-        if (! skipPreamble && ! this.__willChange()) {
+        newValue = this.model.setValue(newValue);
+
+        if (newValue === false ||
+                (doCb !== false && ! this.trigger('drag', newValue))) {
+
+            this.model.setValue(preDragValue);
             return false;
         }
 
-        this.__activateHandleWithEvent(event);
-
-        // These events are bound for the duration of the drag operation and
-        // keep track of the value changes made, with the events being removed
-        // when the mouse button is released.
-        $(document).
-            bind(DRAG_END_E + '.quinn', this.disableDrag).
-            bind(DRAG_E     + '.quinn', this.drag).
-
-            // The mouse may leave the window while dragging, and the mouse
-            // button released. Watch for the mouse re-entering, and see what
-            // the button is doing.
-            bind('mouseenter.quinn', this.disableDrag);
-
-        return false;
+        return newValue;
     };
 
     /**
-     * ### disableDrag
+     * ### willChange
      *
-     * Run when the user lifts the mouse button after completing a drag.
+     * Tells the Quinn instance that the user is about to make a change to the
+     * slider value. The calling function should check the return value of
+     * willChange -- if false, no changes are permitted to the slider.
      */
-    Quinn.prototype.disableDrag = function (event) {
-        // Remove the events which were bound in `enableDrag`.
-        $(document).
-            unbind(DRAG_END_E + '.quinn').
-            unbind(DRAG_E + '.quinn').
-            unbind('mouseenter.quinn');
-
-        this.activeHandle.element.removeClass('active');
-        this.__hasChanged();
-
-        return event.preventDefault();
-    };
-
-    /**
-     * ### drag
-     *
-     * Bound to the mousemove event, alters the slider value while the user
-     * contiues to hold the left mouse button.
-     */
-    Quinn.prototype.drag = function (event) {
-        var pageX = event.pageX, newValue;
-
-        if (event.type === 'touchmove') {
-            pageX = event.originalEvent.targetTouches[0].pageX;
-        }
-
-        this.__setValue(this.__valueFromMouse(pageX));
-
-        return event.preventDefault();
-    };
-
-    // ## Psuedo-Private Methods
-
-    /**
-     * Given a click or drag event, determines the closest handle and
-     * activates it. Does nothing if a handle is already active.
-     */
-    Quinn.prototype.__activateHandleWithEvent = function (event) {
-        var pageX = event.pageX, value;
-
-        if (this.activeHandle) {
+    Quinn.prototype.willChange = function () {
+        if (this.disabled === true || ! this.trigger('begin')) {
             return false;
         }
 
-        if (event.type === 'touchmove') {
-            pageX = event.originalEvent.targetTouches[0].pageX;
-        }
+        this.previousValue = this.model.value;
 
-        value = this.__valueFromMouse(pageX);
-
-        this.activeHandle = _.min(this.handles, function (handle) {
-            return Math.abs(handle.value - value);
-        });
-
-        this.activeHandle.element.addClass('active');
+        return true;
     };
 
     /**
-     * ### __valueFromMouse
+     * ### hasChanged
+     *
+     * Tells the Quinn instance that the user has finished making their
+     * changes to the slider and that the new value should be retained.
+     */
+    Quinn.prototype.hasChanged = function () {
+        this.deactivateActiveHandle();
+
+        /* Run the onChange callback; if the callback returns false then we
+         * revert the slider change, and restore everything to how it was
+         * before. Note that reverting the change will also fire an onChange
+         * event when the value is reverted.
+         */
+        if (! this.trigger('change', this.model.value)) {
+            this.setTentativeValue(this.previousValue, true);
+            this.abortChange();
+
+            return false;
+        }
+
+        if (this.previousValue === this.value) {
+            // The user reset the slider back to where it was.
+            this.abortChange();
+        }
+    };
+
+    /**
+     * ### abortChange
+     *
+     * Aborts a slider change.
+     */
+    Quinn.prototype.abortChange = function () {
+        this.previousValue = null;
+        this.deactivateActiveHandle();
+
+        return this.trigger('abort');
+    };
+
+    /**
+     * ### valueFromMouse
      *
      * Determines the value of the slider at the position indicated by the
      * mouse cursor.
      */
-    Quinn.prototype.__valueFromMouse = function (mousePosition) {
-        var percent = this.__positionFromMouse(mousePosition),
-            delta   = this.range[1] - this.range[0];
+    Quinn.prototype.valueFromMouse = function (mousePosition) {
+        var percent = this.positionFromMouse(mousePosition),
+            delta   = this.rightExtent - this.leftExtent;
 
-        return this.range[0] + delta * (percent / 100);
+        return this.leftExtent + delta * percent;
     };
 
     /**
-     * ### __positionFromMouse
+     * ### positionFromMouse
      *
-     * Determines how far along the bar the mouse cursor is as a percentage of
+     * Determines how far along the bar the mouse cursor is as a fraction of
      * the bar's width.
+     *
+     * TODO Cache the width and offset when the drag operation begins.
      */
-    Quinn.prototype.__positionFromMouse = function (mousePosition) {
-        var barWidth = this.bar.width(),
-            maxLeft  = this.bar.offset().left,
+    Quinn.prototype.positionFromMouse = function (mousePosition) {
+        var barWidth = this.wrapper.width(),
+            maxLeft  = this.wrapper.offset().left,
             maxRight = maxLeft + barWidth,
             barPosition;
 
@@ -436,11 +300,267 @@
             barPosition = mousePosition - maxLeft;
         }
 
-        return barPosition / barWidth * 100;
+        return barPosition / barWidth;
+    };
+
+    // ## User Interaction
+
+    /**
+     * ### startDrag
+     *
+     * Begins a drag event which permits a user to move the slider handle in
+     * order to adjust the slider value.
+     *
+     * When `skipPreamble` is true, startDrag will not run `willChange()` on
+     * the assumption that it has already been run (see `clickBar`).
+     */
+    Quinn.prototype.startDrag = function (event, skipPreamble) {
+        // Only enable dragging when the left mouse button is used.
+        if (! IS_TOUCH_ENABLED && event.which !== 1) {
+            return true;
+        }
+
+        if (! skipPreamble && ! this.willChange()) {
+            return false;
+        }
+
+        this.activateHandleWithEvent(event);
+
+        // These events are bound for the duration of the drag operation and
+        // keep track of the value changes made, with the events being removed
+        // when the mouse button is released.
+        $(document).
+            bind(DRAG_END_E + '.quinn', this.endDrag).
+            bind(DRAG_E     + '.quinn', this.drag).
+
+            // The mouse may leave the window while dragging, and the mouse
+            // button released. Watch for the mouse re-entering, and see what
+            // the button is doing.
+            bind('mouseenter.quinn', this.endDrag);
+
+        return false;
     };
 
     /**
-     * ### __roundToStep
+     * ### drag
+     *
+     * Bound to the mousemove event, alters the slider value while the user
+     * contiues to hold the left mouse button.
+     */
+    Quinn.prototype.drag = function () {
+        var pageX = event.pageX, newValue;
+
+        if (event.type === 'touchmove') {
+            pageX = event.originalEvent.targetTouches[0].pageX;
+        }
+
+        this.setTentativeValue(this.valueFromMouse(pageX));
+
+        return event.preventDefault();
+    };
+
+    /**
+     * ### endDrag
+     *
+     * Run when the user lifts the mouse button after completing a drag.
+     */
+    Quinn.prototype.endDrag = function (event) {
+        // Remove the events which were bound in `startDrag`.
+        $(document).
+            unbind(DRAG_END_E + '.quinn').
+            unbind(DRAG_E + '.quinn').
+            unbind('mouseenter.quinn');
+
+        this.hasChanged();
+
+        return event.preventDefault();
+    };
+
+    /**
+     * ### clickBar
+     *
+     * Event handler which is used when the user clicks part of the slider bar
+     * to instantly change the value.
+     */
+    Quinn.prototype.clickBar = function (event) {
+        // Ignore the click if the left mouse button wasn't used.
+        if (! IS_TOUCH_ENABLED && event.which !== 1) {
+            return true;
+        }
+
+        if (this.willChange()) {
+            this.activateHandleWithEvent(event);
+            this.setTentativeValue(this.valueFromMouse(event.pageX), true);
+
+            // Allow user to further refine the slider value by dragging
+            // without releasing the mouse button. `endDrag` will take care of
+            // committing the final updated value. This doesn't work nicely on
+            // touch devices, so we don't do this there.
+            if (IS_TOUCH_ENABLED) {
+                this.hasChanged();
+            } else {
+                this.startDrag(event, true);
+            }
+        }
+
+        return event.preventDefault();
+    }
+
+    /**
+     * Given a click or drag event, determines which model "value" is closest
+     * to the clicked location and tells the view to activate the handle.
+     * Does nothing if a handle is already active.
+     */
+    Quinn.prototype.activateHandleWithEvent = function (event) {
+        var pageX = event.pageX, value, closestValue;
+
+        if (this.activeHandle) {
+            return false;
+        }
+
+        if (event.type === 'touchmove') {
+            pageX = event.originalEvent.targetTouches[0].pageX;
+        }
+
+        value = this.valueFromMouse(pageX);
+
+        closestValue = _.min(this.model.values, function (handleValue) {
+            return Math.abs(handleValue - value);
+        });
+
+        this.activeHandle = _.indexOf(this.model.values, closestValue);
+
+        this.trigger('handleOn', this.activeHandle);
+    };
+
+    /**
+     * Deactivates the currently active handle. Does nothing if no handle is
+     * active.
+     */
+    Quinn.prototype.deactivateActiveHandle = function () {
+        if (this.activeHandle != null) {
+            this.trigger('handleOff', this.activeHandle);
+            this.activeHandle = null;
+        }
+    };
+
+    /**
+     * ## Model
+     *
+     * Holds the current Quinn value, ensures that the value set is valid
+     * (within the `range` bounds, one of the `only` values, etc).
+     */
+    function Model (quinn) {
+        var extrema, minimum, maximum, initialValue, length, i;
+
+        this.options        = quinn.options;
+        this.values         = [];
+        this.previousValues = [];
+
+        this.step           = quinn.options.step;
+        this.only           = quinn.options.only;
+
+        /* The minimum and maximum need to be "fixed" so that they are a
+         * multiple of the "step" option. For example, if given a step of 5
+         * then we must round a minimum value of 2 up to 5, and a maximum
+         * value of 97 down to 95.
+         *
+         * Note that values are always rounded so that they stay within the
+         * given minimum and maximum range. 2 cannot be rounded down to 0,
+         * since that is lower than the value provided by the user.
+         *
+         * TODO Provided this.min and this.max are set, isn't it possible
+         *      to just use sanitizeValue?
+         *
+         * TODO Since it isn't possible to set a value which doesn't conform
+         *      to the step, is it even necessary to "fix" the minimum and
+         *      maximum values?
+         */
+
+        extrema = this.options.selectable || this.options.range;
+
+        this.minimum = extrema[0];
+        this.maximum = extrema[1];
+
+        minimum = this.roundToStep(extrema[0]);
+        maximum = this.roundToStep(extrema[1]);
+
+        if (minimum < extrema[0]) {
+            minimum += this.options.step;
+        }
+
+        if (maximum > extrema[1]) {
+            maximum -= this.options.step;
+        }
+
+        this.minimum = minimum;
+        this.maximum = maximum;
+
+        /* Determine the initial value of the slider. Prefer an explicitly set
+         * value, whether a scalar or an array. If no value is provided by the
+         * developer, instead fall back to using the minimum.
+         */
+
+        if (this.options.value == null) {
+            initialValue = this.minimum;
+        } else if (_.isArray(this.options.value)) {
+            initialValue = this.options.value;
+        } else {
+            initialValue = [ this.options.value ];
+        }
+
+        for (i = 0, length = initialValue.length; i < length; i++) {
+            this.values[i] = null;
+        }
+
+        this.setValue(initialValue);
+    }
+
+    /**
+     * An internal method which sets the value of the slider during a drag
+     * event. `setValue` should be called only after `willChange` in the Quinn
+     * instance.
+     *
+     * Only when `hasChanged` is called is the value considered final. If
+     * `abortChange` is called, the tentative value is discarded and the
+     * previous "good" value is restored.
+     *
+     * The new value will be returned (which may differ slightly from the
+     * value you set, if it had to be adjusted to fit the step option, or stay
+     * within the minimum / maximum range). The method will return false if
+     * the value you set resulted in no changes.
+     */
+    Model.prototype.setValue = function (newValue) {
+        var originalValue = this.value, length, i;
+
+        if (! _.isArray(newValue)) {
+            newValue = [ newValue ];
+        } else {
+            // Don't mutate the original array.
+            newValue = _.clone(newValue);
+        }
+
+        for (i = 0, length = newValue.length; i < length; i++) {
+            newValue[i] = this.sanitizeValue(newValue[i]);
+        }
+
+        if (_.isEqual(newValue, originalValue)) {
+            return false;
+        }
+
+        this.value = this.values = newValue;
+
+        if (this.values.length === 1) {
+            // When the slider represents only a single value, instead of
+            // setting an array as the value, just use the number.
+            this.value = newValue[0];
+        }
+
+        return this.value;
+    };
+
+    /**
+     * ### roundToStep
      *
      * Given a number, rounds it to the nearest step.
      *
@@ -448,201 +568,41 @@
      * 2 will round to 0, etc. Does not take account of the minimum and
      * maximum range options.
      */
-    Quinn.prototype.__roundToStep = function (number) {
-        var multiplier = 1 / this.options.step,
+    Model.prototype.roundToStep = function (number) {
+        var multiplier = 1 / this.step,
             rounded    = Math.round(number * multiplier) / multiplier;
 
-        if (_.isArray(this.options.only)) {
-            rounded = _.min(this.options.only, function (value) {
+        if (_.isArray(this.only)) {
+            rounded = _.min(this.only, function (value) {
                 return Math.abs(value - number);
             });
         }
 
-        if (rounded > this.selectable[1] ) {
-            return rounded - this.options.step;
-        } else if (rounded < this.selectable[0]) {
-            return rounded + this.options.step;
-        } else {
-            return rounded;
+        if (rounded > this.maximum) {
+            return rounded - this.step;
+        } else if (rounded < this.minimum) {
+            return rounded + this.step;
         }
+
+        return rounded;
     };
 
     /**
-     * #### __sanitizeValue
+     * ### sanitizeValue
      *
      * Given a numberic value, snaps it to the nearest step, and ensures that
      * it is within the selectable minima and maxima.
      */
-    Quinn.prototype.__sanitizeValue = function (value) {
-        value = this.__roundToStep(value);
+    Model.prototype.sanitizeValue = function (value) {
+        value = this.roundToStep(value);
 
-        if (value < this.selectable[0]) {
-            return this.selectable[0];
-        } else if (value > this.selectable[1]) {
-            return this.selectable[1];
+        if (value > this.maximum) {
+            return this.maximum;
+        } else if (value < this.minimum) {
+            return this.minimum;
         }
 
         return value;
-    };
-
-    /**
-     * ### __willChange
-     *
-     * Tells the Quinn instance that the user is about to make a change to the
-     * slider value. The calling function should check the return value of
-     * __willChange -- if false, no changes are permitted to the slider.
-     */
-    Quinn.prototype.__willChange = function () {
-        if (this.isDisabled === true || ! this.trigger('begin')) {
-            return false;
-        }
-
-        this.previousValues.unshift(this.value);
-        return true;
-    };
-
-    /**
-     * ### __hasChanged
-     *
-     * Tells the Quinn instance that the user has finished making their
-     * changes to the slider.
-     */
-    Quinn.prototype.__hasChanged = function () {
-        this.activeHandle = null;
-
-        // Run the onChange callback; if the callback returns false then we
-        // revert the slider change, and restore everything to how it was
-        // before. Note that reverting the change will also fire an onChange
-        // event when the value is reverted.
-        if (! this.trigger('change')) {
-            this.__setValue(_.head(this.previousValues), true);
-            this.__abortChange();
-
-            return false;
-        }
-
-        if (_.head(this.previousValues) === this.value) {
-            // The user reset the slider back to where it was.
-            this.__abortChange();
-        }
-    };
-
-    /**
-     * ### __abortChange
-     *
-     * Aborts a slider change, and restores it to it's previous state.
-     */
-    Quinn.prototype.__abortChange = function () {
-        this.activeHandle   = null;
-        this.previousValues = _.tail(this.previousValues);
-
-        return this.trigger('abort');
-    };
-
-    /**
-     * ### __setValue
-     *
-     * Internal method which changes the slider value. See setValue.
-     */
-    Quinn.prototype.__setValue = function (newValue, animate, doCallback) {
-        var originalValue = this.value, numberValue, i, length, handle;
-
-        if (this.isRange) {
-
-            // RANGE-BASED SLIDERS
-
-            if (_.isArray(newValue)) {
-                if (this.value != null) {
-                    originalValue = _.clone(originalValue);
-
-                    if (newValue.length != originalValue.length) {
-                        return false;
-                    }
-                } else {
-                    // Value is uninitialized when called for the first time.
-                    this.value = [];
-                }
-
-                // Don't mutate the original array.
-                newValue = _.clone(newValue);
-
-                for (i = 0, length = newValue.length; i < length; i++) {
-                    newValue[i] = this.__sanitizeValue(newValue[i]);
-                }
-            } else if (_.isNumber(newValue)) {
-                if (! this.activeHandle) {
-                    // Number values are only accepted during drag events,
-                    // when the activeHandle has been set.
-                    return false;
-                }
-
-                newValue = this.__sanitizeValue(newValue);
-
-                if (this.activeHandle.id === 1) {
-                    if (newValue <= this.handles[0].value) {
-                        newValue = this.handles[0].value +
-                            this.options.step;
-                    }
-                } else {
-                    if (newValue >= this.handles[1].value) {
-                        newValue = this.handles[1].value -
-                            this.options.step;
-                    }
-                }
-
-                numberValue = newValue;
-
-                newValue = _.clone(this.value);
-                newValue[this.activeHandle.id] = numberValue;
-            } else {
-                // The default slider value when initialized is "null", so
-                // default to setting the range to the slider minimum and
-                // maximum permitted value.
-                newValue = _.clone(this.selectable);
-            }
-
-            if (_.isEqual(originalValue, newValue)) {
-                // No values were changed.
-                return false;
-            }
-
-            this.value = newValue;
-
-        } else {
-
-            // SINGLE VALUE SLIDERS
-
-            if (_.isNumber(newValue)) {
-                newValue = [ this.__sanitizeValue(newValue) ];
-            } else {
-                // The default slider value when initialized is "null", so
-                // default to setting the range to the slider minimum
-                // permitted value.
-                newValue = [ this.selectable[0] ];
-            }
-
-            if (originalValue === newValue[0]) {
-                // No values were changed.
-                return false;
-            }
-
-            this.value = newValue[0];
-        }
-
-        // Run the onDrag callback; if the callback returns false then stop
-        // immediately and do not alter the value.
-        if (! this.trigger('drag', this.value)) {
-            this.value = originalValue;
-            return false;
-        }
-
-        for (i = 0, length = this.handles.length; i < length; i++) {
-            this.handles[i].value = newValue[i];
-        }
-
-        this.sendRenderer('redraw', animate);
-
-        return true;
     };
 
     /**
@@ -652,7 +612,7 @@
      * those elements when the slider value is changed.
      *
      * You may write your own renderer class and provide it to Quinn using the
-     * `rendered: myRenderer` option.
+     * `renderer: myRenderer` option.
      *
      * Your class needs to define only two public methods:
      *
@@ -664,10 +624,37 @@
      *   Alters DOM elements (normally CSS) so that the visual representation
      *   of the slider matches the value.
      */
-    Quinn.Renderer = function (quinn, options) {
+    Quinn.Renderer = function (quinn) {
+        _.bindAll(this, 'render', 'redraw');
+
         this.quinn   = quinn;
+        this.model   = quinn.model;
         this.wrapper = quinn.wrapper;
-        this.options = options;
+        this.options = quinn.options;
+        this.handles = [];
+
+        // The values which are at the far left and far right of the bar.
+        // These may differ slightly from the values which are permitted for
+        // the model if the developer specified different `range` and
+        // `selectable` options.
+        this.drawMin = quinn.options.range[0];
+        this.drawMax = quinn.options.range[1];
+
+        this.activeHandle = null;
+
+        quinn.bind('drag',   this.redraw);
+        quinn.bind('change', this.redraw);
+
+        // quinn.bind('enabled',  this.enable);
+        // quinn.bind('disabled', this.disable);
+
+        quinn.bind('handleOn', _.bind(function (handleIndex) {
+            this.handles[handleIndex].addClass('active');
+        }, this));
+
+        quinn.bind('handleOff', _.bind(function (handleIndex) {
+            this.handles[handleIndex].removeClass('active');
+        }, this));
     }
 
     /**
@@ -684,7 +671,7 @@
 
         this.width = this.options.width || this.wrapper.width();
 
-        function addRoundingElements(element) {
+        function addRoundingElements (element) {
             element.append($('<div class="left" />'));
             element.append($('<div class="main" />'));
             element.append($('<div class="right" />'));
@@ -693,14 +680,8 @@
         this.bar       = $('<div class="bar" />');
         this.activeBar = $('<div class="active-bar" />');
 
-        if (this.quinn.isRange) {
+        if (this.model.values.length > 1) {
             this.wrapper.addClass('range');
-
-            for (i = 0, length = this.options.value.length; i < length; i++) {
-                this.quinn.handles[i].element = $('<span class="handle" />');
-            }
-        } else {
-            this.quinn.handles[0].element = $('<span class="handle" />');
         }
 
         addRoundingElements(this.bar);
@@ -711,11 +692,10 @@
         this.wrapper.addClass('quinn');
 
         // Add each of the handles to the bar, and bind the click events.
-        for (i = 0, length = this.quinn.handles.length; i < length; i++) {
-            this.quinn.handles[i].element.bind(
-                DRAG_START_E, this.quinn.enableDrag);
-
-            this.bar.append(this.quinn.handles[i].element);
+        for (i = 0, length = this.model.values.length; i < length; i++) {
+            this.handles[i] = $('<span class="handle"></span>');
+            this.handles[i].bind(DRAG_START_E, this.quinn.startDrag);
+            this.bar.append(this.handles[i]);
         }
 
         // The slider depends on some absolute positioning, so  adjust the
@@ -726,6 +706,8 @@
         // Finally, these events are triggered when the user seeks to
         // update the slider.
         this.wrapper.bind('mousedown', this.quinn.clickBar);
+
+        this.redraw(false);
     };
 
     /**
@@ -736,23 +718,27 @@
      */
     Quinn.Renderer.prototype.redraw = function (animate) {
         var opts  = this.options,
-            range = this.quinn.range,
-            delta = range[1] - range[0];
+            min   = this.quinn.leftExtent,
+            max   = this.quinn.rightExtent,
+            delta = max - min;
+
+        // TODO Temporary:
+        animate = false;
 
         this.activeBar.stop(true);
 
-        _.each(this.quinn.handles, _.bind(function(handle, i) {
+        _.each(this.handles, _.bind(function(handle, i) {
             var percent, inPixels;
 
-            handle.element.stop(true);
+            handle.stop(true);
 
             // Convert the value percentage to pixels so that we can position
             // the handle accounting for the movementAdjust option.
-            percent = (handle.value - range[0]) / delta;
+            percent = (this.model.values[i] - min) / delta;
             inPixels = ((this.width - 5) * percent).toString() + 'px'
 
             if (animate && opts.effects) {
-                handle.element.animate({ left: inPixels }, {
+                handle.animate({ left: inPixels }, {
                     duration: opts.effectSpeed,
                     step: _.bind(function (now) {
                         now = now / this.width;
@@ -761,8 +747,8 @@
                         // Convert that to the equivalent value. For example,
                         // if the slider is 0->200, and now is 20, the
                         // equivalent value is 40.
-                        this.__redrawActiveBar(now *
-                            (range[1] - range[0]) + range[0], handle);
+                        this.redrawActiveBar(now *
+                            (max - min) + min, handle);
 
                         return true;
                     }, this)
@@ -770,8 +756,8 @@
             } else {
                 // TODO being in the loop results in an unnecessary
                 //      additional call to positionActiveBar
-                handle.element.css('left', inPixels);
-                this.__redrawActiveBar(this.quinn.value);
+                handle.css('left', inPixels);
+                this.redrawActiveBar(this.model.value);
             }
         }, this));
     };
@@ -783,15 +769,15 @@
      * the value 0 is. Accepts a `value` argument so that it may be used
      * within a `step` callback in a jQuery `animate` call.
      */
-    Quinn.Renderer.prototype.__redrawActiveBar = function (value, handle) {
+    Quinn.Renderer.prototype.redrawActiveBar = function (value, handle) {
         var leftPosition = null,
             rightPosition = null;
 
         this.activeBar.stop();
 
-        if (this.quinn.isRange) {
+        if (this.model.values.length > 1) {
             if (handle) {
-                if (handle.id === 0) {
+                if (handle === this.handles[0]) {
                     leftPosition  = this.__positionForValue(value);
                 } else {
                     rightPosition = this.__positionForValue(value);
@@ -831,8 +817,8 @@
      * 1->100, the value 20 is found 40px from the left of the bar.
      */
     Quinn.Renderer.prototype.__positionForValue = function (value) {
-        var delta    = this.quinn.range[1] - this.quinn.range[0],
-            position = (((value - this.quinn.range[0]) / delta)) * this.width;
+        var delta    = this.quinn.rightExtent - this.quinn.leftExtent,
+            position = (((value - this.quinn.leftExtent) / delta)) * this.width;
 
         if (position < 0) {
             return 0;
@@ -842,16 +828,6 @@
             return Math.round(position);
         }
     };
-
-    /**
-     * ## Handle
-     *
-     * A handle is the "thing" which the user may click and drag in order to
-     * alter the value of the slider.
-     */
-    function createHandle (id, initialValue) {
-        return { id: id, value: initialValue, element: null };
-    }
 
     /**
      * ### Options
