@@ -328,6 +328,8 @@ supposed to set.</p>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
 
+        <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;redraw&#39;</span><span class="p">);</span>
+
         <span class="k">return</span> <span class="nx">newValue</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
       </td>
@@ -975,8 +977,7 @@ the model if the developer specified different <code>range</code> and
 
         <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-        <span class="nx">quinn</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;drag&#39;</span><span class="p">,</span>   <span class="k">this</span><span class="p">.</span><span class="nx">redraw</span><span class="p">);</span>
-        <span class="nx">quinn</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">redraw</span><span class="p">);</span></pre></div>
+        <span class="nx">quinn</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="s1">&#39;redraw&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">redraw</span><span class="p">);</span></pre></div>
       </td>
     </tr>
     <tr id='section-45'>
@@ -984,7 +985,8 @@ the model if the developer specified different <code>range</code> and
         <div class="pilwrap">
           <a class="pilcrow" href="#section-45">&#182;</a>
         </div>
-        <p>quinn.bind(&lsquo;enabled&rsquo;,  this.enable);
+        <p>quinn.bind(&lsquo;change&rsquo;, this.redraw);
+quinn.bind(&lsquo;enabled&rsquo;,  this.enable);
 quinn.bind(&lsquo;disabled&rsquo;, this.disable);</p>
       </td>
       <td class=code>

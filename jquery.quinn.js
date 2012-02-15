@@ -204,6 +204,8 @@
             return false;
         }
 
+        this.trigger('redraw');
+
         return newValue;
     };
 
@@ -642,9 +644,9 @@
 
         this.activeHandle = null;
 
-        quinn.bind('drag',   this.redraw);
-        quinn.bind('change', this.redraw);
+        quinn.bind('redraw', this.redraw);
 
+        // quinn.bind('change', this.redraw);
         // quinn.bind('enabled',  this.enable);
         // quinn.bind('disabled', this.disable);
 
