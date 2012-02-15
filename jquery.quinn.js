@@ -383,13 +383,13 @@
         // keep track of the value changes made, with the events being removed
         // when the mouse button is released.
         $(document).
-            bind(DRAG_END_E + '.quinn', this.endDrag).
-            bind(DRAG_E     + '.quinn', this.drag).
+            on(DRAG_END_E + '.quinn', this.endDrag).
+            on(DRAG_E     + '.quinn', this.drag).
 
             // The mouse may leave the window while dragging, and the mouse
             // button released. Watch for the mouse re-entering, and see what
             // the button is doing.
-            bind('mouseenter.quinn', this.endDrag);
+            on('mouseenter.quinn', this.endDrag);
 
         return false;
     };
@@ -420,9 +420,9 @@
     Quinn.prototype.endDrag = function (event) {
         // Remove the events which were bound in `startDrag`.
         $(document).
-            unbind(DRAG_END_E + '.quinn').
-            unbind(DRAG_E + '.quinn').
-            unbind('mouseenter.quinn');
+            off(DRAG_END_E + '.quinn').
+            off(DRAG_E + '.quinn').
+            off('mouseenter.quinn');
 
         this.hasChanged();
 
@@ -747,7 +747,7 @@
         // Add each of the handles to the bar, and bind the click events.
         for (i = 0, length = this.model.values.length; i < length; i++) {
             this.handles[i] = $('<span class="handle"></span>');
-            this.handles[i].bind(DRAG_START_E, this.quinn.startDrag);
+            this.handles[i].on(DRAG_START_E, this.quinn.startDrag);
             this.bar.append(this.handles[i]);
         }
 
@@ -758,7 +758,7 @@
 
         // Finally, these events are triggered when the user seeks to
         // update the slider.
-        this.wrapper.bind('mousedown', this.quinn.clickBar);
+        this.wrapper.on('mousedown', this.quinn.clickBar);
 
         this.redraw({ animate: false });
     };
