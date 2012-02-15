@@ -142,10 +142,16 @@
      * argument is truthy, the change in value will be animated when updating
      * the slider position. The onDrag callback may be skipped if `doCallback`
      * is falsey.
+     *
+     * newValue - The new value of the slider.
+     * animate  - Redrawing the slider should be animated instead of instant.
+     *            Defaults to true.
+     * silent   - When true, doesn't trigger the "drag" callback. Defaults to
+     *            false.
      */
-    Quinn.prototype.setValue = function (newValue, animate, doCallback) {
+    Quinn.prototype.setValue = function (newValue, animate, silent) {
         if (this.willChange()) {
-            if (this.setTentativeValue(newValue, doCallback) !== false) {
+            if (this.setTentativeValue(newValue, animate, silent) !== false) {
                 this.hasChanged();
             } else {
                 this.abortChange();
@@ -158,10 +164,16 @@
     /**
      * ### setTentativeValue
      *
-     * Used internally to set the model value while ensuring that the necessary
-     * callbacks are fired.
+     * Used internally to set the model value while ensuring that the
+     * necessary callbacks are fired.
+     *
+     * newValue - The new, tentative, value of the slider.
+     * animate  - Redrawing the slider should be animated instead of instant.
+     *            Defaults to true.
+     * silent   - When true, doesn't trigger the "drag" callback. Defaults to
+     *            false.
      */
-    Quinn.prototype.setTentativeValue = function (newValue, doCb) {
+    Quinn.prototype.setTentativeValue = function (newValue, animate, silent) {
         var preDragValue = this.model.value,
             scalar, prevScalar, nextScalar;
 
@@ -202,13 +214,13 @@
         newValue = this.model.setValue(newValue);
 
         if (newValue === false ||
-                (doCb !== false && ! this.trigger('drag', newValue))) {
+                (! silent && ! this.trigger('drag', newValue))) {
 
             this.model.setValue(preDragValue);
             return false;
         }
 
-        this.trigger('redraw');
+        this.trigger('redraw', animate);
 
         return newValue;
     };
@@ -281,7 +293,7 @@
          * event when the value is reverted.
          */
         if (! this.trigger('change', this.model.value)) {
-            this.setTentativeValue(this.previousValue, true);
+            this.setTentativeValue(this.previousValue);
             this.abortChange();
 
             return false;
@@ -396,7 +408,7 @@
             pageX = event.originalEvent.targetTouches[0].pageX;
         }
 
-        this.setTentativeValue(this.valueFromMouse(pageX));
+        this.setTentativeValue(this.valueFromMouse(pageX), false);
 
         return event.preventDefault();
     };
@@ -432,7 +444,7 @@
 
         if (this.willChange()) {
             this.activateHandleWithEvent(event);
-            this.setTentativeValue(this.valueFromMouse(event.pageX), true);
+            this.setTentativeValue(this.valueFromMouse(event.pageX));
 
             // Allow user to further refine the slider value by dragging
             // without releasing the mouse button. `endDrag` will take care of
@@ -749,7 +761,7 @@
         // update the slider.
         this.wrapper.bind('mousedown', this.quinn.clickBar);
 
-        this.redraw(false);
+        this.redraw({ animate: false });
     };
 
     /**
@@ -764,8 +776,9 @@
             max   = this.quinn.rightExtent,
             delta = max - min;
 
-        // TODO Temporary:
-        animate = false;
+        if (animate == void 0) {
+            animate = true;
+        }
 
         this.activeBar.stop(true);
 
@@ -776,7 +789,7 @@
 
             // Convert the value percentage to pixels so that we can position
             // the handle accounting for the movementAdjust option.
-            percent = (this.model.values[i] - min) / delta;
+            percent  = (this.model.values[i] - min) / delta;
             inPixels = ((this.width - 5) * percent).toString() + 'px'
 
             if (animate && opts.effects) {
