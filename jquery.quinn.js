@@ -145,14 +145,14 @@
      */
     Quinn.prototype.setValue = function (newValue, animate, doCallback) {
         if (this.willChange()) {
-            if (this.setTentativeValue(newValue, doCallback)) {
+            if (this.setTentativeValue(newValue, doCallback) !== false) {
                 this.hasChanged();
             } else {
                 this.abortChange();
             }
         }
 
-        return this.value;
+        return this.model.value;
     };
 
     /**
@@ -164,6 +164,10 @@
     Quinn.prototype.setTentativeValue = function (newValue, doCb) {
         var preDragValue = this.model.value,
             scalar, prevScalar, nextScalar;
+
+        if (newValue == null) {
+            return false;
+        }
 
         // If the slider is a range (more than one value), but only a number
         // was given, we need to alter the given value so that we set the
@@ -533,7 +537,7 @@
      * the value you set resulted in no changes.
      */
     Model.prototype.setValue = function (newValue) {
-        var originalValue = this.value, length, i;
+        var originalValue = this.values, length, i;
 
         if (! _.isArray(newValue)) {
             newValue = [ newValue ];

@@ -239,14 +239,14 @@ is falsey.</p>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">doCallback</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">willChange</span><span class="p">())</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">doCallback</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">doCallback</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">this</span><span class="p">.</span><span class="nx">hasChanged</span><span class="p">();</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
                 <span class="k">this</span><span class="p">.</span><span class="nx">abortChange</span><span class="p">();</span>
             <span class="p">}</span>
         <span class="p">}</span>
 
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
@@ -263,7 +263,11 @@ callbacks are fired.</p>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setTentativeValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">doCb</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">preDragValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
-            <span class="nx">scalar</span><span class="p">,</span> <span class="nx">prevScalar</span><span class="p">,</span> <span class="nx">nextScalar</span><span class="p">;</span></pre></div>
+            <span class="nx">scalar</span><span class="p">,</span> <span class="nx">prevScalar</span><span class="p">,</span> <span class="nx">nextScalar</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span></pre></div>
       </td>
     </tr>
     <tr id='section-13'>
@@ -822,7 +826,7 @@ the value you set resulted in no changes.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Model</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">originalValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">originalValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
             <span class="nx">newValue</span> <span class="o">=</span> <span class="p">[</span> <span class="nx">newValue</span> <span class="p">];</span>
