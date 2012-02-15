@@ -17,6 +17,18 @@
     }
 
     /**
+     * Given an event, returns the horizontal location on the page on which
+     * the event occurred.
+     */
+    function locationOfEvent (event) {
+        if (event.type === 'touchmove') {
+            return event.originalEvent.targetTouches[0].pageX;
+        }
+
+        return event.pageX;
+    }
+
+    /**
      * ## Quinn
      *
      * Quinn is the main slider class, and handles setting up the slider UI,
@@ -400,12 +412,9 @@
      * Bound to the mousemove event, alters the slider value while the user
      * contiues to hold the left mouse button.
      */
-    Quinn.prototype.drag = function () {
-        var pageX = event.pageX, newValue;
-
-        if (event.type === 'touchmove') {
-            pageX = event.originalEvent.targetTouches[0].pageX;
-        }
+    Quinn.prototype.drag = function (event) {
+        var pageX = locationOfEvent(event),
+            newValue;
 
         this.setTentativeValue(this.valueFromMouse(pageX), false);
 
@@ -465,17 +474,13 @@
      * Does nothing if a handle is already active.
      */
     Quinn.prototype.activateHandleWithEvent = function (event) {
-        var pageX = event.pageX, value, closestValue;
+        var value, closestValue;
 
         if (this.activeHandle) {
             return false;
         }
 
-        if (event.type === 'touchmove') {
-            pageX = event.originalEvent.targetTouches[0].pageX;
-        }
-
-        value = this.valueFromMouse(pageX);
+        value = this.valueFromMouse(locationOfEvent(event));
 
         closestValue = _.min(this.model.values, function (handleValue) {
             return Math.abs(handleValue - value);
