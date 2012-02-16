@@ -267,6 +267,14 @@ h4 + ul li {
     margin-bottom: 10px;
 }
 
+h4 + ul li:before {
+    color: #747d84;
+    content: "✻";
+    float: left;
+    font-size: 12px;
+    text-indent: -1.3em;
+}
+
 h4 + ul li p, h4 + ul li pre {
     margin: 10px 0;
 }
