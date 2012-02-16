@@ -55,6 +55,9 @@
         this.leftExtent    = this.options.range[0];
         this.rightExtent   = this.options.range[1];
 
+        this.wrapperWidth  = 0;
+        this.wrapperOffset = 0;
+
         this.on('setup',  this.options.onSetup);
         this.on('begin',  this.options.onBegin);
         this.on('drag',   this.options.onDrag);
@@ -341,22 +344,20 @@
      * TODO Cache the width and offset when the drag operation begins.
      */
     Quinn.prototype.positionFromMouse = function (mousePosition) {
-        var barWidth = this.wrapper.width(),
-            maxLeft  = this.wrapper.offset().left,
-            maxRight = maxLeft + barWidth,
+        var maxRight = this.wrapperOffset + this.wrapperWidth,
             barPosition;
 
-        if (mousePosition < maxLeft) {
+        if (mousePosition < this.wrapperOffset) {
             // Mouse is to the left of the bar.
             barPosition = 0;
         } else if (mousePosition > maxRight) {
             // Mouse is to the right of the bar.
-            barPosition = barWidth;
+            barPosition = this.wrapperWidth;
         } else {
-            barPosition = mousePosition - maxLeft;
+            barPosition = mousePosition - this.wrapperOffset;
         }
 
-        return barPosition / barWidth;
+        return barPosition / this.wrapperWidth;
     };
 
     // ## User Interaction
@@ -379,6 +380,11 @@
         if (! skipPreamble && ! this.willChange()) {
             return false;
         }
+
+        // These attributes are cached so that we don't have to look them up
+        // every time the user drags the handle.
+        this.wrapperWidth  = this.wrapper.width();
+        this.wrapperOffset = this.wrapper.offset().left;
 
         this.activateHandleWithEvent(event);
 
