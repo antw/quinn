@@ -103,7 +103,8 @@
      */
     Quinn.prototype.trigger = function (event, value) {
         var callbacks = this.callbacks[event] || [],
-            callback, i = 0;
+            i = 0,
+            callback;
 
         if (value === void 0) {
             value = this.value;
@@ -403,10 +404,8 @@
      * contiues to hold the left mouse button.
      */
     Quinn.prototype.drag = function (event) {
-        var pageX = locationOfEvent(event),
-            newValue;
-
-        this.setTentativeValue(this.valueFromMouse(pageX), false);
+        this.setTentativeValue(
+            this.valueFromMouse(locationOfEvent(event)), false);
 
         return event.preventDefault();
     };
@@ -456,7 +455,7 @@
         }
 
         return event.preventDefault();
-    }
+    };
 
     /**
      * Given a click or drag event, determines which model "value" is closest
@@ -499,7 +498,7 @@
      * (within the `range` bounds, one of the `only` values, etc).
      */
     function Model (quinn) {
-        var extrema, minimum, maximum, initialValue, length, i;
+        var extrema, initialValue, length, i;
 
         this.options        = quinn.options;
         this.values         = [];
@@ -707,7 +706,7 @@
                 self.wrapper.css('opacity', self.options.disabledOpacity);
             }
         });
-    }
+    };
 
     /**
      * ### render
@@ -784,7 +783,7 @@
             // Convert the value percentage to pixels so that we can position
             // the handle accounting for the movementAdjust option.
             percent  = (this.model.values[i] - min) / delta;
-            inPixels = ((this.width - 5) * percent).toString() + 'px'
+            inPixels = ((this.width - 5) * percent).toString() + 'px';
 
             if (animate && opts.effects) {
                 handle.animate({ left: inPixels }, {

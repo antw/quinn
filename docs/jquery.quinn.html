@@ -176,7 +176,8 @@ and trigger will return false; otherwise true is returned.</p>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">trigger</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">callbacks</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">callbacks</span><span class="p">[</span><span class="nx">event</span><span class="p">]</span> <span class="o">||</span> <span class="p">[],</span>
-            <span class="nx">callback</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nx">callback</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">===</span> <span class="k">void</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">value</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
@@ -657,10 +658,8 @@ contiues to hold the left mouse button.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">drag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">pageX</span> <span class="o">=</span> <span class="nx">locationOfEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">),</span>
-            <span class="nx">newValue</span><span class="p">;</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">valueFromMouse</span><span class="p">(</span><span class="nx">pageX</span><span class="p">),</span> <span class="kc">false</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">valueFromMouse</span><span class="p">(</span><span class="nx">locationOfEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">)),</span> <span class="kc">false</span><span class="p">);</span>
 
         <span class="k">return</span> <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
     <span class="p">};</span></pre></div>
@@ -748,7 +747,7 @@ touch devices, so we don&rsquo;t do this there.</p>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">};</span></pre></div>
       </td>
     </tr>
     <tr id='section-39'>
@@ -809,7 +808,7 @@ active.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="kd">function</span> <span class="nx">Model</span> <span class="p">(</span><span class="nx">quinn</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">extrema</span><span class="p">,</span> <span class="nx">minimum</span><span class="p">,</span> <span class="nx">maximum</span><span class="p">,</span> <span class="nx">initialValue</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">extrema</span><span class="p">,</span> <span class="nx">initialValue</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">options</span>        <span class="o">=</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">options</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">values</span>         <span class="o">=</span> <span class="p">[];</span>
@@ -1067,7 +1066,7 @@ the model if the developer specified different <code>range</code> and
                 <span class="nx">self</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;opacity&#39;</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">disabledOpacity</span><span class="p">);</span>
             <span class="p">}</span>
         <span class="p">});</span>
-    <span class="p">}</span></pre></div>
+    <span class="p">};</span></pre></div>
       </td>
     </tr>
     <tr id='section-render'>
@@ -1180,7 +1179,7 @@ the handle accounting for the movementAdjust option.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>            <span class="nx">percent</span>  <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">-</span> <span class="nx">min</span><span class="p">)</span> <span class="o">/</span> <span class="nx">delta</span><span class="p">;</span>
-            <span class="nx">inPixels</span> <span class="o">=</span> <span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="nx">percent</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span>
+            <span class="nx">inPixels</span> <span class="o">=</span> <span class="p">((</span><span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="nx">percent</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">;</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">animate</span> <span class="o">&amp;&amp;</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">effects</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">handle</span><span class="p">.</span><span class="nx">animate</span><span class="p">({</span> <span class="nx">left</span><span class="o">:</span> <span class="nx">inPixels</span> <span class="p">},</span> <span class="p">{</span>
