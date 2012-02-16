@@ -196,11 +196,11 @@ further callbacks to the Quinn instance:
 
     var slider = new $.Quinn(element, options);
 
-    slider.bind('drag', function (value) {
+    slider.on('drag', function (value) {
         console.log(value);
     });
 
-    slider.bind('abort', function (value) {
+    slider.on('abort', function (value) {
         console.log('Value reset to ' + value);
     });
 {:class="no-example"}
