@@ -794,18 +794,7 @@
             if (animate && opts.effects) {
                 handle.animate({ left: inPixels }, {
                     duration: opts.effectSpeed,
-                    step: _.bind(function (now) {
-                        now = now / this.width;
-
-                        // "now" is the current "left" position of the handle.
-                        // Convert that to the equivalent value. For example,
-                        // if the slider is 0->200, and now is 20, the
-                        // equivalent value is 40.
-                        this.redrawDeltaBar(now *
-                            (max - min) + min, handle);
-
-                        return true;
-                    }, this)
+                    step:     this.redrawDeltaBarInStep(handle)
                 });
             } else {
                 // TODO being in the loop results in an unnecessary
@@ -861,6 +850,34 @@
         if (rightPosition !== null) {
             this.deltaBar.css('right', rightPosition.toString() + 'px');
         }
+    };
+
+    /**
+     * ### redrawDeltaBarInStep
+     *
+     * Draws the delta bar from within the step function during a jQuery
+     * animation.
+     */
+    Quinn.Renderer.prototype.redrawDeltaBarInStep = function (handle) {
+        if (! this.deltaBar) {
+            return function() {};
+        }
+
+        var min  = this.quinn.leftExtent,
+            max  = this.quinn.rightExtent,
+            self = this;
+
+        return function (now) {
+            now = now / self.width;
+
+            // "now" is the current "left" position of the handle.
+            // Convert that to the equivalent value. For example,
+            // if the slider is 0->200, and now is 20, the
+            // equivalent value is 40.
+            self.redrawDeltaBar(now * (max - min) + min, handle);
+
+            return true;
+        };
     };
 
     /**
