@@ -772,28 +772,18 @@
      * they accurately represent the value of the slider.
      */
     Quinn.Renderer.prototype.redraw = function (animate) {
-        var opts  = this.options,
-            min   = this.quinn.leftExtent,
-            max   = this.quinn.rightExtent,
-            delta = max - min;
-
         if (animate == void 0) {
             animate = true;
         }
 
         _.each(this.handles, _.bind(function(handle, i) {
-            var percent, inPixels;
+            var inPixels  = this.position(this.model.values[i], 5) + 'px';
 
             handle.stop(true);
 
-            // Convert the value percentage to pixels so that we can position
-            // the handle accounting for the movementAdjust option.
-            percent  = (this.model.values[i] - min) / delta;
-            inPixels = ((this.width - 5) * percent).toString() + 'px';
-
-            if (animate && opts.effects) {
+            if (animate && this.options.effects) {
                 handle.animate({ left: inPixels }, {
-                    duration: opts.effectSpeed,
+                    duration: this.options.effectSpeed,
                     step:     this.redrawDeltaBarInStep(handle)
                 });
             } else {
@@ -843,8 +833,8 @@
         left  = this.position(left);
         right = this.width - this.position(right);
 
-        this.deltaBar.css('left',  left.toString()  + 'px');
-        this.deltaBar.css('right', right.toString() + 'px');
+        this.deltaBar.css('left',  left  + 'px');
+        this.deltaBar.css('right', right + 'px');
     };
 
     /**
@@ -881,18 +871,22 @@
      * Given a slider value, returns the position in pixels where the value is
      * on the slider bar. For example, in a 200px wide bar whose values are
      * 1->100, the value 20 is found 40px from the left of the bar.
+     *
+     * If adjust is present, the position will be calculated for a handle so
+     * that it "dangles" over the edge of the bar.
      */
-    Quinn.Renderer.prototype.position = function (value) {
+    Quinn.Renderer.prototype.position = function (value, adjust) {
         var delta    = this.quinn.rightExtent - this.quinn.leftExtent,
-            position = (((value - this.quinn.leftExtent) / delta)) * this.width;
+            width    = adjust ? (this.width + adjust) : this.width,
+            position = (((value - this.quinn.leftExtent) / delta)) * width;
 
         if (position < 0) {
             return 0;
         } else if (position > this.width) {
             return this.width;
-        } else {
-            return Math.round(position);
         }
+
+        return Math.round(position);
     };
 
     /**
