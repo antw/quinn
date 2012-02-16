@@ -205,7 +205,7 @@ further callbacks to the Quinn instance:
     });
 {:class="no-example"}
 
-### setup `onSetup: function (currentValue, quinn)` {#onsetup}
+### setup `setup: function (currentValue, quinn)` {#onsetup}
 
 **setup** is run only once, immediately after the Quinn constructor has
 completed. Two arguments are supplied: the current value of the slider and the
@@ -214,13 +214,13 @@ differ from the one given to the callback since the constructor adjusts the
 slider value to fit with the **range**, **selectable**, and **step** options.
 The value supplied to the callback is correct.
 
-### begin `onBegin: function (currentValue, quinn)` {#onbegin}
+### begin `begin: function (currentValue, quinn)` {#onbegin}
 
 **begin** is fired as the user starts to adjust the slider value. This happens
 when they click on the slider bar, or on the handle _prior_ to the slider
 being dragged to a new position.
 
-### drag `onDrag: function (newValue, quinn)` {#ondrag}
+### drag `drag: function (newValue, quinn)` {#ondrag}
 
 The **drag** callback is run each time the slider value changes. The function
 is supplied with two arguments: the new slider value, and the Quinn instance.
@@ -233,11 +233,11 @@ is supplied with two arguments: the new slider value, and the Quinn instance.
     }
 
     $('.slider').quinn({
-        onDrag: function (newValue, slider) {
+        drag: function (newValue, slider) {
             changeValueColour(newValue);
         },
 
-        onSetup: function (value, slider) {
+        setup: function (value, slider) {
             /* Set the initial colour. */
             changeValueColour(value);
         }
@@ -255,7 +255,7 @@ handle.
 Explicitly returning false in the callback will prevent the change.
 
     $('.slider').quinn({
-        onDrag: function (newValue, slider) {
+        drag: function (newValue, slider) {
             /* Prevent selection of 41 to 59. */
             if (newValue > 40 && newValue < 60) {
                 return false;
@@ -263,7 +263,7 @@ Explicitly returning false in the callback will prevent the change.
         }
     });
 
-### change `onChange: function (newValue, quinn)` {#onchange}
+### change `change: function (newValue, quinn)` {#onchange}
 
 **change** is similar to the to the **drag** event in that it is fired when
 the slider value is changed by a user. However, unlike **drag** it is fired
@@ -274,7 +274,7 @@ after dragging the slider handle.
     $('.slider').quinn({
         value: 25,
 
-        onChange: function (newValue, slider) {
+        change: function (newValue, slider) {
             /* Disallow selecting a value over 50, but only
                after the user has finished moving the slider. */
             if (newValue > 50) {
@@ -283,7 +283,7 @@ after dragging the slider handle.
         }
     });
 
-### abort `onAbort: function (restoredValue, quinn)` {#onabort}
+### abort `abort: function (restoredValue, quinn)` {#onabort}
 
 The **abort** event is fired once the user has finished adjusting the value
 (like **change**) but the change failed either because the **change** callback
@@ -325,11 +325,11 @@ all it takes. In some cases, you may need to alter the CSS. For example:
     $('.slider').quinn({
         value: 25,
 
-        onDrag: function (newValue, slider) {
+        drag: function (newValue, slider) {
             changeValueColour(newValue);
         },
 
-        onSetup: function (value, slider) {
+        setup: function (value, slider) {
             /* Set the initial colour. */
             changeValueColour(value);
         }
@@ -349,7 +349,8 @@ History
   supplying your own renderer allows you to create completely custom sliders
   (you could even write a `CanvasRenderer` if you so desired).
 
-* `onChange` is now `onDrag`, and `onCommit` is now `onChange`.
+* **Events have been renamed.** `onChange`/`change` is now `drag`, and
+  `onCommit`/`commit` is now `change`.
 
 * Quinn's styling rules [have been changed][style-change]. If you use the
   default Quinn theme with no changes you should be able to simple drop the

@@ -156,14 +156,14 @@ QUnit.specify('', function () {
             });
         }); // With disable: true
 
-        describe('With onSetup: ...', function () {
+        describe('With setup: ...', function () {
             var callbackRun;
 
             before(function () {
                 callbackRun = false;
 
                 slider = new $.Quinn(wrapper, {
-                    onSetup: function () {
+                    setup: function () {
                         callbackRun = true;
                     }
                 });
@@ -172,7 +172,7 @@ QUnit.specify('', function () {
             it('should run the callback function', function () {
                 assert(callbackRun).isTrue();
             });
-        }); // With onSetup: ...
+        }); // With setup: ...
 
     });
 

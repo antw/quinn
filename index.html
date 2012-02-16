@@ -232,7 +232,7 @@ slider.on('abort', function (value) {
 });
 </code></pre>
 
-<h3 id="onsetup">setup <code>onSetup: function (currentValue, quinn)</code></h3>
+<h3 id="onsetup">setup <code>setup: function (currentValue, quinn)</code></h3>
 
 <p><strong>setup</strong> is run only once, immediately after the Quinn constructor has
 completed. Two arguments are supplied: the current value of the slider and the
@@ -241,13 +241,13 @@ differ from the one given to the callback since the constructor adjusts the
 slider value to fit with the <strong>range</strong>, <strong>selectable</strong>, and <strong>step</strong> options.
 The value supplied to the callback is correct.</p>
 
-<h3 id="onbegin">begin <code>onBegin: function (currentValue, quinn)</code></h3>
+<h3 id="onbegin">begin <code>begin: function (currentValue, quinn)</code></h3>
 
 <p><strong>begin</strong> is fired as the user starts to adjust the slider value. This happens
 when they click on the slider bar, or on the handle <em>prior</em> to the slider
 being dragged to a new position.</p>
 
-<h3 id="ondrag">drag <code>onDrag: function (newValue, quinn)</code></h3>
+<h3 id="ondrag">drag <code>drag: function (newValue, quinn)</code></h3>
 
 <p>The <strong>drag</strong> callback is run each time the slider value changes. The function
 is supplied with two arguments: the new slider value, and the Quinn instance.</p>
@@ -260,11 +260,11 @@ is supplied with two arguments: the new slider value, and the Quinn instance.</p
 }
 
 $('.slider').quinn({
-    onDrag: function (newValue, slider) {
+    drag: function (newValue, slider) {
         changeValueColour(newValue);
     },
 
-    onSetup: function (value, slider) {
+    setup: function (value, slider) {
         /* Set the initial colour. */
         changeValueColour(value);
     }
@@ -283,7 +283,7 @@ handle.</p>
 <p>Explicitly returning false in the callback will prevent the change.</p>
 
 <pre><code>$('.slider').quinn({
-    onDrag: function (newValue, slider) {
+    drag: function (newValue, slider) {
         /* Prevent selection of 41 to 59. */
         if (newValue &gt; 40 &amp;&amp; newValue &lt; 60) {
             return false;
@@ -292,7 +292,7 @@ handle.</p>
 });
 </code></pre>
 
-<h3 id="onchange">change <code>onChange: function (newValue, quinn)</code></h3>
+<h3 id="onchange">change <code>change: function (newValue, quinn)</code></h3>
 
 <p><strong>change</strong> is similar to the to the <strong>drag</strong> event in that it is fired when
 the slider value is changed by a user. However, unlike <strong>drag</strong> it is fired
@@ -303,7 +303,7 @@ after dragging the slider handle.</p>
 <pre><code>$('.slider').quinn({
     value: 25,
 
-    onChange: function (newValue, slider) {
+    change: function (newValue, slider) {
         /* Disallow selecting a value over 50, but only
            after the user has finished moving the slider. */
         if (newValue &gt; 50) {
@@ -313,7 +313,7 @@ after dragging the slider handle.</p>
 });
 </code></pre>
 
-<h3 id="onabort">abort <code>onAbort: function (restoredValue, quinn)</code></h3>
+<h3 id="onabort">abort <code>abort: function (restoredValue, quinn)</code></h3>
 
 <p>The <strong>abort</strong> event is fired once the user has finished adjusting the value
 (like <strong>change</strong>) but the change failed either because the <strong>change</strong> callback
@@ -354,11 +354,11 @@ all it takes. In some cases, you may need to alter the CSS. For example:</p>
 $('.slider').quinn({
     value: 25,
 
-    onDrag: function (newValue, slider) {
+    drag: function (newValue, slider) {
         changeValueColour(newValue);
     },
 
-    onSetup: function (value, slider) {
+    setup: function (value, slider) {
         /* Set the initial colour. */
         changeValueColour(value);
     }
@@ -380,7 +380,8 @@ supplying your own renderer allows you to create completely custom sliders
 (you could even write a <code>CanvasRenderer</code> if you so desired).</p>
   </li>
   <li>
-    <p><code>onChange</code> is now <code>onDrag</code>, and <code>onCommit</code> is now <code>onChange</code>.</p>
+    <p><strong>Events have been renamed.</strong> <code>onChange</code>/<code>change</code> is now <code>drag</code>, and
+<code>onCommit</code>/<code>commit</code> is now <code>change</code>.</p>
   </li>
   <li>
     <p>Quinn’s styling rules <a href="https://github.com/antw/quinn/commit/ea29f2f">have been changed</a>. If you use the

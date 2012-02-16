@@ -58,11 +58,11 @@
         this.wrapperWidth  = 0;
         this.wrapperOffset = 0;
 
-        this.on('setup',  this.options.onSetup);
-        this.on('begin',  this.options.onBegin);
-        this.on('drag',   this.options.onDrag);
-        this.on('change', this.options.onChange);
-        this.on('abort',  this.options.onAbort);
+        this.on('setup',  this.options.setup);
+        this.on('begin',  this.options.begin);
+        this.on('drag',   this.options.drag);
+        this.on('change', this.options.change);
+        this.on('abort',  this.options.abort);
 
         if (_.isFunction(this.renderer.render)) {
             this.renderer.render();
@@ -292,9 +292,9 @@
     Quinn.prototype.hasChanged = function () {
         this.deactivateActiveHandle();
 
-        /* Run the onChange callback; if the callback returns false then we
+        /* Run the change callback; if the callback returns false then we
          * revert the slider change, and restore everything to how it was
-         * before. Note that reverting the change will also fire an onChange
+         * before. Note that reverting the change will also fire an change
          * event when the value is reverted.
          */
         if (! this.trigger('change', this.model.value)) {
@@ -939,7 +939,7 @@
         //   number: the altered slider value
         //   Quinn:  the Quinn instance
         //
-        onDrag: null,
+        drag: null,
 
         // Run after the user has finished making a change.
         //
@@ -947,7 +947,7 @@
         //   number: the new slider value
         //   Quinn:  the Quinn instance
         //
-        onChange: null,
+        change: null,
 
         // Run once after the slider has been constructed.
         //
@@ -955,7 +955,7 @@
         //   number: the current slider value
         //   Quinn:  the Quinn instance
         //
-        onSetup: null,
+        setup: null,
 
         // An optional class which is used to render the Quinn DOM elements
         // and redraw them when the slider value is changed. This should be

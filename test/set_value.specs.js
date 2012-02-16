@@ -27,30 +27,30 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(0);
             });
 
-            it('should run the onDrag callback', function () {
-                var onDragRun = false;
+            it('should run the drag callback', function () {
+                var dragRun = false;
 
                 slider = new $.Quinn(wrapper, {
-                    onDrag: function () {
-                        onDragRun = true;
+                    drag: function () {
+                        dragRun = true;
                     }
                 });
 
                 slider.setValue(50);
-                assert(onDragRun).isTrue();
+                assert(dragRun).isTrue();
             });
 
-            it('should run the onChange callback', function () {
-                var onChangeRun = false;
+            it('should run the change callback', function () {
+                var changeRun = false;
 
                 slider = new $.Quinn(wrapper, {
-                    onChange: function () {
-                        onChangeRun = true;
+                    change: function () {
+                        changeRun = true;
                     }
                 });
 
                 slider.setValue(50);
-                assert(onChangeRun).isTrue();
+                assert(changeRun).isTrue();
             });
         }); // when setting a value
 
@@ -95,13 +95,13 @@ QUnit.specify('', function () {
             });
         }); // when the value does not match the step
 
-        describe('when the onDrag callback returns false', function () {
-            var onChangeRun;
+        describe('when the drag callback returns false', function () {
+            var changeRun;
 
             before(function () {
                 slider = new $.Quinn(wrapper, {
-                    onDrag:   function () { return false },
-                    onChange: function () { onChangeRun = true; }
+                    drag:   function () { return false },
+                    change: function () { changeRun = true; }
                 });
             });
 
@@ -110,16 +110,16 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(0);
             });
 
-            it('should not run onChange', function () {
+            it('should not run change', function () {
                 slider.setValue(5);
-                assert(onChangeRun).isFalse();
+                assert(changeRun).isFalse();
             });
-        }); // when the onDrag callback returns false
+        }); // when the drag callback returns false
 
-        describe('when the onChange callback returns false', function () {
+        describe('when the change callback returns false', function () {
             before(function () {
                 slider = new $.Quinn(wrapper, {
-                    onChange: function () { return false }
+                    change: function () { return false }
                 });
             });
 
@@ -127,29 +127,29 @@ QUnit.specify('', function () {
                 assert(slider.setValue(5)).equals(0);
                 assert(slider.model.value).equals(0);
             });
-        }); // when the onChange callback returns false
+        }); // when the change callback returns false
 
         describe('when the value is unchanged', function () {
-            var onDragRun, onChangeRun;
+            var dragRun, changeRun;
 
             before(function () {
                 slider = new $.Quinn(wrapper, {
-                    onDrag:   function () { onDragRun   = true; },
-                    onChange: function () { onChangeRun = true; }
+                    drag:   function () { dragRun   = true; },
+                    change: function () { changeRun = true; }
                 });
 
-                onDragRun   = false;
-                onChangeRun = false;
+                dragRun   = false;
+                changeRun = false;
 
                 slider.setValue(0);
             });
 
-            it('should not run onDrag', function () {
-                assert(onDragRun).isFalse();
+            it('should not run drag', function () {
+                assert(dragRun).isFalse();
             });
 
-            it('should not run onChange', function () {
-                assert(onChangeRun).isFalse();
+            it('should not run cnChange', function () {
+                assert(changeRun).isFalse();
             });
         }); // when the value is unchanged
 

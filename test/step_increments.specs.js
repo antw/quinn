@@ -2,7 +2,7 @@ QUnit.specify('', function () {
     var wrapper = $('#slider'), slider;
 
     describe('stepUp', function () {
-        var wrapper = $('#slider'), slider, onDragRun, onChangeRun;
+        var wrapper = $('#slider'), slider, dragRun, changeRun;
 
         after(function () {
             wrapper.html('');
@@ -10,12 +10,12 @@ QUnit.specify('', function () {
 
         describe('When step: 1', function () {
             before(function () {
-                onDragRun   = false;
-                onChangeRun = false;
+                dragRun   = false;
+                changeRun = false;
 
                 slider = new $.Quinn(wrapper, {
-                    onDrag:   function () { onDragRun   = true },
-                    onChange: function () { onChangeRun = true },
+                    drag:   function () { dragRun   = true },
+                    change: function () { changeRun = true },
                 });
             });
 
@@ -29,14 +29,14 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(2);
             });
 
-            it('should run onDrag', function () {
+            it('should run drag', function () {
                 slider.stepUp();
-                assert(onDragRun).isTrue();
+                assert(dragRun).isTrue();
             });
 
-            it('should run onChange', function () {
+            it('should run change', function () {
                 slider.stepUp();
-                assert(onChangeRun).isTrue();
+                assert(changeRun).isTrue();
             });
         });
 
@@ -58,8 +58,8 @@ QUnit.specify('', function () {
 
         describe('When already at maximum value', function () {
             before(function () {
-                onDragRun   = false;
-                onChangeRun = false;
+                dragRun   = false;
+                changeRun = false;
 
                 slider = new $.Quinn(wrapper, { value: 100 });
             });
@@ -69,14 +69,14 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(100);
             });
 
-            it('should not run onDrag', function () {
+            it('should not run drag', function () {
                 slider.stepUp();
-                assert(onDragRun).isFalse();
+                assert(dragRun).isFalse();
             });
 
-            it('should not run onChange', function () {
+            it('should not run change', function () {
                 slider.stepUp();
-                assert(onChangeRun).isFalse();
+                assert(changeRun).isFalse();
             });
         });
 
@@ -93,8 +93,8 @@ QUnit.specify('', function () {
 
         describe('when the slider is disabled', function () {
             before(function () {
-                onDragRun   = false;
-                onChangeRun = false;
+                dragRun   = false;
+                changeRun = false;
 
                 slider = new $.Quinn(wrapper, { disable: true });
             });
@@ -104,14 +104,14 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(0);
             });
 
-            it('should not run onDrag', function () {
+            it('should not run drag', function () {
                 slider.stepUp();
-                assert(onDragRun).isFalse();
+                assert(dragRun).isFalse();
             });
 
-            it('should not run onChange', function () {
+            it('should not run change', function () {
                 slider.stepUp();
-                assert(onChangeRun).isFalse();
+                assert(changeRun).isFalse();
             });
         });
 
@@ -137,7 +137,7 @@ QUnit.specify('', function () {
     });
 
     describe('stepDown', function () {
-        var wrapper = $('#slider'), slider, onDragRun, onChangeRun;
+        var wrapper = $('#slider'), slider, dragRun, changeRun;
 
         after(function () {
             wrapper.html('');
@@ -145,13 +145,13 @@ QUnit.specify('', function () {
 
         describe('When step: 1', function () {
             before(function () {
-                onDragRun   = false;
-                onChangeRun = false;
+                dragRun   = false;
+                changeRun = false;
 
                 slider = new $.Quinn(wrapper, {
                     value:    100,
-                    onDrag:   function () { onDragRun   = true },
-                    onChange: function () { onChangeRun = true },
+                    drag:   function () { dragRun   = true },
+                    change: function () { changeRun = true },
                 });
             });
 
@@ -165,14 +165,14 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(98);
             });
 
-            it('should run onDrag', function () {
+            it('should run drag', function () {
                 slider.stepDown();
-                assert(onDragRun).isTrue();
+                assert(dragRun).isTrue();
             });
 
-            it('should run onChange', function () {
+            it('should run change', function () {
                 slider.stepDown();
-                assert(onChangeRun).isTrue();
+                assert(changeRun).isTrue();
             });
         });
 
@@ -194,8 +194,8 @@ QUnit.specify('', function () {
 
         describe('When already at minumum value', function () {
             before(function () {
-                onDragRun   = false;
-                onChangeRun = false;
+                dragRun   = false;
+                changeRun = false;
 
                 slider = new $.Quinn(wrapper);
             });
@@ -205,14 +205,14 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(0);
             });
 
-            it('should not run onDrag', function () {
+            it('should not run drag', function () {
                 slider.stepDown();
-                assert(onDragRun).isFalse();
+                assert(dragRun).isFalse();
             });
 
-            it('should not run onChange', function () {
+            it('should not run change', function () {
                 slider.stepDown();
-                assert(onChangeRun).isFalse();
+                assert(changeRun).isFalse();
             });
         });
 
@@ -229,8 +229,8 @@ QUnit.specify('', function () {
 
         describe('when the slider is disabled', function () {
             before(function () {
-                onDragRun   = false;
-                onChangeRun = false;
+                dragRun   = false;
+                changeRun = false;
 
                 slider = new $.Quinn(wrapper, { value: 100, disable: true });
             });
@@ -240,14 +240,14 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(100);
             });
 
-            it('should not run onDrag', function () {
+            it('should not run drag', function () {
                 slider.stepDown();
-                assert(onDragRun).isFalse();
+                assert(dragRun).isFalse();
             });
 
-            it('should not run onChange', function () {
+            it('should not run change', function () {
                 slider.stepDown();
-                assert(onChangeRun).isFalse();
+                assert(changeRun).isFalse();
             });
         });
 

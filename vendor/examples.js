@@ -57,9 +57,9 @@
         };
     }
 
-    // Wraps around the onDrag and onSetup callbacks given in the
-    // example to ensure that the value shown in the interactive example
-    // is updated as the slider is moved.
+    // Wraps around the drag and setup callbacks given in the example to
+    // ensure that the value shown in the interactive example is updated as
+    // the slider is moved.
 
     $.fn.quinnExample = function (options) {
         var $this = this;
@@ -67,8 +67,8 @@
         options = options || {};
 
         options = _.extend(options, {
-            onDrag:  wrapCallback(options.onDrag,  1),
-            onSetup: wrapCallback(options.onSetup, 1)
+            drag:  wrapCallback(options.drag,  1),
+            setup: wrapCallback(options.setup, 1)
         });
 
         return $this.quinn(options);
