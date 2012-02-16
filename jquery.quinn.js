@@ -151,14 +151,8 @@
      *
      * Updates the value of the slider to `newValue`. If the `animate`
      * argument is truthy, the change in value will be animated when updating
-     * the slider position. The onDrag callback may be skipped if `doCallback`
-     * is falsey.
-     *
-     * newValue - The new value of the slider.
-     * animate  - Redrawing the slider should be animated instead of instant.
-     *            Defaults to true.
-     * silent   - When true, doesn't trigger the "drag" callback. Defaults to
-     *            false.
+     * the slider position. The drag callback may be skipped if `silent` is
+     * true.
      */
     Quinn.prototype.setValue = function (newValue, animate, silent) {
         if (this.willChange()) {
@@ -178,11 +172,7 @@
      * Used internally to set the model value while ensuring that the
      * necessary callbacks are fired.
      *
-     * newValue - The new, tentative, value of the slider.
-     * animate  - Redrawing the slider should be animated instead of instant.
-     *            Defaults to true.
-     * silent   - When true, doesn't trigger the "drag" callback. Defaults to
-     *            false.
+     * See `setValue`.
      */
     Quinn.prototype.setTentativeValue = function (newValue, animate, silent) {
         var preDragValue = this.model.value,

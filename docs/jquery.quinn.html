@@ -250,19 +250,8 @@ the &ldquo;disabled&rdquo; event unless the instance was already disabled.</p>
 
 <p>Updates the value of the slider to <code>newValue</code>. If the <code>animate</code>
 argument is truthy, the change in value will be animated when updating
-the slider position. The onDrag callback may be skipped if <code>doCallback</code>
-is falsey.</p>
-
-<p>newValue &ndash; The new value of the slider.
-animate  &ndash; Redrawing the slider should be animated instead of instant.</p>
-
-<pre><code>       Defaults to true.
-</code></pre>
-
-<p>silent   &ndash; When true, doesn&rsquo;t trigger the &ldquo;drag&rdquo; callback. Defaults to</p>
-
-<pre><code>       false.
-</code></pre>
+the slider position. The drag callback may be skipped if <code>silent</code> is
+true.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">silent</span><span class="p">)</span> <span class="p">{</span>
@@ -288,16 +277,7 @@ animate  &ndash; Redrawing the slider should be animated instead of instant.</p>
 <p>Used internally to set the model value while ensuring that the
 necessary callbacks are fired.</p>
 
-<p>newValue &ndash; The new, tentative, value of the slider.
-animate  &ndash; Redrawing the slider should be animated instead of instant.</p>
-
-<pre><code>       Defaults to true.
-</code></pre>
-
-<p>silent   &ndash; When true, doesn&rsquo;t trigger the &ldquo;drag&rdquo; callback. Defaults to</p>
-
-<pre><code>       false.
-</code></pre>
+<p>See <code>setValue</code>.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setTentativeValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">silent</span><span class="p">)</span> <span class="p">{</span>
