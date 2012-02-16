@@ -667,6 +667,8 @@
     Quinn.Renderer = function (quinn) {
         _.bindAll(this, 'render', 'redraw');
 
+        var self = this;
+
         this.quinn   = quinn;
         this.model   = quinn.model;
         this.wrapper = quinn.wrapper;
@@ -684,17 +686,29 @@
 
         quinn.on('redraw', this.redraw);
 
-        // quinn.on('change', this.redraw);
-        // quinn.on('enabled',  this.enable);
-        // quinn.on('disabled', this.disable);
+        quinn.on('handleOn', function (handleIndex) {
+            self.handles[handleIndex].addClass('active');
+        });
 
-        quinn.on('handleOn', _.bind(function (handleIndex) {
-            this.handles[handleIndex].addClass('active');
-        }, this));
+        quinn.on('handleOff', function (handleIndex) {
+            self.handles[handleIndex].removeClass('active');
+        });
 
-        quinn.on('handleOff', _.bind(function (handleIndex) {
-            this.handles[handleIndex].removeClass('active');
-        }, this));
+        quinn.on('enabled', function () {
+            self.wrapper.removeClass('disabled');
+
+            if (self.options.disabledOpacity !== 1.0) {
+                self.wrapper.css('opacity', 1.0);
+            }
+        });
+
+        quinn.on('disabled', function () {
+            self.wrapper.addClass('disabled');
+
+            if (self.options.disabledOpacity !== 1.0) {
+                self.wrapper.css('opacity', self.options.disabledOpacity);
+            }
+        });
     }
 
     /**
