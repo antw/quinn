@@ -753,11 +753,6 @@
             this.bar.append(this.handles[i]);
         }
 
-        // The slider depends on some absolute positioning, so  adjust the
-        // elements widths and positions as necessary ...
-
-        this.bar.css({ width: this.width.toString() + 'px' });
-
         // Finally, these events are triggered when the user seeks to
         // update the slider.
         this.wrapper.on('mousedown', this.quinn.clickBar);

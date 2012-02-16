@@ -49,7 +49,10 @@
 .quinn .bar, .quinn .delta-bar {
   float: left;
   position: absolute;
-  width: auto;
+}
+
+.quinn .bar {
+  width: 100%;
 }
 
 .quinn .bar .left, .quinn .bar .main, .quinn .bar .right,
