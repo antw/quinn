@@ -537,11 +537,11 @@
         this.maximum = this.roundToStep(extrema[1]);
 
         if (this.minimum < extrema[0]) {
-            this.minimum = this.minimum + this.step;
+            this.minimum += this.step;
         }
 
         if (this.maximum > extrema[1]) {
-            this.maximum = this.maximum - this.step;
+            this.maximum -= this.step;
         }
 
         /* Determine the initial value of the slider. Prefer an explicitly set
