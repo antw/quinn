@@ -1,14 +1,13 @@
 Quinn
 =====
 
-Are you viewing this README on Github? Head to the
-[Quinn homepage][home] where all of the examples below are fully
-interactive.
+Are you viewing this README on Github? Head to the [Quinn homepage][home]
+where all of the examples below are fully interactive.
 {:.github}
 
-[Quinn][github] is a jQuery-based library which creates sliders (aka.
-ranges, aka. track  bars) for HTML applications. The project is hosted
-on [GitHub][github]; you can report bugs and discuss features on the
+[Quinn][github] is a jQuery-based library which creates sliders (aka. ranges,
+aka. track bars) for HTML applications. The project is hosted on
+[GitHub][github]; you can report bugs and discuss features on the
 [issue tracker][issues], or direct your tweets at [@antw][twitter]. An
 [annotated version][annotated] of the source is available.
 
@@ -25,13 +24,12 @@ Quinn has been tested and works in the following environments:
  - Internet Explorer 7 and 8
  {:.yes}
 
-There are no plans to support Internet Explorer 6. The unit tests can
-be run [in your browser][tests].
+There are no plans to support Internet Explorer 6. The unit tests can be run
+[in your browser][tests].
 
-Quinn was developed by [~antw][antw] as part of Quintel
-Intelligence's [Energy Transition Model][etm] application, and has been
-open-sourced with their kind permission. Quinn is released under the
-[New BSD License][license].
+Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
+[Energy Transition Model][etm] application, and has been open-sourced with
+their kind permission. Quinn is released under the [New BSD License][license].
 
 Downloads
 ---------
@@ -50,15 +48,14 @@ Table of Contents
 
 #### Options
 
-[Minima and Maxima][range], [Initial Values][value],
-[Steps][step], [Selectable Ranges][selectable],
-[Multiple Values][values], [Effects][effects],
-[Specific Values][only], [Disabling the Slider][disable]
+[Minima and Maxima][range], [Initial Values][value], [Steps][step],
+[Selectable Ranges][selectable], [Multiple Values][values],
+[Effects][effects], [Specific Values][only], [Disabling the Slider][disable]
 
 #### [Callbacks][callbacks]
 
-[setup][onsetup], [begin][onbegin], [drag][ondrag],
-[change][onchange], [abort][onabort]
+[setup][onsetup], [begin][onbegin], [drag][ondrag], [change][onchange],
+[abort][onabort]
 
 #### [Theming][theming]
 
@@ -75,108 +72,104 @@ instance, you may pass extra options when initializing:
 
 ### Minima and Maxima `range: [min, max]` {#range}
 
-By default, a Quinn slider allows selection of whole numbers between 0
-and 100. By supplying a **range** option, you can change these values:
-**range** should be an array of two values, where the first value is the
-minimum value represented on the slider, and the second is the maximum.
+By default, a Quinn slider allows selection of whole numbers between 0 and
+100. By supplying a **range** option, you can change these values: **range**
+should be an array of two values, where the first value is the minimum value
+represented on the slider, and the second is the maximum.
 
     /* Our volume knobs go up to eleven. */
     $('.slider').quinn({ range: [ 0, 11 ] });
 
-Negative values are perfectly acceptable, and the "active bar" (the
-blue background) will always be anchored at zero.
+Negative values are perfectly acceptable, and the "active bar" (the blue
+background) will always be anchored at zero.
 
     $('.slider').quinn({ range: [ -100, 100 ] });
 
 ### Initial Values `value: number` {#value}
 
-When a slider is created without a default value, it will initialize
-with the slider in the minimum value position. Supplying a **value**
-option results in the slider being created with a different starting
-value.
+When a slider is created without a default value, it will initialize with the
+slider in the minimum value position. Supplying a **value** option results in
+the slider being created with a different starting value.
 
     $('.slider').quinn({ value: 25 });
 
 ### Steps `step: number` {#step}
 
 The **step** option restricts the values which may be selected using the
-slider to numbers which are divisible by the step without a remainder.
-For example, a step of 10 only 0, 10, 20, 30, ..., n, to be chosen.
+slider to numbers which are divisible by the step without a remainder. For
+example, a step of 10 only 0, 10, 20, 30, ..., n, to be chosen.
 
     $('.slider').quinn({ step: 10 });
 
-If you supply an initial value which can't be used as it doesn't "fit"
-with the step, the value will be rounded to the nearest acceptable point
-on the slider. For example, an step of 10, and an initial value of 17
-will result in the slider being initialized with a value of 20 instead.
+If you supply an initial value which can't be used as it doesn't "fit" with
+the step, the value will be rounded to the nearest acceptable point on the
+slider. For example, an step of 10, and an initial value of 17 will result in
+the slider being initialized with a value of 20 instead.
 
-Combining the **step** option with **[range][range]** permits the
-creation of sliders with arbitrary values:
+Combining the **step** option with **[range][range]** permits the creation of
+sliders with arbitrary values:
 
     $('.slider').quinn({ range: [0, 1.21], step: 0.01 });
 
 ### Selectable Ranges `selectable: [min, max]` {#selectable}
 
-Sometimes you want to show a slider where only a certain partition of
-the values may be chosen by the user. This is achieved using the
-**selectable** option.
+Sometimes you want to show a slider where only a certain partition of the
+values may be chosen by the user. This is achieved using the **selectable**
+option.
 
-The example below is created with the default range `[0, 100]`, but
-restricts the values the user may select:
+The example below is created with the default range `[0, 100]`, but restricts
+the values the user may select:
 
     $('.slider').quinn({ selectable: [35, 80] });
 
-The "selectable" values can be changed later with `setSelectable(min,
-max)`.
+The "selectable" values can be changed later with `setSelectable(min, max)`.
 
-When using **selectable**, your **step** option will still be respected
-and **selectable** values which don't fit with the step will be rounded
-to the nearest inclusive step. Note that in the example below the lowest
-selectable value (5) is not available since `step: 20` is used. The
-lower value is instead rounded to 20 (not 0 since this is outside the
-selectable range supplied and might break your data validation later).
+When using **selectable**, your **step** option will still be respected and
+**selectable** values which don't fit with the step will be rounded to the
+nearest inclusive step. Note that in the example below the lowest selectable
+value (5) is not available since `step: 20` is used. The lower value is
+instead rounded to 20 (not 0 since this is outside the selectable range
+supplied and might break your data validation later).
 
     $('.slider').quinn({ selectable: [5, 80], step: 20 });
 
 ### Multiple Values `value: [value1, value2, ..., valueN]` {#values}
 
-Instead of a Quinn slider having a single value, it may instead be used
-to represent a range of values, with a lower and upper value. Simply
-supply an array with two numeric values.
+Instead of a Quinn slider having a single value, it may instead be used to
+represent a range of values, with a lower and upper value. Simply supply an
+array with two numeric values.
 
     $('.slider').quinn({ value: [25, 75] });
 
 Quinn isn't limited to two values; add as many as you want, but with the
-default renderer using more than two values will disable the blue "delta"
-bar.
+default renderer using more than two values will disable the blue "delta" bar.
 
     $('.slider').quinn({ value: [15, 30, 70, 85] });
 
 ### Effects `effects: bool` `effectSpeed: number` {#effects}
 
-Some Quinn actions make use of jQuery effects. For example, clicking on
-the slider bar immediately changes the value and animates movement of
-the handle to the new position. Animation length may be altered with the
-**effectSpeed** option which may be any valid jQuery animation length
-(fast, slow, or a number), or disabled completely by setting `effects:
-false`.
+Some Quinn actions make use of jQuery effects. For example, clicking on the
+slider bar immediately changes the value and animates movement of the handle
+to the new position. Animation length may be altered with the **effectSpeed**
+option which may be any valid jQuery animation length (fast, slow, or a
+number), or disabled completely by setting `effects: false`.
 
-If the [Easing][easing] library is available, your default animation
-easing function will be used.
+If the [Easing][easing] library is available, your default animation easing
+function will be used.
 
     $('.slider').quinn({ effects: false });
 
 ### Specific Values `only: [value, value, ...]` {#only}
 
-To create a slider where the user may select only from specific values,
-use the **only** option with an array of values which may be chosen.
+To create a slider where the user may select only from specific values, use
+the **only** option with an array of values which may be chosen.
 
     $('.slider').quinn({ only: [10, 15, 50, 80], value: 50 });
 
 ### Disabling the Slider `disable: bool` {#disable}
 
-When you do not wish the user to be able to interact with the slider,
-pass `false` with the **disable** option:
+When you do not wish the user to be able to interact with the slider, pass
+`false` with the **disable** option:
 
     $('.slider').quinn({ value: 50, disable: true });
 
@@ -189,8 +182,7 @@ creating the slider.
 
 When the user alters the slider position, the order of events firing is:
 
- 1. **[begin][onbegin]**: Each time the user starts changing the slider
-    value.
+ 1. **[begin][onbegin]**: Each time the user starts changing the slider value.
  2. **[drag][ondrag]**: Repeatedly as the user drags the handle to new
     positions. If the callbacks all return true, and the value was changed, a
     `redraw` event is then fired. `redraw` is considered internal and should
@@ -199,8 +191,8 @@ When the user alters the slider position, the order of events firing is:
  4. **[abort][onabort]**: When the user releases the mouse button, and the
     change callback returns false.
 
-In addition to supplying callbacks when initializing a slider, you may
-bind further callbacks to the Quinn instance:
+In addition to supplying callbacks when initializing a slider, you may bind
+further callbacks to the Quinn instance:
 
     var slider = new $.Quinn(element, options);
 
@@ -215,25 +207,23 @@ bind further callbacks to the Quinn instance:
 
 ### setup `onSetup: function (currentValue, quinn)` {#onsetup}
 
-**setup** is run only once, immediately after the Quinn constructor
-has completed. Two arguments are supplied: the current value of the
-slider and the Quinn instance. Note that the slider value given during
-initialization may differ from the one given to the callback since the
-constructor adjusts the slider value to fit with the **range**,
-**selectable**, and **step** options. The value supplied to the
-callback is correct.
+**setup** is run only once, immediately after the Quinn constructor has
+completed. Two arguments are supplied: the current value of the slider and the
+Quinn instance. Note that the slider value given during initialization may
+differ from the one given to the callback since the constructor adjusts the
+slider value to fit with the **range**, **selectable**, and **step** options.
+The value supplied to the callback is correct.
 
 ### begin `onBegin: function (currentValue, quinn)` {#onbegin}
 
-**begin** is fired as the user starts to adjust the slider value. This
-happens when they click on the slider bar, or on the handle _prior_ to
-the slider being dragged to a new position.
+**begin** is fired as the user starts to adjust the slider value. This happens
+when they click on the slider bar, or on the handle _prior_ to the slider
+being dragged to a new position.
 
 ### drag `onDrag: function (newValue, quinn)` {#ondrag}
 
-The **drag** callback is run each time the slider value changes. The
-function is supplied with two arguments: the new slider value, and the
-Quinn instance.
+The **drag** callback is run each time the slider value changes. The function
+is supplied with two arguments: the new slider value, and the Quinn instance.
 
     function changeValueColour (value) {
         var h = (128 - value * 1.28).toFixed(),
@@ -254,13 +244,13 @@ Quinn instance.
     });
 
 Be aware that the **drag** callback is run every time the slider value
-changes, which can be extremely frequent when dragging the slider
-handle. This is perfect for "hooking" in to the slider to display the
-value elsewhere in your UI (such as the examples on this page), to
-update a graph in real-time, etc, but is not suitable for persisting the
-slider value to a server unless you like flooding your application with
-tens of HTTP requests per second. Use **change** which is fired only
-after the user has finished dragging the handle.
+changes, which can be extremely frequent when dragging the slider handle. This
+is perfect for "hooking" in to the slider to display the value elsewhere in
+your UI (such as the examples on this page), to update a graph in real-time,
+etc, but is not suitable for persisting the slider value to a server unless
+you like flooding your application with tens of HTTP requests per second. Use
+**change** which is fired only after the user has finished dragging the
+handle.
 
 Explicitly returning false in the callback will prevent the change.
 
@@ -275,11 +265,11 @@ Explicitly returning false in the callback will prevent the change.
 
 ### change `onChange: function (newValue, quinn)` {#onchange}
 
-**change** is similar to the to the **drag** event in that it is
-fired when the slider value is changed by a user. However, unlike
-**drag** it is fired only after the user has _finished_ changing the
-value. This is defined as clicking the slider bar to change the value,
-or lifting the left mouse button after dragging the slider handle.
+**change** is similar to the to the **drag** event in that it is fired when
+the slider value is changed by a user. However, unlike **drag** it is fired
+only after the user has _finished_ changing the value. This is defined as
+clicking the slider bar to change the value, or lifting the left mouse button
+after dragging the slider handle.
 
     $('.slider').quinn({
         value: 25,
@@ -295,19 +285,17 @@ or lifting the left mouse button after dragging the slider handle.
 
 ### abort `onAbort: function (restoredValue, quinn)` {#onabort}
 
-The **abort** event is fired once the user has finished adjusting the
-value (like **change**) but the change failed either because the
-**change** callback returned false, or the user set the slider back
-to it's starting value.
+The **abort** event is fired once the user has finished adjusting the value
+(like **change**) but the change failed either because the **change** callback
+returned false, or the user set the slider back to it's starting value.
 
 Theming
 -------
 
-Altering Quinn's appearance is relatively simple. The default style uses
-a [single-image sprite][default-sprite]. If you don't need to resize any
-of the slider elements, replacing this image with
-[an alternative][rainbow-sprite] is all it takes. In some cases, you may
-need to alter the CSS. For example:
+Altering Quinn's appearance is relatively simple. The default style uses a
+[single-image sprite][default-sprite]. If you don't need to resize any of the
+slider elements, replacing this image with [an alternative][rainbow-sprite] is
+all it takes. In some cases, you may need to alter the CSS. For example:
 
     .rainbow .bar .left, .rainbow .bar .main, .rainbow .bar .right,
     .rainbow .active-bar .left, .rainbow .active-bar .main,
@@ -386,43 +374,41 @@ History
 
 #### 0.4.2 _February 10th, 2012_
 
-Changed the way touch-support was detected to fix clicking on the handle
-not working correctly in Chrome 17.
+Changed the way touch-support was detected to fix clicking on the handle not
+working correctly in Chrome 17.
 
 #### 0.4.1 _January 20th, 2012_
 
-Fix for an occasional error when clicking on the bar of sliders when
-animation is enabled.
+Fix for an occasional error when clicking on the bar of sliders when animation
+is enabled.
 
 #### 0.4.0 _December 8th, 2011_
 
-Quinn ranges may now also represent a [range of values][values] by
-providing a two-element array as the value option. Note that this
-will be the last major Quinn release which will use the current
-"change" and "commit" callback names; 0.5 will change these to
-"drag" and "change" respectively.
+Quinn ranges may now also represent a [range of values][values] by providing a
+two-element array as the value option. Note that this will be the last major
+Quinn release which will use the current "change" and "commit" callback names;
+0.5 will change these to "drag" and "change" respectively.
 
 #### 0.3.9 _October 4th, 2011_
 
-During `onChange` callbacks, `quinn.value` will now be the new value of
-the slider, and not the previous value.
+During `onChange` callbacks, `quinn.value` will now be the new value of the
+slider, and not the previous value.
 
 #### 0.3.8 _September 29th, 2011_
 
-Added `width` and `handleWidth` to manually set the width of these
-elements. Useful when using Quinn on a wrapper element which hasn't
-yet been added to the DOM.
+Added `width` and `handleWidth` to manually set the width of these elements.
+Useful when using Quinn on a wrapper element which hasn't yet been added to
+the DOM.
 
 #### 0.3.7 _August 18th, 2011_
 
-Fix a bug with Firefox 6 where elements positioned absolutely with
-fractional pixel values would not display correctly.
+Fix a bug with Firefox 6 where elements positioned absolutely with fractional
+pixel values would not display correctly.
 
 #### 0.3.6 _August 15th, 2011_
 
-Fix a rendering error introduced in 0.3.4 where the blue active bar
-was placed in the wrong position when both slider range values were
-above or below zero.
+Fix a rendering error introduced in 0.3.4 where the blue active bar was placed
+in the wrong position when both slider range values were above or below zero.
 
 #### 0.3.5 _August 15th, 2011_
 
@@ -430,51 +416,51 @@ Some IE 8 fixes.
 
 #### 0.3.4 _August 14th, 2011_
 
-The blue "active bar" now originates at zero rather than the lowest
-slider value, allowing sliders with sub-zero values to be better
-represented than before.
+The blue "active bar" now originates at zero rather than the lowest slider
+value, allowing sliders with sub-zero values to be better represented than
+before.
 
 #### 0.3.3 _July 28th, 2011_
 
-Add a `disabledOpacity` option for controlling what opacity is used
-when disabling.
+Add a `disabledOpacity` option for controlling what opacity is used when
+disabling.
 
 #### 0.3.1 _July 21st, 2011_
 
-Small stylesheet adjustment to ensure that the slider handle may be
-moved all the way to the right of the bar.
+Small stylesheet adjustment to ensure that the slider handle may be moved all
+the way to the right of the bar.
 
 #### 0.3.0 _June 27th, 2011_
 
-Events may be bound to the Quinn instance just like DOM events in jQuery
-using `bind`. The onComplete callback has been renamed onCommit.
+Events may be bound to the Quinn instance just like DOM events in jQuery using
+`bind`. The onComplete callback has been renamed onCommit.
 
 #### 0.2.1 _June 14th, 2011_
 
-Quinn has now been tested and fixed for IE7, urgh. Opera has been tested
-and, unsurprisingly, works perfectly.
+Quinn has now been tested and fixed for IE7, urgh. Opera has been tested and,
+unsurprisingly, works perfectly.
 
 #### 0.2.0 _June 13th, 2011_
 
-`stepUp` and `stepDown` have been added which are similar to the methods
-of the same name on HTML 5 range and number inputs. Quinn instances may
-now be created using `new $.Quinn(...)` if you need to hang on to the
-slider instance after creation. Default theme changed to use a modified
-version of Aristo. Fixed an issue when using `selectable` with `step`
-when the selectable options didn't fit the step.
+`stepUp` and `stepDown` have been added which are similar to the methods of
+the same name on HTML 5 range and number inputs. Quinn instances may now be
+created using `new $.Quinn(...)` if you need to hang on to the slider instance
+after creation. Default theme changed to use a modified version of Aristo.
+Fixed an issue when using `selectable` with `step` when the selectable options
+didn't fit the step.
 
 #### 0.1.6 _June 10th, 2011_
 
-The `only` option has been added which restricts the choosable values
-to those which are in the `only` array. Respects the `selectable` and
-`range` settings. Clicking in the space above the visible slider bar now
-correctly triggers events.
+The `only` option has been added which restricts the choosable values to those
+which are in the `only` array. Respects the `selectable` and `range` settings.
+Clicking in the space above the visible slider bar now correctly triggers
+events.
 
 #### 0.1.4 _June 9th, 2011_
 
-Adds support for touch devices (iOS, Android, etc). Various small fixes
-to make the library "more jQuery-like", including the ability to chain
-other functions off `$.fn.quinn()`. "Click-dragging" no longer fires two
+Adds support for touch devices (iOS, Android, etc). Various small fixes to
+make the library "more jQuery-like", including the ability to chain other
+functions off `$.fn.quinn()`. "Click-dragging" no longer fires two
 `onComplete` events; only one when the user releases the mouse button.
 
 #### 0.1.2 _June 9th, 2011_
@@ -485,8 +471,8 @@ separate `onComplete` events.
 
 #### 0.1.0 _June 8th, 2011_
 
-Initial release on GitHub. Supports most planned features, but tests in
-Opera and Internet Explorer are not yet complete.
+Initial release on GitHub. Supports most planned features, but tests in Opera
+and Internet Explorer are not yet complete.
 
 [home]:           http://antw.github.com/quinn
 [github]:         http://github.com/antw/quinn
