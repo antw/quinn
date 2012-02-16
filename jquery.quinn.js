@@ -280,6 +280,11 @@
 
         this.previousValue = this.model.value;
 
+        // These attributes are cached so that we don't have to look them up
+        // every time the user drags the handle.
+        this.wrapperWidth  = this.wrapper.width();
+        this.wrapperOffset = this.wrapper.offset().left;
+
         return true;
     };
 
@@ -380,11 +385,6 @@
         if (! skipPreamble && ! this.willChange()) {
             return false;
         }
-
-        // These attributes are cached so that we don't have to look them up
-        // every time the user drags the handle.
-        this.wrapperWidth  = this.wrapper.width();
-        this.wrapperOffset = this.wrapper.offset().left;
 
         this.activateHandleWithEvent(event);
 

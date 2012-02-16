@@ -435,7 +435,20 @@ willChange &mdash; if false, no changes are permitted to the slider.</p>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-21'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-21">&#182;</a>
+        </div>
+        <p>These attributes are cached so that we don&rsquo;t have to look them up
+every time the user drags the handle.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="k">this</span><span class="p">.</span><span class="nx">wrapperWidth</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">width</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">wrapperOffset</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">offset</span><span class="p">().</span><span class="nx">left</span><span class="p">;</span>
 
         <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
@@ -470,10 +483,10 @@ changes to the slider and that the new value should be retained.</p>
         <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-22'>
+    <tr id='section-23'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-22">&#182;</a>
+          <a class="pilcrow" href="#section-23">&#182;</a>
         </div>
         <p>The user reset the slider back to where it was.</p>
       </td>
@@ -540,10 +553,10 @@ the bar&rsquo;s width.</p>
         <span class="k">if</span> <span class="p">(</span><span class="nx">mousePosition</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">wrapperOffset</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-26'>
+    <tr id='section-27'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-26">&#182;</a>
+          <a class="pilcrow" href="#section-27">&#182;</a>
         </div>
         <p>Mouse is to the left of the bar.</p>
       </td>
@@ -552,10 +565,10 @@ the bar&rsquo;s width.</p>
         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">mousePosition</span> <span class="o">&gt;</span> <span class="nx">maxRight</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-27'>
+    <tr id='section-28'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-27">&#182;</a>
+          <a class="pilcrow" href="#section-28">&#182;</a>
         </div>
         <p>Mouse is to the right of the bar.</p>
       </td>
@@ -597,10 +610,10 @@ the assumption that it has already been run (see <code>clickBar</code>).</p>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">startDrag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">skipPreamble</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-30'>
+    <tr id='section-31'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-30">&#182;</a>
+          <a class="pilcrow" href="#section-31">&#182;</a>
         </div>
         <p>Only enable dragging when the left mouse button is used.</p>
       </td>
@@ -611,20 +624,7 @@ the assumption that it has already been run (see <code>clickBar</code>).</p>
 
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">skipPreamble</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">willChange</span><span class="p">())</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span></pre></div>
-      </td>
-    </tr>
-    <tr id='section-31'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-31">&#182;</a>
-        </div>
-        <p>These attributes are cached so that we don&rsquo;t have to look them up
-every time the user drags the handle.</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre>        <span class="k">this</span><span class="p">.</span><span class="nx">wrapperWidth</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">width</span><span class="p">();</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">wrapperOffset</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">offset</span><span class="p">().</span><span class="nx">left</span><span class="p">;</span>
+        <span class="p">}</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">activateHandleWithEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span></pre></div>
       </td>
