@@ -300,9 +300,7 @@ other values also.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">scalar</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">sanitizeValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">);</span>
-                <span class="nx">newValue</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">);</span></pre></div>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
     <tr id='section-15'>
@@ -310,23 +308,15 @@ other values also.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-15">&#182;</a>
         </div>
-        <p>Ensure that the handle doesn&rsquo;t &ldquo;cross over&rdquo; a higher or
-lower handle.</p>
+        <p>Without an active handle, we don&rsquo;t know which value we are
+supposed to set.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>                <span class="nx">prevScalar</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
-                <span class="nx">nextScalar</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+        <div class='highlight'><pre>                <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+            <span class="p">}</span>
 
-                <span class="k">if</span> <span class="p">(</span><span class="nx">prevScalar</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&lt;=</span> <span class="nx">prevScalar</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">scalar</span> <span class="o">=</span> <span class="nx">prevScalar</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
-                <span class="p">}</span>
-
-                <span class="k">if</span> <span class="p">(</span><span class="nx">nextScalar</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&gt;=</span> <span class="nx">nextScalar</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">scalar</span> <span class="o">=</span> <span class="nx">nextScalar</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
-                <span class="p">}</span>
-
-                <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">]</span> <span class="o">=</span> <span class="nx">scalar</span><span class="p">;</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>
+            <span class="nx">scalar</span>   <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">sanitizeValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">);</span>
+            <span class="nx">newValue</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">);</span></pre></div>
       </td>
     </tr>
     <tr id='section-16'>
@@ -334,12 +324,22 @@ lower handle.</p>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-16">&#182;</a>
         </div>
-        <p>Without an active handle, we don&rsquo;t know which value we are
-supposed to set.</p>
+        <p>Ensure that the handle doesn&rsquo;t &ldquo;cross over&rdquo; a higher or
+lower handle.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>                <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <div class='highlight'><pre>            <span class="nx">prevScalar</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+            <span class="nx">nextScalar</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">prevScalar</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&lt;=</span> <span class="nx">prevScalar</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">scalar</span> <span class="o">=</span> <span class="nx">prevScalar</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
             <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">nextScalar</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&gt;=</span> <span class="nx">nextScalar</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">scalar</span> <span class="o">=</span> <span class="nx">nextScalar</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">]</span> <span class="o">=</span> <span class="nx">scalar</span><span class="p">;</span>
         <span class="p">}</span>
 
         <span class="nx">newValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">setValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">);</span>

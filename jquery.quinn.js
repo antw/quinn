@@ -186,30 +186,30 @@
         // was given, we need to alter the given value so that we set the
         // other values also.
         if (this.model.values.length > 1 && _.isNumber(newValue)) {
-            if (this.activeHandle != null) {
-                scalar   = this.model.sanitizeValue(newValue);
-                newValue = _.clone(this.model.values);
-
-                // Ensure that the handle doesn't "cross over" a higher or
-                // lower handle.
-
-                prevScalar = newValue[this.activeHandle - 1];
-                nextScalar = newValue[this.activeHandle + 1];
-
-                if (prevScalar != null && scalar <= prevScalar) {
-                    scalar = prevScalar + this.options.step;
-                }
-
-                if (nextScalar != null && scalar >= nextScalar) {
-                    scalar = nextScalar - this.options.step;
-                }
-
-                newValue[this.activeHandle] = scalar;
-            } else {
+            if (this.activeHandle == null) {
                 // Without an active handle, we don't know which value we are
                 // supposed to set.
                 return false;
             }
+
+            scalar   = this.model.sanitizeValue(newValue);
+            newValue = _.clone(this.model.values);
+
+            // Ensure that the handle doesn't "cross over" a higher or
+            // lower handle.
+
+            prevScalar = newValue[this.activeHandle - 1];
+            nextScalar = newValue[this.activeHandle + 1];
+
+            if (prevScalar != null && scalar <= prevScalar) {
+                scalar = prevScalar + this.options.step;
+            }
+
+            if (nextScalar != null && scalar >= nextScalar) {
+                scalar = nextScalar - this.options.step;
+            }
+
+            newValue[this.activeHandle] = scalar;
         }
 
         newValue = this.model.setValue(newValue);
