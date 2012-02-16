@@ -853,8 +853,16 @@ active.</p>
 
         <span class="nx">extrema</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">selectable</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">range</span><span class="p">;</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">=</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">=</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">extrema</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">extrema</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">&lt;</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">&gt;</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
+        <span class="p">}</span>
 
         <span class="cm">/* Determine the initial value of the slider. Prefer an explicitly set</span>
 <span class="cm">         * value, whether a scalar or an array. If no value is provided by the</span>

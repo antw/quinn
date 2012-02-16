@@ -533,8 +533,16 @@
 
         extrema = this.options.selectable || this.options.range;
 
-        this.minimum = extrema[0];
-        this.maximum = extrema[1];
+        this.minimum = this.roundToStep(extrema[0]);
+        this.maximum = this.roundToStep(extrema[1]);
+
+        if (this.minimum < extrema[0]) {
+            this.minimum = this.minimum + this.step;
+        }
+
+        if (this.maximum > extrema[1]) {
+            this.maximum = this.maximum - this.step;
+        }
 
         /* Determine the initial value of the slider. Prefer an explicitly set
          * value, whether a scalar or an array. If no value is provided by the
