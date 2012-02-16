@@ -529,30 +529,12 @@
          *
          * TODO Provided this.min and this.max are set, isn't it possible
          *      to just use sanitizeValue?
-         *
-         * TODO Since it isn't possible to set a value which doesn't conform
-         *      to the step, is it even necessary to "fix" the minimum and
-         *      maximum values?
          */
 
         extrema = this.options.selectable || this.options.range;
 
         this.minimum = extrema[0];
         this.maximum = extrema[1];
-
-        minimum = this.roundToStep(extrema[0]);
-        maximum = this.roundToStep(extrema[1]);
-
-        if (minimum < extrema[0]) {
-            minimum += this.options.step;
-        }
-
-        if (maximum > extrema[1]) {
-            maximum -= this.options.step;
-        }
-
-        this.minimum = minimum;
-        this.maximum = maximum;
 
         /* Determine the initial value of the slider. Prefer an explicitly set
          * value, whether a scalar or an array. If no value is provided by the

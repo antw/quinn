@@ -849,30 +849,12 @@ active.</p>
 <span class="cm">         *</span>
 <span class="cm">         * TODO Provided this.min and this.max are set, isn&#39;t it possible</span>
 <span class="cm">         *      to just use sanitizeValue?</span>
-<span class="cm">         *</span>
-<span class="cm">         * TODO Since it isn&#39;t possible to set a value which doesn&#39;t conform</span>
-<span class="cm">         *      to the step, is it even necessary to &quot;fix&quot; the minimum and</span>
-<span class="cm">         *      maximum values?</span>
 <span class="cm">         */</span>
 
         <span class="nx">extrema</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">selectable</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">range</span><span class="p">;</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">=</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">=</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-
-        <span class="nx">minimum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">extrema</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-        <span class="nx">maximum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">extrema</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nx">minimum</span> <span class="o">&lt;</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
-            <span class="nx">minimum</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nx">maximum</span> <span class="o">&gt;</span> <span class="nx">extrema</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
-            <span class="nx">maximum</span> <span class="o">-=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">=</span> <span class="nx">minimum</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">=</span> <span class="nx">maximum</span><span class="p">;</span>
 
         <span class="cm">/* Determine the initial value of the slider. Prefer an explicitly set</span>
 <span class="cm">         * value, whether a scalar or an array. If no value is provided by the</span>
