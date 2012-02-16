@@ -138,7 +138,7 @@ selectable range supplied and might break your data validation later).
 
     $('.slider').quinn({ selectable: [5, 80], step: 20 });
 
-### Multiple Values `value: [value, value]` {#values}
+### Multiple Values `value: [value1, value2, ..., valueN]` {#values}
 
 Instead of a Quinn slider having a single value, it may instead be used
 to represent a range of values, with a lower and upper value. Simply
@@ -366,6 +366,8 @@ History
   new Stylesheet into your assets or public directory. If you customise the
   theme see the [above referenced commit][style-change] for more information.
   The `.active-bar` class has been renamed to `.delta-bar`.
+
+* You may now use [more than two values][values] with Quinn.
 
 * The Quinn instance is no longer attached to the DOM node using
   `jQuery.fn.data`. If you need to keep hold of the instance (for example, to

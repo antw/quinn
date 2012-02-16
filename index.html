@@ -159,7 +159,7 @@ selectable range supplied and might break your data validation later).</p>
 <pre><code>$('.slider').quinn({ selectable: [5, 80], step: 20 });
 </code></pre>
 
-<h3 id="values">Multiple Values <code>value: [value, value]</code></h3>
+<h3 id="values">Multiple Values <code>value: [value1, value2, ..., valueN]</code></h3>
 
 <p>Instead of a Quinn slider having a single value, it may instead be used
 to represent a range of values, with a lower and upper value. Simply
@@ -398,6 +398,9 @@ default Quinn theme with no changes you should be able to simple drop the
 new Stylesheet into your assets or public directory. If you customise the
 theme see the <a href="https://github.com/antw/quinn/commit/ea29f2f">above referenced commit</a> for more information.
 The <code>.active-bar</code> class has been renamed to <code>.delta-bar</code>.</p>
+  </li>
+  <li>
+    <p>You may now use <a href="#values">more than two values</a> with Quinn.</p>
   </li>
   <li>
     <p>The Quinn instance is no longer attached to the DOM node using
