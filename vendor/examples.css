@@ -345,7 +345,7 @@ body, h3 code + code:before {
 
 /* "Quiet" */
 
-p code, pre code, h3 code, h4 em {
+p code, li code, pre code, h3 code, h4 em {
     color: #5f676c;
 }
 

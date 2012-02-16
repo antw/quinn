@@ -70,10 +70,10 @@ open-sourced with their kind permission. Quinn is released under the
 <a href="#values">Multiple Values</a>, <a href="#effects">Effects</a>,
 <a href="#only">Specific Values</a>, <a href="#disable">Disabling the Slider</a></p>
 
-<h4 id="callbacks">Callbacks</h4>
+<h4 id="callbackscallbacks"><a href="#callbacks">Callbacks</a></h4>
 
-<p><a href="#onsetup">onSetup</a>, <a href="#onbegin">onBegin</a>, <a href="#ondrag">onDrag</a>,
-<a href="#onchange">onChange</a>, <a href="#onbort">onAbort</a></p>
+<p><a href="#onsetup">setup</a>, <a href="#onbegin">begin</a>, <a href="#ondrag">drag</a>,
+<a href="#onchange">change</a>, <a href="#onbort">abort</a></p>
 
 <h4 id="themingtheming"><a href="#theming">Theming</a></h4>
 
@@ -206,7 +206,7 @@ pass <code>false</code> with the <strong>disable</strong> option:</p>
 <pre><code>$('.slider').quinn({ value: 50, disable: true });
 </code></pre>
 
-<h2 id="callbacks-1">Callbacks</h2>
+<h2 id="callbacks">Callbacks</h2>
 
 <p>The behavior of the slider may be further customised through the use of
 callback functions which are supplied as part of the options object when
@@ -215,13 +215,15 @@ creating the slider.</p>
 <p>When the user alters the slider position, the order of events firing is:</p>
 
 <ol>
-  <li><strong><a href="#onbegin">onBegin</a></strong>: Each time the user starts changing the slider
+  <li><strong><a href="#onbegin">begin</a></strong>: Each time the user starts changing the slider
 value.</li>
-  <li><strong><a href="#ondrag">onDrag</a></strong>: Repeatedly as the user drags the handle to new
-positions.</li>
-  <li><strong><a href="#onchange">onChange</a></strong>: When the user releases the mouse button.</li>
-  <li><strong><a href="#onbort">onAbort</a></strong>: When the user releases the mouse button, and the
-onChange callback returns false.</li>
+  <li><strong><a href="#ondrag">drag</a></strong>: Repeatedly as the user drags the handle to new
+positions. If the callbacks all return true, and the value was changed, a
+<code>redraw</code> event is then fired. <code>redraw</code> is considered internal and should
+be used only if implementing your own renderer.</li>
+  <li><strong><a href="#onchange">change</a></strong>: When the user releases the mouse button.</li>
+  <li><strong><a href="#onbort">abort</a></strong>: When the user releases the mouse button, and the
+change callback returns false.</li>
 </ol>
 
 <p>In addition to supplying callbacks when initializing a slider, you may
@@ -238,9 +240,9 @@ slider.bind('abort', function (value) {
 });
 </code></pre>
 
-<h3 id="onsetup">onSetup <code>onSetup: function (currentValue, quinn)</code></h3>
+<h3 id="onsetup">setup <code>onSetup: function (currentValue, quinn)</code></h3>
 
-<p><strong>onSetup</strong> is run only once, immediately after the Quinn constructor
+<p><strong>setup</strong> is run only once, immediately after the Quinn constructor
 has completed. Two arguments are supplied: the current value of the
 slider and the Quinn instance. Note that the slider value given during
 initialization may differ from the one given to the callback since the
@@ -248,15 +250,15 @@ constructor adjusts the slider value to fit with the <strong>range</strong>,
 <strong>selectable</strong>, and <strong>step</strong> options. The value supplied to the
 callback is correct.</p>
 
-<h3 id="onbegin">onBegin <code>onBegin: function (currentValue, quinn)</code></h3>
+<h3 id="onbegin">begin <code>onBegin: function (currentValue, quinn)</code></h3>
 
-<p><strong>onBegin</strong> is fired as the user starts to adjust the slider value. This
+<p><strong>begin</strong> is fired as the user starts to adjust the slider value. This
 happens when they click on the slider bar, or on the handle <em>prior</em> to
 the slider being dragged to a new position.</p>
 
-<h3 id="ondrag">onDrag <code>onDrag: function (newValue, quinn)</code></h3>
+<h3 id="ondrag">drag <code>onDrag: function (newValue, quinn)</code></h3>
 
-<p>The <strong>onDrag</strong> callback is run each time the slider value changes. The
+<p>The <strong>drag</strong> callback is run each time the slider value changes. The
 function is supplied with two arguments: the new slider value, and the
 Quinn instance.</p>
 
@@ -279,13 +281,13 @@ $('.slider').quinn({
 });
 </code></pre>
 
-<p>Be aware that the <strong>onDrag</strong> callback is run every time the slider value
+<p>Be aware that the <strong>drag</strong> callback is run every time the slider value
 changes, which can be extremely frequent when dragging the slider
 handle. This is perfect for “hooking” in to the slider to display the
 value elsewhere in your UI (such as the examples on this page), to
 update a graph in real-time, etc, but is not suitable for persisting the
 slider value to a server unless you like flooding your application with
-tens of HTTP requests per second. Use <strong>onChange</strong> which is fired only
+tens of HTTP requests per second. Use <strong>change</strong> which is fired only
 after the user has finished dragging the handle.</p>
 
 <p>Explicitly returning false in the callback will prevent the change.</p>
@@ -300,11 +302,11 @@ after the user has finished dragging the handle.</p>
 });
 </code></pre>
 
-<h3 id="onchange">onChange <code>onChange: function (newValue, quinn)</code></h3>
+<h3 id="onchange">change <code>onChange: function (newValue, quinn)</code></h3>
 
-<p><strong>onChange</strong> is similar to the to the <strong>onDrag</strong> event in that it is
+<p><strong>change</strong> is similar to the to the <strong>drag</strong> event in that it is
 fired when the slider value is changed by a user. However, unlike
-<strong>onDrag</strong> it is fired only after the user has <em>finished</em> changing the
+<strong>drag</strong> it is fired only after the user has <em>finished</em> changing the
 value. This is defined as clicking the slider bar to change the value,
 or lifting the left mouse button after dragging the slider handle.</p>
 
@@ -321,11 +323,11 @@ or lifting the left mouse button after dragging the slider handle.</p>
 });
 </code></pre>
 
-<h3 id="onabort">onAbort <code>onAbort: function (restoredValue, quinn)</code></h3>
+<h3 id="onabort">abort <code>onAbort: function (restoredValue, quinn)</code></h3>
 
-<p>The <strong>onAbort</strong> event is fired once the user has finished adjusting the
-value (like <strong>onChange</strong>) but the change failed either because the
-<strong>onChange</strong> callback returned false, or the user set the slider back
+<p>The <strong>abort</strong> event is fired once the user has finished adjusting the
+value (like <strong>change</strong>) but the change failed either because the
+<strong>change</strong> callback returned false, or the user set the slider back
 to it’s starting value.</p>
 
 <h2 id="theming">Theming</h2>

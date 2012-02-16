@@ -55,10 +55,10 @@ Table of Contents
 [Multiple Values][values], [Effects][effects],
 [Specific Values][only], [Disabling the Slider][disable]
 
-#### Callbacks
+#### [Callbacks][callbacks]
 
-[onSetup][onsetup], [onBegin][onbegin], [onDrag][ondrag],
-[onChange][onchange], [onAbort][onabort]
+[setup][onsetup], [begin][onbegin], [drag][ondrag],
+[change][onchange], [abort][onabort]
 
 #### [Theming][theming]
 
@@ -189,13 +189,15 @@ creating the slider.
 
 When the user alters the slider position, the order of events firing is:
 
- 1. **[onBegin][onbegin]**: Each time the user starts changing the slider
+ 1. **[begin][onbegin]**: Each time the user starts changing the slider
     value.
- 2. **[onDrag][ondrag]**: Repeatedly as the user drags the handle to new
-    positions.
- 3. **[onChange][onchange]**: When the user releases the mouse button.
- 4. **[onAbort][onabort]**: When the user releases the mouse button, and the
-    onChange callback returns false.
+ 2. **[drag][ondrag]**: Repeatedly as the user drags the handle to new
+    positions. If the callbacks all return true, and the value was changed, a
+    `redraw` event is then fired. `redraw` is considered internal and should
+    be used only if implementing your own renderer.
+ 3. **[change][onchange]**: When the user releases the mouse button.
+ 4. **[abort][onabort]**: When the user releases the mouse button, and the
+    change callback returns false.
 
 In addition to supplying callbacks when initializing a slider, you may
 bind further callbacks to the Quinn instance:
@@ -211,9 +213,9 @@ bind further callbacks to the Quinn instance:
     });
 {:class="no-example"}
 
-### onSetup `onSetup: function (currentValue, quinn)` {#onsetup}
+### setup `onSetup: function (currentValue, quinn)` {#onsetup}
 
-**onSetup** is run only once, immediately after the Quinn constructor
+**setup** is run only once, immediately after the Quinn constructor
 has completed. Two arguments are supplied: the current value of the
 slider and the Quinn instance. Note that the slider value given during
 initialization may differ from the one given to the callback since the
@@ -221,15 +223,15 @@ constructor adjusts the slider value to fit with the **range**,
 **selectable**, and **step** options. The value supplied to the
 callback is correct.
 
-### onBegin `onBegin: function (currentValue, quinn)` {#onbegin}
+### begin `onBegin: function (currentValue, quinn)` {#onbegin}
 
-**onBegin** is fired as the user starts to adjust the slider value. This
+**begin** is fired as the user starts to adjust the slider value. This
 happens when they click on the slider bar, or on the handle _prior_ to
 the slider being dragged to a new position.
 
-### onDrag `onDrag: function (newValue, quinn)` {#ondrag}
+### drag `onDrag: function (newValue, quinn)` {#ondrag}
 
-The **onDrag** callback is run each time the slider value changes. The
+The **drag** callback is run each time the slider value changes. The
 function is supplied with two arguments: the new slider value, and the
 Quinn instance.
 
@@ -251,13 +253,13 @@ Quinn instance.
         }
     });
 
-Be aware that the **onDrag** callback is run every time the slider value
+Be aware that the **drag** callback is run every time the slider value
 changes, which can be extremely frequent when dragging the slider
 handle. This is perfect for "hooking" in to the slider to display the
 value elsewhere in your UI (such as the examples on this page), to
 update a graph in real-time, etc, but is not suitable for persisting the
 slider value to a server unless you like flooding your application with
-tens of HTTP requests per second. Use **onChange** which is fired only
+tens of HTTP requests per second. Use **change** which is fired only
 after the user has finished dragging the handle.
 
 Explicitly returning false in the callback will prevent the change.
@@ -271,11 +273,11 @@ Explicitly returning false in the callback will prevent the change.
         }
     });
 
-### onChange `onChange: function (newValue, quinn)` {#onchange}
+### change `onChange: function (newValue, quinn)` {#onchange}
 
-**onChange** is similar to the to the **onDrag** event in that it is
+**change** is similar to the to the **drag** event in that it is
 fired when the slider value is changed by a user. However, unlike
-**onDrag** it is fired only after the user has _finished_ changing the
+**drag** it is fired only after the user has _finished_ changing the
 value. This is defined as clicking the slider bar to change the value,
 or lifting the left mouse button after dragging the slider handle.
 
@@ -291,11 +293,11 @@ or lifting the left mouse button after dragging the slider handle.
         }
     });
 
-### onAbort `onAbort: function (restoredValue, quinn)` {#onabort}
+### abort `onAbort: function (restoredValue, quinn)` {#onabort}
 
-The **onAbort** event is fired once the user has finished adjusting the
-value (like **onChange**) but the change failed either because the
-**onChange** callback returned false, or the user set the slider back
+The **abort** event is fired once the user has finished adjusting the
+value (like **change**) but the change failed either because the
+**change** callback returned false, or the user set the slider back
 to it's starting value.
 
 Theming
@@ -515,6 +517,7 @@ Opera and Internet Explorer are not yet complete.
 [effects]:        #effects
 [only]:           #only
 [disable]:        #disable
+[callbacks]:      #callbacks
 [onsetup]:        #onsetup
 [onbegin]:        #onbegin
 [ondrag]:         #ondrag
