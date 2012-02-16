@@ -382,7 +382,7 @@ $('.slider').quinn({
 <ul>
   <li>
     <p>Quinn has been heavily refactored. Instead of a single class trying to do
-everything there now exists a <code>Model</code> on which values are set, and is
+everything, there now exists a <code>Model</code> on which values are set, and is
 responsible for ensuring the the values set are valid. A <code>Renderer</code> has
 been added which is solely responsible for creating the visual
 representation of the slider. The default Renderer creates the same HTML
@@ -396,7 +396,8 @@ custom sliders (you could even write a <code>CanvasRenderer</code> if you so des
     <p>Quinn’s styling rules <a href="https://github.com/antw/quinn/commit/ea29f2f">have been changed</a>. If you use the
 default Quinn theme with no changes you should be able to simple drop the
 new Stylesheet into your assets or public directory. If you customise the
-theme see the <a href="https://github.com/antw/quinn/commit/ea29f2f">above referenced commit</a> for more information.</p>
+theme see the <a href="https://github.com/antw/quinn/commit/ea29f2f">above referenced commit</a> for more information.
+The <code>.active-bar</code> class has been renamed to <code>.delta-bar</code>.</p>
   </li>
   <li>
     <p>The Quinn instance is no longer attached to the DOM node using

@@ -739,18 +739,18 @@
             element.append($('<div class="right" />'));
         }
 
-        this.bar       = $('<div class="bar" />');
-        this.activeBar = $('<div class="active-bar" />');
+        this.bar      = $('<div class="bar" />');
+        this.deltaBar = $('<div class="delta-bar" />');
 
         if (this.model.values.length > 1) {
             this.wrapper.addClass('range');
         }
 
         addRoundingElements(this.bar);
-        addRoundingElements(this.activeBar);
 
         if (this.model.values.length <= 2) {
-            this.bar.append(this.activeBar);
+            addRoundingElements(this.deltaBar);
+            this.bar.append(this.deltaBar);
         }
 
         this.wrapper.html(this.bar);
@@ -778,7 +778,7 @@
     /**
      * ### redraw
      *
-     * Moves the slider handle and the active-bar background elements so that
+     * Moves the slider handle and the delta-bar background elements so that
      * they accurately represent the value of the slider.
      */
     Quinn.Renderer.prototype.redraw = function (animate) {
@@ -790,8 +790,6 @@
         if (animate == void 0) {
             animate = true;
         }
-
-        this.activeBar.stop(true);
 
         _.each(this.handles, _.bind(function(handle, i) {
             var percent, inPixels;
@@ -813,7 +811,7 @@
                         // Convert that to the equivalent value. For example,
                         // if the slider is 0->200, and now is 20, the
                         // equivalent value is 40.
-                        this.redrawActiveBar(now *
+                        this.redrawDeltaBar(now *
                             (max - min) + min, handle);
 
                         return true;
@@ -821,25 +819,25 @@
                 });
             } else {
                 // TODO being in the loop results in an unnecessary
-                //      additional call to positionActiveBar
+                //      additional call to redrawDeltaBar
                 handle.css('left', inPixels);
-                this.redrawActiveBar(this.model.value);
+                this.redrawDeltaBar(this.model.value);
             }
         }, this));
     };
 
     /**
-     * ### redrawActiveBar
+     * ### redrawDeltaBar
      *
-     * Positions the blue active bar so that it originates at a position where
+     * Positions the blue delta bar so that it originates at a position where
      * the value 0 is. Accepts a `value` argument so that it may be used
      * within a `step` callback in a jQuery `animate` call.
      */
-    Quinn.Renderer.prototype.redrawActiveBar = function (value, handle) {
+    Quinn.Renderer.prototype.redrawDeltaBar = function (value, handle) {
         var leftPosition = null,
             rightPosition = null;
 
-        this.activeBar.stop();
+        this.deltaBar.stop(true);
 
         if (this.model.values.length > 1) {
             if (handle) {
@@ -867,11 +865,11 @@
         rightPosition = this.bar.width() - rightPosition;
 
         if (leftPosition !== null) {
-            this.activeBar.css('left', leftPosition.toString() + 'px');
+            this.deltaBar.css('left', leftPosition.toString() + 'px');
         }
 
         if (rightPosition !== null) {
-            this.activeBar.css('right', rightPosition.toString() + 'px');
+            this.deltaBar.css('right', rightPosition.toString() + 'px');
         }
     };
 

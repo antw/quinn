@@ -352,7 +352,7 @@ History
 #### Git HEAD
 
 * Quinn has been heavily refactored. Instead of a single class trying to do
-  everything there now exists a `Model` on which values are set, and is
+  everything, there now exists a `Model` on which values are set, and is
   responsible for ensuring the the values set are valid. A `Renderer` has
   been added which is solely responsible for creating the visual
   representation of the slider. The default Renderer creates the same HTML
@@ -365,6 +365,7 @@ History
   default Quinn theme with no changes you should be able to simple drop the
   new Stylesheet into your assets or public directory. If you customise the
   theme see the [above referenced commit][style-change] for more information.
+  The `.active-bar` class has been renamed to `.delta-bar`.
 
 * The Quinn instance is no longer attached to the DOM node using
   `jQuery.fn.data`. If you need to keep hold of the instance (for example, to
