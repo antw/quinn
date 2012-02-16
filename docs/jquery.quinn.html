@@ -1125,7 +1125,10 @@ but should be called again if the slider is resized.</p>
         <span class="nx">addRoundingElements</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">);</span>
         <span class="nx">addRoundingElements</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeBar</span><span class="p">);</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeBar</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeBar</span><span class="p">);</span>
+        <span class="p">}</span>
+
         <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;quinn&#39;</span><span class="p">);</span></pre></div>
       </td>

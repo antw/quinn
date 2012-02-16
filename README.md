@@ -146,6 +146,12 @@ supply an array with two numeric values.
 
     $('.slider').quinn({ value: [25, 75] });
 
+Quinn isn't limited to two values; add as many as you want, but with the
+default renderer using more than two values will disable the blue "delta"
+bar.
+
+    $('.slider').quinn({ value: [15, 30, 70, 85] });
+
 ### Effects `effects: bool` `effectSpeed: number` {#effects}
 
 Some Quinn actions make use of jQuery effects. For example, clicking on

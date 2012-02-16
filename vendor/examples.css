@@ -384,10 +384,11 @@ li code, p code {
 .example .value {
   font: bold 15px/1 "Helvetica Neue", Arial, Helvetica, sans-serif;
   float: left;
+  margin-right: -20px;
   min-height: 40px;
-  padding: 2px 0 0 25px;
+  padding: 2px 0 0 5px;
   text-align: center;
-  width: 73px;
+  width: 113px;
 }
 
 .example pre {

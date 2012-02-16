@@ -749,7 +749,10 @@
         addRoundingElements(this.bar);
         addRoundingElements(this.activeBar);
 
-        this.bar.append(this.activeBar);
+        if (this.model.values.length <= 2) {
+            this.bar.append(this.activeBar);
+        }
+
         this.wrapper.html(this.bar);
         this.wrapper.addClass('quinn');
 

@@ -34,8 +34,15 @@
                 text;
 
             if (_.isArray(newValue)) {
-                text = newValue[0].toFixed(precision) + ' - ' +
-                       newValue[1].toFixed(precision);
+                text = _.map(newValue, function (val) {
+                    return val.toFixed(precision);
+                });
+
+                if (newValue.length > 2) {
+                    text = text.join(', ');
+                } else {
+                    text = text.join(' - ');
+                }
             } else if (newValue != null) {
                 text = newValue.toFixed(precision);
             } else {
