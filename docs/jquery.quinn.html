@@ -1234,21 +1234,20 @@ within a <code>step</code> callback in a jQuery <code>animate</code> call.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">Renderer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">redrawDeltaBar</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">handle</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">leftPosition</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
-            <span class="nx">rightPosition</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">left</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">right</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">deltaBar</span><span class="p">.</span><span class="nx">stop</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">handle</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nx">handle</span> <span class="o">===</span> <span class="k">this</span><span class="p">.</span><span class="nx">handles</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="p">{</span>
-                    <span class="nx">leftPosition</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+                    <span class="nx">left</span>  <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
                 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                    <span class="nx">rightPosition</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+                    <span class="nx">right</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
                 <span class="p">}</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nx">leftPosition</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-                <span class="nx">rightPosition</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+                <span class="nx">left</span>  <span class="o">=</span> <span class="nx">value</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+                <span class="nx">right</span> <span class="o">=</span> <span class="nx">value</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
             <span class="p">}</span>
         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
@@ -1262,8 +1261,8 @@ within a <code>step</code> callback in a jQuery <code>animate</code> call.</p>
 right edge at 0</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>            <span class="nx">leftPosition</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
-            <span class="nx">rightPosition</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <div class='highlight'><pre>            <span class="nx">left</span>  <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+            <span class="nx">right</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
@@ -1276,19 +1275,15 @@ right edge at 0</p>
 left edge at 0</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>            <span class="nx">leftPosition</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-            <span class="nx">rightPosition</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">__positionForValue</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
+        <div class='highlight'><pre>            <span class="nx">left</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="nx">right</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="nx">rightPosition</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">bar</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span> <span class="o">-</span> <span class="nx">rightPosition</span><span class="p">;</span>
+        <span class="nx">left</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">(</span><span class="nx">left</span><span class="p">);</span>
+        <span class="nx">right</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">(</span><span class="nx">right</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">leftPosition</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">deltaBar</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="nx">leftPosition</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nx">rightPosition</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">deltaBar</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="nx">rightPosition</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
-        <span class="p">}</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">deltaBar</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;left&#39;</span><span class="p">,</span>  <span class="nx">left</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span>  <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">deltaBar</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="nx">right</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;px&#39;</span><span class="p">);</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
@@ -1334,19 +1329,19 @@ equivalent value is 40.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-__positionForValue'>
+    <tr id='section-positin'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-__positionForValue">&#182;</a>
+          <a class="pilcrow" href="#section-positin">&#182;</a>
         </div>
-        <h3>__positionForValue</h3>
+        <h3>positin</h3>
 
 <p>Given a slider value, returns the position in pixels where the value is
 on the slider bar. For example, in a 200px wide bar whose values are
 1->100, the value 20 is found 40px from the left of the bar.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">Renderer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">__positionForValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">Renderer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">position</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">delta</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">rightExtent</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">leftExtent</span><span class="p">,</span>
             <span class="nx">position</span> <span class="o">=</span> <span class="p">(((</span><span class="nx">value</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">leftExtent</span><span class="p">)</span> <span class="o">/</span> <span class="nx">delta</span><span class="p">))</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
 

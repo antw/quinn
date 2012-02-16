@@ -813,43 +813,38 @@
      * within a `step` callback in a jQuery `animate` call.
      */
     Quinn.Renderer.prototype.redrawDeltaBar = function (value, handle) {
-        var leftPosition = null,
-            rightPosition = null;
+        var left = null, right = null;
 
         this.deltaBar.stop(true);
 
         if (this.model.values.length > 1) {
             if (handle) {
                 if (handle === this.handles[0]) {
-                    leftPosition  = this.__positionForValue(value);
+                    left  = value;
                 } else {
-                    rightPosition = this.__positionForValue(value);
+                    right = value;
                 }
             } else {
-                leftPosition  = this.__positionForValue(value[0]);
-                rightPosition = this.__positionForValue(value[1]);
+                left  = value[0];
+                right = value[1];
             }
         } else if (value < 0) {
             // position with the left edge underneath the handle, and the
             // right edge at 0
-            leftPosition  = this.__positionForValue(value);
-            rightPosition = this.__positionForValue(0);
+            left  = value;
+            right = 0;
         } else {
             // position with the right edge underneath the handle, and the
             // left edge at 0
-            leftPosition  = this.__positionForValue(0);
-            rightPosition = this.__positionForValue(value);
+            left  = 0;
+            right = value;
         }
 
-        rightPosition = this.bar.width() - rightPosition;
+        left  = this.position(left);
+        right = this.width - this.position(right);
 
-        if (leftPosition !== null) {
-            this.deltaBar.css('left', leftPosition.toString() + 'px');
-        }
-
-        if (rightPosition !== null) {
-            this.deltaBar.css('right', rightPosition.toString() + 'px');
-        }
+        this.deltaBar.css('left',  left.toString()  + 'px');
+        this.deltaBar.css('right', right.toString() + 'px');
     };
 
     /**
@@ -881,13 +876,13 @@
     };
 
     /**
-     * ### __positionForValue
+     * ### positin
      *
      * Given a slider value, returns the position in pixels where the value is
      * on the slider bar. For example, in a 200px wide bar whose values are
      * 1->100, the value 20 is found 40px from the left of the bar.
      */
-    Quinn.Renderer.prototype.__positionForValue = function (value) {
+    Quinn.Renderer.prototype.position = function (value) {
         var delta    = this.quinn.rightExtent - this.quinn.leftExtent,
             position = (((value - this.quinn.leftExtent) / delta)) * this.width;
 
