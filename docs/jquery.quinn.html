@@ -83,7 +83,7 @@ prefer an explicit &ldquo;drawTo&rdquo; option is one is provided.</p>
         <span class="k">return</span> <span class="p">{</span>
             <span class="nx">left</span><span class="o">:</span>  <span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">drawTo</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">)</span>  <span class="o">?</span> <span class="nx">drawTo</span><span class="p">.</span><span class="nx">left</span>  <span class="o">:</span> <span class="nx">min</span><span class="p">,</span>
             <span class="nx">right</span><span class="o">:</span> <span class="nx">_</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">drawTo</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="nx">drawTo</span><span class="p">.</span><span class="nx">right</span> <span class="o">:</span> <span class="nx">max</span>
-        <span class="p">}</span>
+        <span class="p">};</span>
     <span class="p">}</span></pre></div>
       </td>
     </tr>
@@ -306,9 +306,11 @@ necessary callbacks are fired.</p>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setTentativeValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">silent</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">preDragValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span>
-            <span class="nx">scalar</span><span class="p">,</span> <span class="nx">prevScalar</span><span class="p">,</span> <span class="nx">nextScalar</span><span class="p">;</span>
+            <span class="nx">prevScalar</span>   <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nx">nextScalar</span>   <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nx">scalar</span><span class="p">;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">newValue</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">newValue</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">||</span> <span class="nx">newValue</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span></pre></div>
       </td>
@@ -324,7 +326,7 @@ other values also.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span><span class="p">(</span><span class="nx">newValue</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span></pre></div>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
     <tr id='section-16'>
@@ -355,11 +357,11 @@ lower handle.</p>
         <div class='highlight'><pre>            <span class="nx">prevScalar</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
             <span class="nx">nextScalar</span> <span class="o">=</span> <span class="nx">newValue</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">prevScalar</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&lt;=</span> <span class="nx">prevScalar</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">prevScalar</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&lt;=</span> <span class="nx">prevScalar</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">scalar</span> <span class="o">=</span> <span class="nx">prevScalar</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
             <span class="p">}</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="nx">nextScalar</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&gt;=</span> <span class="nx">nextScalar</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">nextScalar</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">scalar</span> <span class="o">&gt;=</span> <span class="nx">nextScalar</span><span class="p">)</span> <span class="p">{</span>
                 <span class="nx">scalar</span> <span class="o">=</span> <span class="nx">nextScalar</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
             <span class="p">}</span>
 
@@ -824,7 +826,7 @@ active.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">deactivateActiveHandle</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;handleOff&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">);</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
         <span class="p">}</span>
@@ -879,7 +881,7 @@ active.</p>
 <span class="cm">         * developer, instead fall back to using the minimum.</span>
 <span class="cm">         */</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">value</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">||</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">initialValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
             <span class="nx">initialValue</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
@@ -1170,13 +1172,12 @@ they accurately represent the value of the slider.</p>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">Renderer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">redraw</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">animate</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">animate</span> <span class="o">==</span> <span class="k">void</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">animate</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">animate</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
 
         <span class="nx">_</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span>
-                <span class="nx">handle</span><span class="p">,</span> <span class="nx">position</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">handle</span><span class="p">,</span> <span class="nx">position</span><span class="p">;</span>
 
             <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">===</span> <span class="nx">self</span><span class="p">.</span><span class="nx">lastDraw</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="p">{</span>
                 <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>

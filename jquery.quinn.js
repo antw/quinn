@@ -39,7 +39,7 @@
         return {
             left:  _.has(drawTo, 'left')  ? drawTo.left  : min,
             right: _.has(drawTo, 'right') ? drawTo.right : max
-        }
+        };
     }
 
     /**
@@ -194,9 +194,11 @@
      */
     Quinn.prototype.setTentativeValue = function (newValue, animate, silent) {
         var preDragValue = this.model.value,
-            scalar, prevScalar, nextScalar;
+            prevScalar   = null,
+            nextScalar   = null,
+            scalar;
 
-        if (newValue == null) {
+        if (typeof newValue === 'undefined' || newValue === null) {
             return false;
         }
 
@@ -204,7 +206,7 @@
         // was given, we need to alter the given value so that we set the
         // other values also.
         if (this.model.values.length > 1 && _.isNumber(newValue)) {
-            if (this.activeHandle == null) {
+            if (this.activeHandle === null) {
                 // Without an active handle, we don't know which value we are
                 // supposed to set.
                 return false;
@@ -219,11 +221,11 @@
             prevScalar = newValue[this.activeHandle - 1];
             nextScalar = newValue[this.activeHandle + 1];
 
-            if (prevScalar != null && scalar <= prevScalar) {
+            if (prevScalar !== null && scalar <= prevScalar) {
                 scalar = prevScalar + this.options.step;
             }
 
-            if (nextScalar != null && scalar >= nextScalar) {
+            if (nextScalar !== null && scalar >= nextScalar) {
                 scalar = nextScalar - this.options.step;
             }
 
@@ -506,7 +508,7 @@
      * active.
      */
     Quinn.prototype.deactivateActiveHandle = function () {
-        if (this.activeHandle != null) {
+        if (this.activeHandle !== null && this.activeHandle !== -1) {
             this.trigger('handleOff', this.activeHandle);
             this.activeHandle = null;
         }
@@ -555,7 +557,7 @@
          * developer, instead fall back to using the minimum.
          */
 
-        if (opts.value == null) {
+        if (typeof opts.value === 'undefined' || opts.value === null) {
             initialValue = this.minimum;
         } else if (_.isArray(opts.value)) {
             initialValue = opts.value;
@@ -776,13 +778,12 @@
     Quinn.Renderer.prototype.redraw = function (animate) {
         var self = this;
 
-        if (animate == void 0) {
+        if (animate !== false) {
             animate = true;
         }
 
         _.each(this.model.values, function (value, i) {
-            var value = self.model.values[i],
-                handle, position;
+            var handle, position;
 
             if (value === self.lastDraw[i]) {
                 return true;
