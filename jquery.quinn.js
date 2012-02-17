@@ -679,13 +679,6 @@
         this.handles  = [];
         this.lastDraw = [];
 
-        // The values which are at the far left and far right of the bar.
-        // These may differ slightly from the values which are permitted for
-        // the model if the developer specified different `range` and
-        // `selectable` options.
-        this.drawMin = quinn.options.range[0];
-        this.drawMax = quinn.options.range[1];
-
         this.activeHandle = null;
 
         quinn.on('redraw', this.redraw);
