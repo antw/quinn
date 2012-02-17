@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+
+    <title>Quinn</title>
+    <link rel="stylesheet" type="text/css" href="../../quinn.css" />
+    <link rel="stylesheet" type="text/css" href="../../vendor/examples.css" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  </head>
+
+  <body>
+
+    <div id="content">
+    <!-- edit README.md, not this file -->
+    <!-- then run rake readme to regenerate this file -->
+    <!-- begin README -->
+
+    <h1 id="quinn">Quinn</h1>
+
+    <div class="example">
+      <div class="widget">
+        <div class="slider"></div>
+      </div>
+      <div class="value">0</div>
+    </div>
+
+    <p>
+      <a href="#" id="val-one">Set to 40, 60</a> &nbsp;
+      <a href="#" id="val-two">Set to 10, 90</a>
+    </p>
+
+    <!-- end README -->
+    </div>
+
+    <script type="text/javascript" src="../../vendor/jquery-1.7.1.js"></script>
+    <script type="text/javascript" src="../../vendor/jquery.easing.1.3.js"></script>
+    <script type="text/javascript" src="../../vendor/underscore-1.3.0.js"></script>
+    <script type="text/javascript" src="../../jquery.quinn.js"></script>
+
+    <script lang="text/javascript">
+      var quinn = new $.Quinn($('.slider'), {
+        value: [ 25, 75 ],
+        drag: function (newValue) {
+          $('.value').text(newValue.join(' - '));
+        },
+        setup: function (newValue) {
+          $('.value').text(newValue.join(' - '));
+        }
+      });
+
+      $('#val-one').click(function () {
+        quinn.setValue([ 40, 60 ]);
+        return false;
+      });
+
+      $('#val-two').click(function () {
+        quinn.setValue([ 10, 90 ]);
+        return false;
+      });
+    </script>
+
+  </body>
+</html>
+

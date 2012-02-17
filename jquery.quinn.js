@@ -797,7 +797,7 @@
                 });
             } else {
                 handle.css('left', position);
-                self.redrawDeltaBar(self.model.value);
+                self.redrawDeltaBar(value, handle);
             }
         });
 
@@ -812,7 +812,7 @@
      * within a `step` callback in a jQuery `animate` call.
      */
     Quinn.Renderer.prototype.redrawDeltaBar = function (value, handle) {
-        var left = 0, right = 0;
+        var left = null, right = null;
 
         this.deltaBar.stop(true);
 
@@ -831,17 +831,22 @@
             // position with the left edge underneath the handle, and the
             // right edge at 0
             left  = value;
+            right = 0;
         } else {
             // position with the right edge underneath the handle, and the
             // left edge at 0
             right = value;
+            left  = 0;
         }
 
-        left  = this.position(left);
-        right = this.width - this.position(right);
+        if (left !== null) {
+            this.deltaBar.css('left', this.position(left) + 'px');
+        }
 
-        this.deltaBar.css('left',  left  + 'px');
-        this.deltaBar.css('right', right + 'px');
+        if (right !== null) {
+            right = this.width - this.position(right);
+            this.deltaBar.css('right', right + 'px');
+        }
     };
 
     /**
