@@ -380,8 +380,15 @@ History
 * Two new events have been added: `enabled` and `disabled`, triggered when the
   slider is enabled and disabled.
 
-* Matching the change in jQuery and Backbone, the `bind` method has been
-  renamed to `on`.
+* Since both jQuery and Backbone renamed their `bind` methods to `on`, Quinn
+  has followed suit and done likewise.
+
+      var quinn = new $.Quinn($('element'), options);
+
+      quinn.on('drag',   function () { /* ... */ });
+      quinn.on('change', function () { /* ... */ });
+      quinn.on('abort',  function () { /* ... */ });
+  {:class="no-example"}
 
 #### 0.4.2 _February 10th, 2012_
 

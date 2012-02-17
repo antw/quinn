@@ -419,8 +419,15 @@ alter the value elsewhere) you should use the constructor manually:</p>
 slider is enabled and disabled.</p>
   </li>
   <li>
-    <p>Matching the change in jQuery and Backbone, the <code>bind</code> method has been
-renamed to <code>on</code>.</p>
+    <p>Since both jQuery and Backbone renamed their <code>bind</code> methods to <code>on</code>, Quinn
+has followed suit and done likewise.</p>
+
+    <pre class="no-example"><code>var quinn = new $.Quinn($('element'), options);
+
+quinn.on('drag',   function () { /* ... */ });
+quinn.on('change', function () { /* ... */ });
+quinn.on('abort',  function () { /* ... */ });
+</code></pre>
   </li>
 </ul>
 
