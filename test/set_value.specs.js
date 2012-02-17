@@ -156,12 +156,13 @@ QUnit.specify('', function () {
         }); // when the value is unchanged
 
         describe('when the value is unchanged during a drag operation', function () {
-            var dragRun, changeRun;
+            var dragRun, changeRun, abortRun;
 
             before(function () {
                 slider = new $.Quinn(wrapper, {
                     drag:   function () { dragRun   = true; },
-                    change: function () { changeRun = true; }
+                    change: function () { changeRun = true; },
+                    abort:  function () { abortRun  = true; }
                 });
 
                 dragRun   = false;
@@ -179,6 +180,10 @@ QUnit.specify('', function () {
 
             it('should not run change', function () {
                 assert(changeRun).isFalse();
+            });
+
+            it('should run abort', function () {
+                assert(abortRun).isTrue();
             });
         }); // when the value is unchanged
 
