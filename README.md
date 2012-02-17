@@ -339,22 +339,18 @@ History
 
 #### Git HEAD
 
-* Quinn has been heavily refactored. Instead of a single class trying to do
-  everything, there now exists a `Model` on which values are set, and is
-  responsible for ensuring the values set are valid. A `Renderer` has been
-  added which is solely responsible for creating the visual representation of
-  the slider. The default Renderer creates the same HTML as before, but
-  supplying your own renderer allows you to create completely custom sliders
-  (you could even write a `CanvasRenderer` if you so desired).
+* **This release contains changes which are not backwards-compatible with
+  previous versions versions.** You should only need to make small changes,
+  but this release is not "add to the repo and go"...
 
-* Quinn requires Underscore **1.3.1 or newer**.
+* Underscore dependency is now v1.3.1 or newer.
 
 * The `range` and `selectable` options has been removed and replaced with
-  `min` and `max. If you wish to draw a slider wider than the minimum and
+  `min` and `max`. If you wish to draw a slider wider than the minimum and
   maximum values (previously possible with a combination of `range` and
-  `selectable`) you may instead use the new [`drawTo`][drawTo] option.
+  `selectable`) you may instead [use the new `drawTo` option][drawTo].
 
-* **Events have been renamed.** `onChange`/`change` is now `drag`, and
+* Events have been renamed. `onChange`/`change` is now `drag`, and
   `onCommit`/`commit` is now `change`.
 
 * Quinn's styling rules [have been changed][style-change]. If you use the
@@ -362,6 +358,14 @@ History
   new Stylesheet into your assets or public directory. If you customise the
   theme see the [above referenced commit][style-change] for more information.
   The `.active-bar` class has been renamed to `.delta-bar`.
+
+* Quinn has been heavily refactored. Instead of a single class trying to do
+  everything, there now exists a `Model` on which values are set, and is
+  responsible for ensuring the values set are valid. A `Renderer` has been
+  added which is solely responsible for creating the visual representation of
+  the slider. The default Renderer creates the same HTML as before, but
+  supplying your own renderer allows you to create completely custom sliders
+  (you could even write a `CanvasRenderer` if you so desired).
 
 * You may now use [more than two values][values] with Quinn.
 
