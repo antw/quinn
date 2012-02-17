@@ -168,10 +168,10 @@ QUnit.specify('', function () {
                 dragRun   = false;
                 changeRun = false;
 
-                slider.willChange();
+                slider.start();
                 slider.setTentativeValue(50);
                 slider.setTentativeValue(0);
-                slider.hasChanged();
+                slider.resolve();
             });
 
             it('should drag', function () {
