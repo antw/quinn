@@ -679,8 +679,6 @@
         this.handles  = [];
         this.lastDraw = [];
 
-        this.activeHandle = null;
-
         quinn.on('redraw', this.redraw);
 
         quinn.on('handleOn', function (handleIndex) {
