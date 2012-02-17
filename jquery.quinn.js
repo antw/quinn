@@ -465,16 +465,7 @@
         if (this.start()) {
             this.activateHandleWithEvent(event);
             this.setTentativeValue(this.valueFromMouse(event.pageX));
-
-            // Allow user to further refine the slider value by dragging
-            // without releasing the mouse button. `endDrag` will take care of
-            // committing the final updated value. This doesn't work nicely on
-            // touch devices, so we don't do this there.
-            if (IS_TOUCH_ENABLED) {
-                this.resolve();
-            } else {
-                this.startDrag(event, true);
-            }
+            this.startDrag(event, true);
         }
 
         return event.preventDefault();
