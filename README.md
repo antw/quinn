@@ -285,7 +285,8 @@ after dragging the slider handle.
 
 The **abort** event is fired once the user has finished adjusting the value
 (like **change**) but the change failed either because the **change** callback
-returned false, or the user set the slider back to it's starting value.
+returned false, or the user set the slider back to the value it was at before
+they began dragging.
 
 Theming
 -------
