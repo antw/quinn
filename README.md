@@ -341,8 +341,8 @@ History
 #### 1.0.0.rc1 _February 17th, 2012_
 
 * **This release contains changes which are not backwards-compatible with
-  previous versions versions.** You should only need to make small changes,
-  but this release is not "add to the repo and go"...
+  previous versions.** You should only need to make small changes, but this
+  release is not "add to the repo and go"...
 
 * Underscore dependency is now v1.3.1 or newer.
 
