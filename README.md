@@ -356,7 +356,7 @@ History
 
 * Quinn's styling rules [have been changed][style-change]. If you use the
   default Quinn theme with no changes you should be able to simple drop the
-  new Stylesheet into your assets or public directory. If you customise the
+  new stylesheet into your assets or public directory. If you customise the
   theme see the [above referenced commit][style-change] for more information.
   The `.active-bar` class has been renamed to `.delta-bar`.
 
