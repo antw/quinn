@@ -153,24 +153,24 @@
 }
 
 /**
- * Range sliders
- * -------------
+ * Multiple-value sliders
+ * ----------------------
  *
  * Styles specific to sliders which instead of having a single value,
  * represent a range by having two values (a minimum and maximum).
  */
 
-.quinn.range .handle {
+.quinn.multiple .handle {
   background-position: -100px 0;
   height: 26px;
   margin-top: -9px;
   width: 19px;
 }
 
-.quinn.range .handle.active {
+.quinn.multple .handle.active {
   background-position: -100px -30px;
 }
 
-.quinn.range .handle:focus {
+.quinn.multiple .handle:focus {
   background-position: -100px -60px;
 }

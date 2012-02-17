@@ -745,7 +745,7 @@
         this.deltaBar = $('<div class="delta-bar" />');
 
         if (this.model.values.length > 1) {
-            this.wrapper.addClass('range');
+            this.wrapper.addClass('multiple');
         }
 
         addRoundingElements(this.bar);
