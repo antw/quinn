@@ -90,6 +90,9 @@
         this.trigger('setup', this.model.value);
     }
 
+    // The current Quinn version.
+    Quinn.VERSION = '1.0.0.rc1';
+
     // ### Event Handling
 
     /**
