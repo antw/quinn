@@ -521,12 +521,10 @@
     function Model (quinn) {
         var extrema, initialValue, length, i;
 
-        this.options        = quinn.options;
-        this.values         = [];
-        this.previousValues = [];
-
-        this.step           = quinn.options.step;
-        this.only           = quinn.options.only;
+        this.options = quinn.options;
+        this.step    = quinn.options.step;
+        this.only    = quinn.options.only;
+        this.values  = [];
 
         /* The minimum and maximum need to be "fixed" so that they are a
          * multiple of the "step" option. For example, if given a step of 5

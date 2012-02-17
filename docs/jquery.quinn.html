@@ -845,12 +845,10 @@ active.</p>
         <div class='highlight'><pre>    <span class="kd">function</span> <span class="nx">Model</span> <span class="p">(</span><span class="nx">quinn</span><span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">extrema</span><span class="p">,</span> <span class="nx">initialValue</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">options</span>        <span class="o">=</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">options</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">values</span>         <span class="o">=</span> <span class="p">[];</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">previousValues</span> <span class="o">=</span> <span class="p">[];</span>
-
-        <span class="k">this</span><span class="p">.</span><span class="nx">step</span>           <span class="o">=</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">only</span>           <span class="o">=</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">only</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">options</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">step</span>    <span class="o">=</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">only</span>    <span class="o">=</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">only</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">values</span>  <span class="o">=</span> <span class="p">[];</span>
 
         <span class="cm">/* The minimum and maximum need to be &quot;fixed&quot; so that they are a</span>
 <span class="cm">         * multiple of the &quot;step&quot; option. For example, if given a step of 5</span>
