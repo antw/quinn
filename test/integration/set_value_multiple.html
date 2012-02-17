@@ -32,7 +32,8 @@
     </p>
 
     <pre><code>change events triggered: <span id="change-events">0</span>
-drag events triggered:   <span id="drag-events">0</div></code></pre>
+drag events triggered:   <span id="drag-events">0</span>
+abort events triggered:  <span id="abort-events">0</span></code></pre>
 
     <!-- end README -->
     </div>
@@ -43,7 +44,7 @@ drag events triggered:   <span id="drag-events">0</div></code></pre>
     <script type="text/javascript" src="../../jquery.quinn.js"></script>
 
     <script lang="text/javascript">
-      var dragEvents = 0, changeEvents = 0, quinn;
+      var dragEvents = 0, changeEvents = 0, abortEvents = 0, quinn;
 
       quinn = new $.Quinn($('.slider'), {
         value: [ 25, 75 ],
@@ -59,7 +60,11 @@ drag events triggered:   <span id="drag-events">0</div></code></pre>
 
         setup: function (newValue) {
           $('.value').text(newValue.join(' - '));
-        }
+        },
+
+        abort: function (newValue) {
+          $('#abort-events').text(++abortEvents);
+        },
       });
 
       $('#val-one').click(function () {
