@@ -519,11 +519,11 @@
      * (within the `range` bounds, one of the `only` values, etc).
      */
     function Model (quinn) {
-        var extrema, initialValue, length, i;
+        var opts, initialValue, length, i;
 
-        this.options = quinn.options;
-        this.step    = quinn.options.step;
-        this.only    = quinn.options.only;
+        this.options = opts = quinn.options;
+        this.step    = opts.step;
+        this.only    = opts.only;
         this.values  = [];
 
         /* The minimum and maximum need to be "fixed" so that they are a
@@ -539,14 +539,14 @@
          *      to just use sanitizeValue?
          */
 
-        this.minimum = this.roundToStep(this.options.min);
-        this.maximum = this.roundToStep(this.options.max);
+        this.minimum = this.roundToStep(opts.min);
+        this.maximum = this.roundToStep(opts.max);
 
-        if (this.minimum < this.options.min) {
+        if (this.minimum < opts.min) {
             this.minimum += this.step;
         }
 
-        if (this.maximum > this.options.max) {
+        if (this.maximum > opts.max) {
             this.maximum -= this.step;
         }
 
@@ -555,12 +555,12 @@
          * developer, instead fall back to using the minimum.
          */
 
-        if (this.options.value == null) {
+        if (opts.value == null) {
             initialValue = this.minimum;
-        } else if (_.isArray(this.options.value)) {
-            initialValue = this.options.value;
+        } else if (_.isArray(opts.value)) {
+            initialValue = opts.value;
         } else {
-            initialValue = [ this.options.value ];
+            initialValue = [ opts.value ];
         }
 
         for (i = 0, length = initialValue.length; i < length; i++) {
