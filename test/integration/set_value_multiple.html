@@ -31,6 +31,9 @@
       <a href="#" id="val-four">Set to 0, 100</a>
     </p>
 
+    <pre><code>change events triggered: <span id="change-events">0</span>
+drag events triggered:   <span id="drag-events">0</div></code></pre>
+
     <!-- end README -->
     </div>
 
@@ -40,11 +43,20 @@
     <script type="text/javascript" src="../../jquery.quinn.js"></script>
 
     <script lang="text/javascript">
-      var quinn = new $.Quinn($('.slider'), {
+      var dragEvents = 0, changeEvents = 0, quinn;
+
+      quinn = new $.Quinn($('.slider'), {
         value: [ 25, 75 ],
+
         drag: function (newValue) {
           $('.value').text(newValue.join(' - '));
+          $('#drag-events').text(++dragEvents);
         },
+
+        change: function (newValue) {
+          $('#change-events').text(++changeEvents);
+        },
+
         setup: function (newValue) {
           $('.value').text(newValue.join(' - '));
         }
