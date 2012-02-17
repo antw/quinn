@@ -429,6 +429,12 @@ quinn.on('change', function () { /* ... */ });
 quinn.on('abort',  function () { /* ... */ });
 </code></pre>
   </li>
+  <li>
+    <p>The internal methods <code>__willChange</code>, <code>__hasChanged</code>, and <code>__abortChange</code>
+have been renamed to <code>start</code>, <code>resolve</code>, and <code>reject</code> to more closely match
+the jQuery.Deferred API. Note that $.Quinn is <em>not</em> a jQuery.Deferred
+object; other Deferred methods are not provided.</p>
+  </li>
 </ul>
 
 <h4 id="february-10th-2012">0.4.2 <em>February 10th, 2012</em></h4>

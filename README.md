@@ -390,6 +390,11 @@ History
       quinn.on('abort',  function () { /* ... */ });
   {:class="no-example"}
 
+* The internal methods `__willChange`, `__hasChanged`, and `__abortChange`
+  have been renamed to `start`, `resolve`, and `reject` to more closely match
+  the jQuery.Deferred API. Note that $.Quinn is *not* a jQuery.Deferred
+  object; other Deferred methods are not provided.
+
 #### 0.4.2 _February 10th, 2012_
 
 Changed the way touch-support was detected to fix clicking on the handle not

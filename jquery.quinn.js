@@ -173,11 +173,11 @@
      * true.
      */
     Quinn.prototype.setValue = function (newValue, animate, silent) {
-        if (this.willChange()) {
+        if (this.start()) {
             if (this.setTentativeValue(newValue, animate, silent) !== false) {
-                this.hasChanged();
+                this.resolve();
             } else {
-                this.abortChange();
+                this.reject();
             }
         }
 
@@ -281,13 +281,13 @@
     };
 
     /**
-     * ### willChange
+     * ### start
      *
      * Tells the Quinn instance that the user is about to make a change to the
      * slider value. The calling function should check the return value of
-     * willChange -- if false, no changes are permitted to the slider.
+     * start -- if false, no changes are permitted to the slider.
      */
-    Quinn.prototype.willChange = function () {
+    Quinn.prototype.start = function () {
         if (this.disabled === true || ! this.trigger('begin')) {
             return false;
         }
@@ -303,17 +303,17 @@
     };
 
     /**
-     * ### hasChanged
+     * ### resolve
      *
      * Tells the Quinn instance that the user has finished making their
      * changes to the slider and that the new value should be retained.
      */
-    Quinn.prototype.hasChanged = function () {
+    Quinn.prototype.resolve = function () {
         this.deactivateActiveHandle();
 
         if (_.isEqual(this.previousValue, this.model.value)) {
             // The user reset the slider back to where it was.
-            this.abortChange();
+            this.reject();
             return false;
         }
 
@@ -324,18 +324,18 @@
          */
         if (! this.trigger('change', this.model.value)) {
             this.setTentativeValue(this.previousValue);
-            this.abortChange();
+            this.reject();
 
             return false;
         }
     };
 
     /**
-     * ### abortChange
+     * ### reject
      *
      * Aborts a slider change.
      */
-    Quinn.prototype.abortChange = function () {
+    Quinn.prototype.reject = function () {
         this.previousValue = null;
         this.deactivateActiveHandle();
 
@@ -388,8 +388,8 @@
      * Begins a drag event which permits a user to move the slider handle in
      * order to adjust the slider value.
      *
-     * When `skipPreamble` is true, startDrag will not run `willChange()` on
-     * the assumption that it has already been run (see `clickBar`).
+     * When `skipPreamble` is true, startDrag will not run `start()` on the
+     * assumption that it has already been run (see `clickBar`).
      */
     Quinn.prototype.startDrag = function (event, skipPreamble) {
         // Only enable dragging when the left mouse button is used.
@@ -397,7 +397,7 @@
             return true;
         }
 
-        if (! skipPreamble && ! this.willChange()) {
+        if (! skipPreamble && ! this.start()) {
             return false;
         }
 
@@ -443,7 +443,7 @@
             off(DRAG_E + '.quinn').
             off('mouseenter.quinn');
 
-        this.hasChanged();
+        this.resolve();
 
         return event.preventDefault();
     };
@@ -460,7 +460,7 @@
             return true;
         }
 
-        if (this.willChange()) {
+        if (this.start()) {
             this.activateHandleWithEvent(event);
             this.setTentativeValue(this.valueFromMouse(event.pageX));
 
@@ -469,7 +469,7 @@
             // committing the final updated value. This doesn't work nicely on
             // touch devices, so we don't do this there.
             if (IS_TOUCH_ENABLED) {
-                this.hasChanged();
+                this.resolve();
             } else {
                 this.startDrag(event, true);
             }
@@ -572,11 +572,11 @@
 
     /**
      * An internal method which sets the value of the slider during a drag
-     * event. `setValue` should be called only after `willChange` in the Quinn
+     * event. `setValue` should be called only after `start` in the Quinn
      * instance.
      *
-     * Only when `hasChanged` is called is the value considered final. If
-     * `abortChange` is called, the tentative value is discarded and the
+     * Only when `resolve` is called is the value considered final. If
+     * `reject` is called, the tentative value is discarded and the
      * previous "good" value is restored.
      *
      * The new value will be returned (which may differ slightly from the
@@ -723,8 +723,7 @@
      * Quinn is initialized with an empty wrapper element; render adds the
      * necessary DOM elements in order to display the slider UI.
      *
-     * render() is called automatically when creating a new Quinn instance,
-     * but should be called again if the slider is resized.
+     * render() is called automatically when creating a new Quinn instance.
      */
     Quinn.Renderer.prototype.render = function () {
         var i, length;

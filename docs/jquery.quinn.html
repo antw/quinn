@@ -279,11 +279,11 @@ true.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">setValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">silent</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">willChange</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">start</span><span class="p">())</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="nx">newValue</span><span class="p">,</span> <span class="nx">animate</span><span class="p">,</span> <span class="nx">silent</span><span class="p">)</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">hasChanged</span><span class="p">();</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">resolve</span><span class="p">();</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">abortChange</span><span class="p">();</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">reject</span><span class="p">();</span>
             <span class="p">}</span>
         <span class="p">}</span>
 
@@ -438,19 +438,19 @@ by which to decrease the value.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-willChange'>
+    <tr id='section-start'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-willChange">&#182;</a>
+          <a class="pilcrow" href="#section-start">&#182;</a>
         </div>
-        <h3>willChange</h3>
+        <h3>start</h3>
 
 <p>Tells the Quinn instance that the user is about to make a change to the
 slider value. The calling function should check the return value of
-willChange &mdash; if false, no changes are permitted to the slider.</p>
+start &mdash; if false, no changes are permitted to the slider.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">willChange</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">start</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">disabled</span> <span class="o">===</span> <span class="kc">true</span> <span class="o">||</span> <span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;begin&#39;</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
@@ -474,18 +474,18 @@ every time the user drags the handle.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-hasChanged'>
+    <tr id='section-resolve'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-hasChanged">&#182;</a>
+          <a class="pilcrow" href="#section-resolve">&#182;</a>
         </div>
-        <h3>hasChanged</h3>
+        <h3>resolve</h3>
 
 <p>Tells the Quinn instance that the user has finished making their
 changes to the slider and that the new value should be retained.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasChanged</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">resolve</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">deactivateActiveHandle</span><span class="p">();</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span></pre></div>
@@ -499,7 +499,7 @@ changes to the slider and that the new value should be retained.</p>
         <p>The user reset the slider back to where it was.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>            <span class="k">this</span><span class="p">.</span><span class="nx">abortChange</span><span class="p">();</span>
+        <div class='highlight'><pre>            <span class="k">this</span><span class="p">.</span><span class="nx">reject</span><span class="p">();</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
 
@@ -510,24 +510,24 @@ changes to the slider and that the new value should be retained.</p>
 <span class="cm">         */</span>
         <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">abortChange</span><span class="p">();</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">reject</span><span class="p">();</span>
 
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-abortChange'>
+    <tr id='section-reject'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-abortChange">&#182;</a>
+          <a class="pilcrow" href="#section-reject">&#182;</a>
         </div>
-        <h3>abortChange</h3>
+        <h3>reject</h3>
 
 <p>Aborts a slider change.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">abortChange</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">reject</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">deactivateActiveHandle</span><span class="p">();</span>
 
@@ -624,8 +624,8 @@ the bar&rsquo;s width.</p>
 <p>Begins a drag event which permits a user to move the slider handle in
 order to adjust the slider value.</p>
 
-<p>When <code>skipPreamble</code> is true, startDrag will not run <code>willChange()</code> on
-the assumption that it has already been run (see <code>clickBar</code>).</p>
+<p>When <code>skipPreamble</code> is true, startDrag will not run <code>start()</code> on the
+assumption that it has already been run (see <code>clickBar</code>).</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">startDrag</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">skipPreamble</span><span class="p">)</span> <span class="p">{</span></pre></div>
@@ -643,7 +643,7 @@ the assumption that it has already been run (see <code>clickBar</code>).</p>
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">skipPreamble</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">willChange</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">skipPreamble</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">start</span><span class="p">())</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
 
@@ -726,7 +726,7 @@ contiues to hold the left mouse button.</p>
             <span class="nx">off</span><span class="p">(</span><span class="nx">DRAG_E</span> <span class="o">+</span> <span class="s1">&#39;.quinn&#39;</span><span class="p">).</span>
             <span class="nx">off</span><span class="p">(</span><span class="s1">&#39;mouseenter.quinn&#39;</span><span class="p">);</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">hasChanged</span><span class="p">();</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">resolve</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">event</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
     <span class="p">};</span></pre></div>
@@ -758,7 +758,7 @@ to instantly change the value.</p>
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">willChange</span><span class="p">())</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">start</span><span class="p">())</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">activateHandleWithEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">valueFromMouse</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">pageX</span><span class="p">));</span></pre></div>
       </td>
@@ -775,7 +775,7 @@ touch devices, so we don&rsquo;t do this there.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>            <span class="k">if</span> <span class="p">(</span><span class="nx">IS_TOUCH_ENABLED</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">this</span><span class="p">.</span><span class="nx">hasChanged</span><span class="p">();</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">resolve</span><span class="p">();</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
                 <span class="k">this</span><span class="p">.</span><span class="nx">startDrag</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
             <span class="p">}</span>
@@ -901,11 +901,11 @@ active.</p>
           <a class="pilcrow" href="#section-44">&#182;</a>
         </div>
         <p>An internal method which sets the value of the slider during a drag
-event. <code>setValue</code> should be called only after <code>willChange</code> in the Quinn
+event. <code>setValue</code> should be called only after <code>start</code> in the Quinn
 instance.</p>
 
-<p>Only when <code>hasChanged</code> is called is the value considered final. If
-<code>abortChange</code> is called, the tentative value is discarded and the
+<p>Only when <code>resolve</code> is called is the value considered final. If
+<code>reject</code> is called, the tentative value is discarded and the
 previous &ldquo;good&rdquo; value is restored.</p>
 
 <p>The new value will be returned (which may differ slightly from the
@@ -1094,8 +1094,7 @@ those elements when the slider value is changed.</p>
 <p>Quinn is initialized with an empty wrapper element; render adds the
 necessary DOM elements in order to display the slider UI.</p>
 
-<p>render() is called automatically when creating a new Quinn instance,
-but should be called again if the slider is resized.</p>
+<p>render() is called automatically when creating a new Quinn instance.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">Renderer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">render</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
