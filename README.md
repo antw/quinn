@@ -13,7 +13,7 @@ aka. track bars) for HTML applications. The project is hosted on
 
     $('.slider').quinn();
 
-The library requires [jQuery][jq] and [Underscore.js][us].
+The library requires [jQuery][jq] and [Underscore.js 0.3.1+][us].
 
 Quinn has been tested and works in the following environments:
 
@@ -28,8 +28,8 @@ There are no plans to support Internet Explorer 6. The unit tests can be run
 [in your browser][tests].
 
 Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
-[Energy Transition Model][etm] application, and has been open-sourced with
-their kind permission. Quinn is released under the [New BSD License][license].
+[Energy Transition Model][etm] application. It is released under the
+[New BSD License][license].
 
 Downloads
 ---------
@@ -48,9 +48,9 @@ Table of Contents
 
 #### Options
 
-[Minima and Maxima][range], [Initial Values][value], [Steps][step],
-[Selectable Ranges][selectable], [Multiple Values][values],
-[Effects][effects], [Specific Values][only], [Disabling the Slider][disable]
+[Minima and Maxima][extrema], [Initial Values][value], [Steps][step],
+[Drawing Options][drawTo], [Multiple Values][values], [Effects][effects],
+[Specific Values][only], [Disabling the Slider][disable]
 
 #### [Callbacks][callbacks]
 
@@ -70,20 +70,18 @@ instance, you may pass extra options when initializing:
     $(selector).quinn(optionsHash);
 {:.no-example}
 
-### Minima and Maxima `range: [min, max]` {#range}
+### Minima and Maxima `min: value, max: value` {#extrema}
 
 By default, a Quinn slider allows selection of whole numbers between 0 and
-100. By supplying a **range** option, you can change these values: **range**
-should be an array of two values, where the first value is the minimum value
-represented on the slider, and the second is the maximum.
+100. By supplying **min** and **max** options, you can change these values.
 
     /* Our volume knobs go up to eleven. */
-    $('.slider').quinn({ range: [ 0, 11 ] });
+    $('.slider').quinn({ min: 0, max: 11 });
 
 Negative values are perfectly acceptable, and the "active bar" (the blue
 background) will always be anchored at zero.
 
-    $('.slider').quinn({ range: [ -100, 100 ] });
+    $('.slider').quinn({ min: -100, max: 100 });
 
 ### Initial Values `value: number` {#value}
 
@@ -106,32 +104,32 @@ the step, the value will be rounded to the nearest acceptable point on the
 slider. For example, an step of 10, and an initial value of 17 will result in
 the slider being initialized with a value of 20 instead.
 
-Combining the **step** option with **[range][range]** permits the creation of
-sliders with arbitrary values:
+Combining the **step** option with [**min** and **max**][extrema] options
+permits the creation of sliders with arbitrary values:
 
-    $('.slider').quinn({ range: [0, 1.21], step: 0.01 });
+    $('.slider').quinn({ min: 0, max: 1.21, step: 0.01 });
 
-### Selectable Ranges `selectable: [min, max]` {#selectable}
+When using **step**, your provided minimum and maximum values may be altered
+to ensure that they "fit" the step correctly. Note that in the example below
+the minimum value 5 is not available since `step: 20` is used. The lower
+value is instead rounded to 20 (not 0 since this is lower than the minimum
+chosen when creating the slider). Similarly, 95 is rounded down to the nearest
+inclusive step, 80.
 
-Sometimes you want to show a slider where only a certain partition of the
-values may be chosen by the user. This is achieved using the **selectable**
-option.
+    $('.slider').quinn({ min: 5, max: 95, step: 20 });
 
-The example below is created with the default range `[0, 100]`, but restricts
-the values the user may select:
+### Drawing Options `drawTo: { left: from, right: to }` {#drawTo}
 
-    $('.slider').quinn({ selectable: [35, 80] });
+Sometimes you might want to draw a slider which is wider than the **min** and
+**max** options you gave it. This is achieved by passing a two-element array
+as **drawTo**.
 
-The "selectable" values can be changed later with `setSelectable(min, max)`.
+The example below draws the slider from a value of 0 up to 100, but only
+permits selecting a value between 30 and 70.
 
-When using **selectable**, your **step** option will still be respected and
-**selectable** values which don't fit with the step will be rounded to the
-nearest inclusive step. Note that in the example below the lowest selectable
-value (5) is not available since `step: 20` is used. The lower value is
-instead rounded to 20 (not 0 since this is outside the selectable range
-supplied and might break your data validation later).
-
-    $('.slider').quinn({ selectable: [5, 80], step: 20 });
+    $('.slider').quinn({
+        min: 30, max: 70, drawTo: { left: 0, right: 100 }
+    });
 
 ### Multiple Values `value: [value1, value2, ..., valueN]` {#values}
 
@@ -211,8 +209,8 @@ further callbacks to the Quinn instance:
 completed. Two arguments are supplied: the current value of the slider and the
 Quinn instance. Note that the slider value given during initialization may
 differ from the one given to the callback since the constructor adjusts the
-slider value to fit with the **range**, **selectable**, and **step** options.
-The value supplied to the callback is correct.
+slider value to fit with the **min**, **max**, and **step** options. The value
+supplied to the callback is correct.
 
 ### begin `begin: function (currentValue, quinn)` {#onbegin}
 
@@ -348,6 +346,13 @@ History
   the slider. The default Renderer creates the same HTML as before, but
   supplying your own renderer allows you to create completely custom sliders
   (you could even write a `CanvasRenderer` if you so desired).
+
+* Quinn requires Underscore **1.3.1 or newer**.
+
+* The `range` and `selectable` options has been removed and replaced with
+  `min` and `max. If you wish to draw a slider wider than the minimum and
+  maximum values (previously possible with a combination of `range` and
+  `selectable`) you may instead use the new [`drawTo`][drawTo] option.
 
 * **Events have been renamed.** `onChange`/`change` is now `drag`, and
   `onCommit`/`commit` is now `change`.
@@ -496,10 +501,10 @@ and Internet Explorer are not yet complete.
 [default-sprite]: http://antw.github.com/quinn/images/default.png
 [rainbow-sprite]: http://antw.github.com/quinn/vendor/rainbow.png
 
-[range]:          #range
+[extrema]:        #extrema
 [value]:          #value
 [step]:           #step
-[selectable]:     #selectable
+[drawTo]:         #drawTo
 [values]:         #values
 [effects]:        #effects
 [only]:           #only
@@ -509,6 +514,6 @@ and Internet Explorer are not yet complete.
 [onbegin]:        #onbegin
 [ondrag]:         #ondrag
 [onchange]:       #onchange
-[onabort]:        #onbort
+[onabort]:        #onabort
 [theming]:        #theming
 [history]:        #history

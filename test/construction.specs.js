@@ -16,19 +16,19 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(0);
             });
 
-            it('should set the lower range value to 0', function () {
-                assert(slider.leftExtent).equals(0);
+            it('should set the left drawTo value to 0', function () {
+                assert(slider.drawTo.left).equals(0);
             });
 
-            it('should set the upper range value to 100', function () {
-                assert(slider.rightExtent).equals(100);
+            it('should set the right drawTo value to 100', function () {
+                assert(slider.drawTo.right).equals(100);
             });
 
-            it('should set the lower selectable value to 0', function () {
+            it('should set the minimum value to 0', function () {
                 assert(slider.model.minimum).equals(0);
             });
 
-            it('should set the upper selectable value to 100', function () {
+            it('should set the maximum value to 100', function () {
                 assert(slider.model.maximum).equals(100);
             });
 
@@ -37,57 +37,109 @@ QUnit.specify('', function () {
             });
         }); // With default settings
 
-        describe('With range: [20, 40]', function () {
+        describe('With min: 20, max: 40', function () {
             before(function () {
-                slider = new $.Quinn(wrapper, { range: [20, 40] });
+                slider = new $.Quinn(wrapper, { min: 20, max: 40 });
             });
 
             it('should set the value to 20', function () {
                 assert(slider.model.value).equals(20);
             });
 
-            it('should set the lower range value to 20', function () {
-                assert(slider.leftExtent).equals(20);
+            it('should set the left drawTo value to 20', function () {
+                assert(slider.drawTo.left).equals(20);
             });
 
-            it('should set the upper range value to 40', function () {
-                assert(slider.rightExtent).equals(40);
+            it('should set the right drawTo value to 40', function () {
+                assert(slider.drawTo.right).equals(40);
             });
 
-            it('should set the lower selectable value to 20', function () {
+            it('should set the minimum value to 20', function () {
                 assert(slider.model.minimum).equals(20);
             });
 
-            it('should set the upper selectable value to 40', function () {
+            it('should set the maximum value to 40', function () {
                 assert(slider.model.maximum).equals(40);
             });
-        }); // With range: [20, 40]
+        }); // With min: 20, max: 40
 
-        describe('With selectable: [20, 40]', function () {
+        describe('With drawTo: { left: -100, right: 200 }', function () {
             before(function () {
-                slider = new $.Quinn(wrapper, { selectable: [20, 40] });
+                slider = new $.Quinn(wrapper, { drawTo: { left: -100, right: 200 } });
             });
 
-            it('should set the value to 20', function () {
-                assert(slider.model.value).equals(20);
+            it('should set the value to 0', function () {
+                assert(slider.model.value).equals(0);
             });
 
-            it('should set the lower range value to 0', function () {
-                assert(slider.leftExtent).equals(0);
+            it('should set the left drawTo value to -100', function () {
+                assert(slider.drawTo.left).equals(-100);
             });
 
-            it('should set the upper range value to 100', function () {
-                assert(slider.rightExtent).equals(100);
+            it('should set the right drawTo value to 200', function () {
+                assert(slider.drawTo.right).equals(200);
             });
 
-            it('should set the lower selectable value to 20', function () {
-                assert(slider.model.minimum).equals(20);
+            it('should set the minimum value to 0', function () {
+                assert(slider.model.minimum).equals(0);
             });
 
-            it('should set the upper selectable value to 40', function () {
-                assert(slider.model.maximum).equals(40);
+            it('should set the maximum value to 100', function () {
+                assert(slider.model.maximum).equals(100);
             });
-        }); // With selectable: [20, 40]
+        }); // With drawTo { left: -100, right: 200 }
+
+        describe('With drawTo: { left: -100 }', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { drawTo: { left: -100 } });
+            });
+
+            it('should set the value to 0', function () {
+                assert(slider.model.value).equals(0);
+            });
+
+            it('should set the left drawTo value to -100', function () {
+                assert(slider.drawTo.left).equals(-100);
+            });
+
+            it('should set the right drawTo value to 100', function () {
+                assert(slider.drawTo.right).equals(100);
+            });
+
+            it('should set the minimum value to 0', function () {
+                assert(slider.model.minimum).equals(0);
+            });
+
+            it('should set the maximum value to 100', function () {
+                assert(slider.model.maximum).equals(100);
+            });
+        }); // With drawTo { left: -100 }
+
+        describe('With drawTo: { right: 200 }', function () {
+            before(function () {
+                slider = new $.Quinn(wrapper, { drawTo: { right: 200 } });
+            });
+
+            it('should set the value to 0', function () {
+                assert(slider.model.value).equals(0);
+            });
+
+            it('should set the left drawTo value to 100', function () {
+                assert(slider.drawTo.left).equals(0);
+            });
+
+            it('should set the right drawTo value to 200', function () {
+                assert(slider.drawTo.right).equals(200);
+            });
+
+            it('should set the minimum value to 0', function () {
+                assert(slider.model.minimum).equals(0);
+            });
+
+            it('should set the maximum value to 100', function () {
+                assert(slider.model.maximum).equals(100);
+            });
+        }); // With drawTo { right: 200 }
 
         describe('With step: 15', function () {
             before(function () {
@@ -98,19 +150,19 @@ QUnit.specify('', function () {
                 assert(slider.model.value).equals(0);
             });
 
-            it('should set the lower range value to 0', function () {
-                assert(slider.leftExtent).equals(0);
+            it('should set the left drawTo value to 0', function () {
+                assert(slider.drawTo.left).equals(0);
             });
 
-            it('should set the upper range value to 100', function () {
-                assert(slider.rightExtent).equals(100);
+            it('should set the right drawTo value to 100', function () {
+                assert(slider.drawTo.right).equals(100);
             });
 
-            it('should set the lower selectable value to 0', function () {
+            it('should set the minimum value to 0', function () {
                 assert(slider.model.minimum).equals(0);
             });
 
-            it('should set the upper selectable value to 90', function () {
+            it('should set the maximum value to 90', function () {
                 // 100 isn't divisible by the step.
                 assert(slider.model.maximum).equals(90);
             });

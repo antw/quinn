@@ -29,6 +29,20 @@
     }
 
     /**
+     * Determines to what minimum and maximum value the slider should be
+     * drawn. Defaults to whatever minimum and maximum the user gave, but will
+     * prefer an explicit "drawTo" option is one is provided.
+     */
+    function drawToOpts (drawTo, min, max) {
+        drawTo = drawTo || {};
+
+        return {
+            left:  _.has(drawTo, 'left')  ? drawTo.left  : min,
+            right: _.has(drawTo, 'right') ? drawTo.right : max
+        }
+    }
+
+    /**
      * ## Quinn
      *
      * Quinn is the main slider class, and handles setting up the slider UI,
@@ -39,36 +53,36 @@
      * width, padding etc.
      */
     function Quinn (wrapper, options) {
+        var opts;
+
         _.bindAll(this, 'clickBar', 'startDrag', 'drag', 'endDrag');
 
-        this.wrapper       = wrapper;
-        this.options       = _.extend({}, Quinn.defaults, options);
-        this.callbacks     = {};
+        this.wrapper        = wrapper;
+        this.options = opts = _.extend({}, Quinn.defaults, options);
+        this.callbacks      = {};
 
-        this.disabled      = false;
-        this.activeHandle  = null;
-        this.previousValue = null;
+        this.disabled       = false;
+        this.activeHandle   = null;
+        this.previousValue  = null;
+        this.drawTo         = drawToOpts(opts.drawTo, opts.min, opts.max);
 
-        this.model         = new Model(this);
-        this.renderer      = new this.options.renderer(this);
+        this.model          = new Model(this);
+        this.renderer       = new this.options.renderer(this);
 
-        this.leftExtent    = this.options.range[0];
-        this.rightExtent   = this.options.range[1];
+        this.wrapperWidth   = 0;
+        this.wrapperOffset  = 0;
 
-        this.wrapperWidth  = 0;
-        this.wrapperOffset = 0;
-
-        this.on('setup',  this.options.setup);
-        this.on('begin',  this.options.begin);
-        this.on('drag',   this.options.drag);
-        this.on('change', this.options.change);
-        this.on('abort',  this.options.abort);
+        this.on('setup',  opts.setup);
+        this.on('begin',  opts.begin);
+        this.on('drag',   opts.drag);
+        this.on('change', opts.change);
+        this.on('abort',  opts.abort);
 
         if (_.isFunction(this.renderer.render)) {
             this.renderer.render();
         }
 
-        if (this.options.disable === true) {
+        if (opts.disable === true) {
             this.disable();
         }
 
@@ -336,9 +350,9 @@
      */
     Quinn.prototype.valueFromMouse = function (mousePosition) {
         var percent = this.positionFromMouse(mousePosition),
-            delta   = this.rightExtent - this.leftExtent;
+            delta   = this.drawTo.right - this.drawTo.left;
 
-        return this.leftExtent + delta * percent;
+        return this.drawTo.left + delta * percent;
     };
 
     /**
@@ -527,16 +541,14 @@
          *      to just use sanitizeValue?
          */
 
-        extrema = this.options.selectable || this.options.range;
+        this.minimum = this.roundToStep(this.options.min);
+        this.maximum = this.roundToStep(this.options.max);
 
-        this.minimum = this.roundToStep(extrema[0]);
-        this.maximum = this.roundToStep(extrema[1]);
-
-        if (this.minimum < extrema[0]) {
+        if (this.minimum < this.options.min) {
             this.minimum += this.step;
         }
 
-        if (this.maximum > extrema[1]) {
+        if (this.maximum > this.options.max) {
             this.maximum -= this.step;
         }
 
@@ -852,8 +864,8 @@
             return function() {};
         }
 
-        var min  = this.quinn.leftExtent,
-            max  = this.quinn.rightExtent,
+        var min  = this.quinn.drawTo.left,
+            max  = this.quinn.drawTo.right,
             self = this;
 
         return function (now) {
@@ -880,9 +892,9 @@
      * that it "dangles" over the edge of the bar.
      */
     Quinn.Renderer.prototype.position = function (value, adjust) {
-        var delta    = this.quinn.rightExtent - this.quinn.leftExtent,
+        var delta    = this.quinn.drawTo.right - this.quinn.drawTo.left,
             width    = adjust ? (this.width + adjust) : this.width,
-            position = (((value - this.quinn.leftExtent) / delta)) * width;
+            position = (((value - this.quinn.drawTo.left) / delta)) * width;
 
         if (position < 0) {
             return 0;
@@ -900,22 +912,24 @@
      * provide them.
      */
     Quinn.defaults = {
-        // An array with the lowest and highest values represented by the
-        // slider.
-        range: [0, 100],
+        // The minimum value which may be selected by a user.
+        min: 0,
 
-        // The range of values which can be selected by the user. Normally
-        // this would be the same as "range", however this option allows you
-        // to make only a portion of the slider selectable.
-        selectable: null,
+        // The maximum value which may be selected by a user.
+        max: 100,
+
+        // If you wish the slider to be drawn so that it is wider than the
+        // range of values which a user may select, supply the values as a
+        // two-element array.
+        drawTo: null,
 
         // The "steps" by which the selectable value increases. For example,
         // when set to 2, the default slider will increase in steps from 0, 2,
         // 4, 8, etc.
         step: 1,
 
-        // The initial value of the slider. null = the lowest value in the
-        // range option.
+        // The initial value of the slider. null = use the lowest permitted
+        // value.
         value: null,
 
         // Restrics the values which may be chosen to those listed in the
