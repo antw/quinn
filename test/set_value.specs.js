@@ -1,3 +1,5 @@
+// vim: set sw=4 ts=4 et:
+
 QUnit.specify('', function () {
 
     describe('setValue', function () {
@@ -148,7 +150,34 @@ QUnit.specify('', function () {
                 assert(dragRun).isFalse();
             });
 
-            it('should not run cnChange', function () {
+            it('should not run change', function () {
+                assert(changeRun).isFalse();
+            });
+        }); // when the value is unchanged
+
+        describe('when the value is unchanged during a drag operation', function () {
+            var dragRun, changeRun;
+
+            before(function () {
+                slider = new $.Quinn(wrapper, {
+                    drag:   function () { dragRun   = true; },
+                    change: function () { changeRun = true; }
+                });
+
+                dragRun   = false;
+                changeRun = false;
+
+                slider.willChange();
+                slider.setTentativeValue(50);
+                slider.setTentativeValue(0);
+                slider.hasChanged();
+            });
+
+            it('should drag', function () {
+                assert(dragRun).isTrue();
+            });
+
+            it('should not run change', function () {
                 assert(changeRun).isFalse();
             });
         }); // when the value is unchanged

@@ -297,6 +297,12 @@
     Quinn.prototype.hasChanged = function () {
         this.deactivateActiveHandle();
 
+        if (_.isEqual(this.previousValue, this.model.value)) {
+            // The user reset the slider back to where it was.
+            this.abortChange();
+            return false;
+        }
+
         /* Run the change callback; if the callback returns false then we
          * revert the slider change, and restore everything to how it was
          * before. Note that reverting the change will also fire an change
@@ -307,11 +313,6 @@
             this.abortChange();
 
             return false;
-        }
-
-        if (_.isEqual(this.previousValue, this.model.value)) {
-            // The user reset the slider back to where it was.
-            this.abortChange();
         }
     };
 

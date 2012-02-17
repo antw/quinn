@@ -468,18 +468,6 @@ changes to the slider and that the new value should be retained.</p>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">hasChanged</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">deactivateActiveHandle</span><span class="p">();</span>
 
-        <span class="cm">/* Run the change callback; if the callback returns false then we</span>
-<span class="cm">         * revert the slider change, and restore everything to how it was</span>
-<span class="cm">         * before. Note that reverting the change will also fire an change</span>
-<span class="cm">         * event when the value is reverted.</span>
-<span class="cm">         */</span>
-        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span><span class="p">);</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">abortChange</span><span class="p">();</span>
-
-            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-        <span class="p">}</span>
-
         <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isEqual</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
@@ -492,6 +480,19 @@ changes to the slider and that the new value should be retained.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>            <span class="k">this</span><span class="p">.</span><span class="nx">abortChange</span><span class="p">();</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="cm">/* Run the change callback; if the callback returns false then we</span>
+<span class="cm">         * revert the slider change, and restore everything to how it was</span>
+<span class="cm">         * before. Note that reverting the change will also fire an change</span>
+<span class="cm">         * event when the value is reverted.</span>
+<span class="cm">         */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">previousValue</span><span class="p">);</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">abortChange</span><span class="p">();</span>
+
+            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
       </td>
