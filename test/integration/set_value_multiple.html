@@ -26,7 +26,9 @@
 
     <p>
       <a href="#" id="val-one">Set to 40, 60</a> &nbsp;
-      <a href="#" id="val-two">Set to 10, 90</a>
+      <a href="#" id="val-two">Set to 20, 80</a> &nbsp;
+      <a href="#" id="val-three">Set to 90, 95</a> &nbsp;
+      <a href="#" id="val-four">Set to 0, 100</a>
     </p>
 
     <!-- end README -->
@@ -54,7 +56,17 @@
       });
 
       $('#val-two').click(function () {
-        quinn.setValue([ 10, 90 ]);
+        quinn.setValue([ 20, 80 ]);
+        return false;
+      });
+
+      $('#val-three').click(function () {
+        quinn.setValue([ 90, 95 ]);
+        return false;
+      });
+
+      $('#val-four').click(function () {
+        quinn.setValue([ 0, 100 ]);
         return false;
       });
     </script>
