@@ -309,7 +309,7 @@
             return false;
         }
 
-        if (this.previousValue === this.value) {
+        if (_.isEqual(this.previousValue, this.model.value)) {
             // The user reset the slider back to where it was.
             this.abortChange();
         }
@@ -672,11 +672,12 @@
 
         var self = this;
 
-        this.quinn   = quinn;
-        this.model   = quinn.model;
-        this.wrapper = quinn.wrapper;
-        this.options = quinn.options;
-        this.handles = [];
+        this.quinn    = quinn;
+        this.model    = quinn.model;
+        this.wrapper  = quinn.wrapper;
+        this.options  = quinn.options;
+        this.handles  = [];
+        this.lastDraw = [];
 
         // The values which are at the far left and far right of the bar.
         // These may differ slightly from the values which are permitted for
@@ -772,27 +773,35 @@
      * they accurately represent the value of the slider.
      */
     Quinn.Renderer.prototype.redraw = function (animate) {
+        var self = this;
+
         if (animate == void 0) {
             animate = true;
         }
 
-        _.each(this.handles, _.bind(function(handle, i) {
-            var inPixels  = this.position(this.model.values[i], 5) + 'px';
+        _.each(this.model.values, function (value, i) {
+            var value = self.model.values[i],
+                handle, position;
 
-            handle.stop(true);
+            if (value === self.lastDraw[i]) {
+                return true;
+            }
 
-            if (animate && this.options.effects) {
-                handle.animate({ left: inPixels }, {
-                    duration: this.options.effectSpeed,
-                    step:     this.redrawDeltaBarInStep(handle)
+            handle   = self.handles[i].stop();
+            position = self.position(self.model.values[i], -5) + 'px';
+
+            if (animate && self.options.effects) {
+                handle.animate({ left: position }, {
+                    duration: self.options.effectSpeed,
+                    step:     self.redrawDeltaBarInStep(handle)
                 });
             } else {
-                // TODO being in the loop results in an unnecessary
-                //      additional call to redrawDeltaBar
-                handle.css('left', inPixels);
-                this.redrawDeltaBar(this.model.value);
+                handle.css('left', position);
+                self.redrawDeltaBar(self.model.value);
             }
-        }, this));
+        });
+
+        this.lastDraw = _.clone(this.model.values);
     };
 
     /**
@@ -803,14 +812,14 @@
      * within a `step` callback in a jQuery `animate` call.
      */
     Quinn.Renderer.prototype.redrawDeltaBar = function (value, handle) {
-        var left = null, right = null;
+        var left = 0, right = 0;
 
         this.deltaBar.stop(true);
 
         if (this.model.values.length > 1) {
             if (handle) {
                 if (handle === this.handles[0]) {
-                    left  = value;
+                    left = value;
                 } else {
                     right = value;
                 }
@@ -822,11 +831,9 @@
             // position with the left edge underneath the handle, and the
             // right edge at 0
             left  = value;
-            right = 0;
         } else {
             // position with the right edge underneath the handle, and the
             // left edge at 0
-            left  = 0;
             right = value;
         }
 
