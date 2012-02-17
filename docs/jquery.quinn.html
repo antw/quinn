@@ -798,7 +798,7 @@ Does nothing if a handle is already active.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">activateHandleWithEvent</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">closestValue</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">closestValue</span><span class="p">,</span> <span class="nx">handleIndex</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
@@ -810,9 +810,12 @@ Does nothing if a handle is already active.</p>
             <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">handleValue</span> <span class="o">-</span> <span class="nx">value</span><span class="p">);</span>
         <span class="p">});</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="nx">closestValue</span><span class="p">);</span>
+        <span class="nx">handleIndex</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">values</span><span class="p">,</span> <span class="nx">closestValue</span><span class="p">);</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;handleOn&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">handleIndex</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span> <span class="o">=</span> <span class="nx">handleIndex</span><span class="p">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span><span class="s1">&#39;handleOn&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">activeHandle</span><span class="p">);</span>
+        <span class="p">}</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>

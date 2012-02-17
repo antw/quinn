@@ -486,7 +486,7 @@
      * Does nothing if a handle is already active.
      */
     Quinn.prototype.activateHandleWithEvent = function (event) {
-        var value, closestValue;
+        var value, closestValue, handleIndex;
 
         if (this.activeHandle) {
             return false;
@@ -498,9 +498,12 @@
             return Math.abs(handleValue - value);
         });
 
-        this.activeHandle = _.indexOf(this.model.values, closestValue);
+        handleIndex = _.indexOf(this.model.values, closestValue);
 
-        this.trigger('handleOn', this.activeHandle);
+        if (handleIndex !== -1) {
+            this.activeHandle = handleIndex;
+            this.trigger('handleOn', this.activeHandle);
+        }
     };
 
     /**
