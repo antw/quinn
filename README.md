@@ -309,8 +309,8 @@ all it takes. In some cases, you may need to alter the CSS. For example:
     }
 
     .rainbow .handle {
-      height: 23px;
-      width: 23px;
+      height: 24px;
+      width: 24px;
     }
 {:class="no-example css"}
 
