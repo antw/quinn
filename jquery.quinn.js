@@ -868,28 +868,31 @@
             max  = this.quinn.drawTo.right,
             self = this;
 
-        return function (now) {
+        return function (now, fx) {
+            console.log(self.value(fx.now, adjust));
+
             now = now / self.width;
 
             // "now" is the current "left" position of the handle.
             // Convert that to the equivalent value. For example,
             // if the slider is 0->200, and now is 20, the
             // equivalent value is 40.
-            self.redrawDeltaBar(now * (max - min) + min, handle);
+            self.redrawDeltaBar(now * (max - min) + min, index);
 
             return true;
         };
     };
 
     /**
-     * ### positin
+     * ### position
      *
      * Given a slider value, returns the position in pixels where the value is
      * on the slider bar. For example, in a 200px wide bar whose values are
      * 1->100, the value 20 is found 40px from the left of the bar.
      *
      * If adjust is present, the position will be calculated for a handle so
-     * that it "dangles" over the edge of the bar.
+     * that it "dangles" over the edge of the bar by the given number of
+     * pixels.
      */
     Quinn.Renderer.prototype.position = function (value, adjust) {
         var delta    = this.quinn.drawTo.right - this.quinn.drawTo.left,

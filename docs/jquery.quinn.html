@@ -1292,7 +1292,9 @@ animation.</p>
             <span class="nx">max</span>  <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">quinn</span><span class="p">.</span><span class="nx">drawTo</span><span class="p">.</span><span class="nx">right</span><span class="p">,</span>
             <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
-        <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">now</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">now</span><span class="p">,</span> <span class="nx">fx</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span><span class="nx">fx</span><span class="p">.</span><span class="nx">now</span><span class="p">,</span> <span class="nx">adjust</span><span class="p">));</span>
+
             <span class="nx">now</span> <span class="o">=</span> <span class="nx">now</span> <span class="o">/</span> <span class="nx">self</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span></pre></div>
       </td>
     </tr>
@@ -1307,26 +1309,27 @@ if the slider is 0->200, and now is 20, the
 equivalent value is 40.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>            <span class="nx">self</span><span class="p">.</span><span class="nx">redrawDeltaBar</span><span class="p">(</span><span class="nx">now</span> <span class="o">*</span> <span class="p">(</span><span class="nx">max</span> <span class="o">-</span> <span class="nx">min</span><span class="p">)</span> <span class="o">+</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">handle</span><span class="p">);</span>
+        <div class='highlight'><pre>            <span class="nx">self</span><span class="p">.</span><span class="nx">redrawDeltaBar</span><span class="p">(</span><span class="nx">now</span> <span class="o">*</span> <span class="p">(</span><span class="nx">max</span> <span class="o">-</span> <span class="nx">min</span><span class="p">)</span> <span class="o">+</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">index</span><span class="p">);</span>
 
             <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">};</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-positin'>
+    <tr id='section-position'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-positin">&#182;</a>
+          <a class="pilcrow" href="#section-position">&#182;</a>
         </div>
-        <h3>positin</h3>
+        <h3>position</h3>
 
 <p>Given a slider value, returns the position in pixels where the value is
 on the slider bar. For example, in a 200px wide bar whose values are
 1->100, the value 20 is found 40px from the left of the bar.</p>
 
 <p>If adjust is present, the position will be calculated for a handle so
-that it &ldquo;dangles&rdquo; over the edge of the bar.</p>
+that it &ldquo;dangles&rdquo; over the edge of the bar by the given number of
+pixels.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Quinn</span><span class="p">.</span><span class="nx">Renderer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">position</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">adjust</span><span class="p">)</span> <span class="p">{</span>
