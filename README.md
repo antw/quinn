@@ -34,13 +34,13 @@ Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
 Downloads
 ---------
 
-[Everything (1.0.0.rc1)][tarball]
+[Everything (1.0.0.rc2)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (1.0.0.rc1)][development-js]
-:   30.4kb, JS only, Uncompressed with comments
+[Development Version (1.0.0.rc2)][development-js]
+:   30.9kb, JS only, Uncompressed with comments
 
-[Production Version (1.0.0.rc1)][production-js]
+[Production Version (1.0.0.rc2)][production-js]
 :   2.6kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -338,6 +338,16 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
+#### 1.0.0.rc2 _February 20th, 2012_
+
+* A couple of fixes to touchevents; Quinn will behave better on smartphones
+  and tablets.
+
+* Better positioning of the slider handles. The positioning of each handle is
+  determined based on its radius, and the height of the slider bar to which it
+  belongs. This results in better handling of custom CSS which has large
+  handles.
+
 #### 1.0.0.rc1 _February 17th, 2012_
 
 * **This release contains changes which are not backwards-compatible with
@@ -511,7 +521,7 @@ and Internet Explorer are not yet complete.
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
-[tarball]:        https://github.com/antw/quinn/tarball/v1.0.0.rc1
+[tarball]:        https://github.com/antw/quinn/tarball/v1.0.0.rc2
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
