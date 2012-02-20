@@ -21,8 +21,14 @@
      * the event occurred.
      */
     function locationOfEvent (event) {
-        if (event.type === 'touchmove') {
-            return event.originalEvent.targetTouches[0].pageX;
+        var oEvent = event.originalEvent;
+
+        if (oEvent.touches && oEvent.touches.length) {
+            return oEvent.touches[0].pageX;
+        } else if (oEvent.changedTouches && oEvent.changedTouches.length) {
+            return oEvent.changedTouches[0].pageX;
+            // if (event.type === 'touchmove') {
+                // return event.originalEvent.targetTouches[0].pageX;
         }
 
         return event.pageX;
@@ -761,7 +767,7 @@
 
         // Finally, these events are triggered when the user seeks to
         // update the slider.
-        this.wrapper.on('mousedown', this.quinn.clickBar);
+        this.wrapper.on(DRAG_START_E, this.quinn.clickBar);
 
         this.redraw(false);
     };
