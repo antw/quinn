@@ -27,8 +27,6 @@
             return oEvent.touches[0].pageX;
         } else if (oEvent.changedTouches && oEvent.changedTouches.length) {
             return oEvent.changedTouches[0].pageX;
-            // if (event.type === 'touchmove') {
-                // return event.originalEvent.targetTouches[0].pageX;
         }
 
         return event.pageX;
@@ -473,7 +471,8 @@
 
         if (this.start()) {
             this.activateHandleWithEvent(event);
-            this.setTentativeValue(this.valueFromMouse(event.pageX));
+            this.setTentativeValue(
+                this.valueFromMouse(locationOfEvent(event)));
             this.startDrag(event, true);
         }
 
