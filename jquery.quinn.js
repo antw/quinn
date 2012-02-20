@@ -730,9 +730,10 @@
      * render() is called automatically when creating a new Quinn instance.
      */
     Quinn.Renderer.prototype.render = function () {
-        var i, length;
+        var i, length, marginLeft;
 
-        this.width = this.options.width || this.wrapper.width();
+        this.width  = this.wrapper.width();
+        this.adjust = -this.wrapper.height();
 
         function addRoundingElements (element) {
             element.append($('<div class="left" />'));
@@ -760,8 +761,19 @@
         // Add each of the handles to the bar, and bind the click events.
         for (i = 0, length = this.model.values.length; i < length; i++) {
             this.handles[i] = $('<span class="handle"></span>');
+
             this.handles[i].on(DRAG_START_E, this.quinn.startDrag);
             this.bar.append(this.handles[i]);
+        }
+
+        // Adjust the positioning of the handles so that they appear to
+        // "dangle" over the edge of the bar.
+
+        marginLeft = this.handles[0].width() + this.adjust;
+        marginLeft = -(marginLeft / 2) + 'px';
+
+        for (i = 0, length = this.handles.length; i < length; i++) {
+            this.handles[i].css('marginLeft', marginLeft);
         }
 
         // Finally, these events are triggered when the user seeks to
@@ -792,7 +804,7 @@
             }
 
             handle   = self.handles[i].stop();
-            position = self.position(self.model.values[i], -5) + 'px';
+            position = self.position(value, self.adjust) + 'px';
 
             if (animate && self.options.effects) {
                 handle.animate({ left: position }, {
@@ -868,16 +880,14 @@
             max  = this.quinn.drawTo.right,
             self = this;
 
-        return function (now, fx) {
-            console.log(self.value(fx.now, adjust));
-
+        return function (now) {
             now = now / self.width;
 
             // "now" is the current "left" position of the handle.
             // Convert that to the equivalent value. For example,
             // if the slider is 0->200, and now is 20, the
             // equivalent value is 40.
-            self.redrawDeltaBar(now * (max - min) + min, index);
+            self.redrawDeltaBar(now * (max - min) + min, handle);
 
             return true;
         };
