@@ -523,7 +523,7 @@ and Internet Explorer are not yet complete.
 
 [tarball]:        https://github.com/antw/quinn/tarball/v1.0.0.rc2
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
-[production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
+[production-js]:  http://antw.github.com/quinn/minified/jquery.quinn.min.js
 
 [default-sprite]: http://antw.github.com/quinn/images/default.png
 [rainbow-sprite]: http://antw.github.com/quinn/vendor/rainbow.png

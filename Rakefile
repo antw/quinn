@@ -1,6 +1,29 @@
 require 'rubygems'
 require 'fileutils'
 
+SOURCES = %w(
+  jquery.quinn.js
+  plugins/balancer/jquery.quinn.balancer.js
+)
+
+# Helpers --------------------------------------------------------------------
+
+# Minified a JavaScript file using the Closure compiler.
+#
+# orig_path - Path to the original, uncompressed file.
+#
+def minify(orig_path)
+  min_path = orig_path.gsub(/\.js$/, '.min.js')
+  min_path = "minified/#{min_path.split('/').last}"
+
+  source   = File.read(orig_path)
+  min      = Closure::Compiler.new.compress(source)
+
+  File.open(min_path, 'w') { |f| f.puts min }
+end
+
+# Tasks ----------------------------------------------------------------------
+
 desc 'Build the library and readme'
 task :build => [:readme, :annotated, :minified] do
 end
@@ -9,16 +32,17 @@ desc 'Build the minified version'
 task :minified do
   require 'closure-compiler'
 
-  source  = File.read('jquery.quinn.js')
-  min     = Closure::Compiler.new.compress(source)
-
-  File.open('jquery.quinn.min.js', 'w') { |f| f.puts min }
+  SOURCES.each { |source| minify source }
 end
 
 desc 'Builds the annotated source code docs'
 task :annotated do
-  `bundle exec rocco jquery.quinn.js`
-  FileUtils.mv('jquery.quinn.html', 'docs/jquery.quinn.html')
+  %x( bundle exec rocco #{ SOURCES.join(' ') } )
+
+  SOURCES.each do |source|
+    source = source.gsub(/\.js$/, '.html')
+    FileUtils.mv(source, "docs/#{source}")
+  end
 end
 
 desc 'Build the index.html readme'
