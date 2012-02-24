@@ -3,8 +3,6 @@
 (function ( $, _ ) {
     'use strict';
 
-    var algos = {};
-
     /**
      * Creates a balancer instance.
      *
@@ -24,7 +22,16 @@
     function Balancer( options ) {
         _.bindAll(this, 'start', 'drag', 'change', 'abort');
 
-        this.options      = _.extend( {}, { target: 100 }, options );
+        this.options = _.extend( {}, {
+            target: 100, algo: 'least_recently_used'
+        }, options );
+
+        if ( Balancer.algo.hasOwnProperty( this.options.algo ) ) {
+            this.algo = Balancer.algo[ this.options.algo ];
+        } else {
+            throw "No such balancing algorithm: " + this.options.algo;
+        }
+
         this.target       = this.options.target;
         this.precision    = 1;
         this.callbacks    = {};
@@ -70,7 +77,7 @@
      */
     Balancer.prototype.doBalance = function( newValue, quinn ) {
         var amountChanged = newValue - this.oValues.value( quinn ),
-            valuesBeforeBalancing, flex, length, slider, prevValue, i;
+            valuesBeforeBalancing, flex;
 
         // Return quickly if the amount changed is larger than the balancer
         // allows, as the change is impossible.
@@ -79,7 +86,7 @@
         }
 
         // Return quickly if none of the subordinate sliders can be moved.
-        if ( ( length = this.subordinates.length ) === 0 ) {
+        if ( this.subordinates.length === 0 ) {
             return false;
         }
 
@@ -98,24 +105,7 @@
         flex = this.oValues.sumOf( this.subordinates ) + newValue;
         flex = this.snap( this.target - flex );
 
-        for ( i = 0; i < length; i++ ) {
-            // The balancer seeks to assign the full flex amount to one
-            // slider; if this can't be done, it moves on to th enext slider,
-            // and keeps going until either all the flex has been assigned, or
-            // we run out of sliders.
-
-            slider    = this.subordinates[i];
-            prevValue = this.oValues.value( slider );
-
-            slider.setTentativeValue( this.snap( prevValue + flex ), false );
-
-            // Reduce the flex by the amount by which the slider was changed,
-            // ready for the next slider.
-
-            flex = this.snap( flex - ( slider.model.value - prevValue ) );
-        }
-
-        if ( flex !== 0 ) {
+        if ( this.algo.call( this, flex ) !== 0 ) {
             valuesBeforeBalancing.revert();
             return false;
         }
@@ -261,6 +251,170 @@
         this.order = _.without( this.order, quinn.balanceId)
         this.order.push( quinn.balanceId );
     }
+
+    // Balancing Algorithms --------------------------------------------------
+
+    /**
+     * Holds functions for different balancers (least-recently-used, fair,
+     * etc).
+     */
+    Balancer.algo = {};
+
+    /**
+     * The least-recently-used balancer seeks to assign the full flex amount
+     * to one slider at a time. When this isn't possible, it trys to assign
+     * the remaining amount to the next slider, and so on... It will always
+     * assign to sliders which the user has not modified when possible, thus
+     * preserving values the user has chosen.
+     */
+    Balancer.algo.least_recently_used = function ( flex ) {
+        var length = this.subordinates.length, i, slider, prevValue;
+
+        for ( i = 0; i < length; i++ ) {
+            // The balancer seeks to assign the full flex amount to one
+            // slider; if this can't be done, it moves on to th enext slider,
+            // and keeps going until either all the flex has been assigned, or
+            // we run out of sliders.
+
+            slider    = this.subordinates[i];
+            prevValue = this.oValues.value( slider );
+
+            slider.setTentativeValue( this.snap( prevValue + flex ), false );
+
+            // Reduce the flex by the amount by which the slider was changed,
+            // ready for the next slider.
+
+            flex = this.snap( flex - ( slider.model.value - prevValue ) );
+        }
+
+        return flex;
+    };
+
+    /**
+     * A balancing algorithm which seeks to assign the flex amount as fairly
+     * as possible between all of the subordinates.
+     */
+    Balancer.algo.fair = function ( flex ) {
+        var iterations  = 20,
+            iterSliders = _.clone( this.subordinates ),
+            length      = iterSliders.length,
+
+            slider, nextIterSliders, iterStartFlex, iterDelta,
+            flexPerSlider, prevValue, i;
+
+        for ( i = 0; i < length; i++ ) {
+            slider = iterSliders[i];
+            slider.balanceDelta = slider.model.maximum -
+                                  slider.model.minimum;
+        }
+
+        while ( iterations-- ) {
+            nextIterSliders = [];
+            iterStartFlex   = flex;
+            iterDelta       = 0;
+
+            // Calculate the *total* delta of all the subordinates combined.
+            // Allows us to assign an amount of flex which is appropriate to
+            // the slider (those with a large delta will get more of the flex
+            // then those with a small delta).
+            for ( i = 0; i < length; i++ ) {
+                iterDelta += iterSliders[i].balanceDelta;
+            }
+
+            for ( i = 0; i < length; i++ ) {
+                slider = iterSliders[i];
+
+                // The amount of flex given to each input. Calculated each
+                // time we balance an input since the previous one may have
+                // used up all the available flex (due to rounding).
+                flexPerSlider = iterStartFlex * (
+                    slider.balanceDelta / iterDelta );
+
+                if ( iterations === 19 ) {
+                    // First iteration.
+                    prevValue = this.oValues.value( slider );
+                } else {
+                    prevValue = slider.model.value;
+                }
+
+                slider.setTentativeValue( prevValue + flexPerSlider, false );
+
+                flex -= ( slider.model.value - prevValue );
+
+                // Finally, if this input can still be changed further, it may
+                // be used again in the next iteration.
+                nextIterSliders.push( slider );
+            }
+
+            // The inputs will be used in the next iteration...
+            iterSliders = nextIterSliders;
+            length      = iterSliders.length;
+
+            // If the flex is all used up, or hasn't changed in this
+            // iteration, don't waste time with more iterations.
+            if ( flex === 0 || flex === iterStartFlex ) {
+                break;
+            }
+        }
+
+        return flex;
+    };
+
+    Balancer.algo.fair = function( flex ) {
+        var iteration = 0,
+            sliders   = _.clone( this.subordinates ),
+            length    = sliders.length,
+            nextIterationSliders, i, flexPerSlider, slider,
+            prevValue, prevFlex;
+
+        while( 20 >= iteration++ ) {
+            nextIterationSliders = [];
+
+            for( i = 0; i < length; i++ ) {
+                // The amount of flex given to each slider. Calculated each
+                // time we balance a slider since the previous one may have
+                // used up all the available flex (depending on rounding).
+                //
+                // For example, a flexPerSlider of 0.05, and a slider step
+                // value of 0.1 would result in 0.05 being round up, leaving
+                // no flex for the second slider.
+                flexPerSlider = this.snap( flex / ( length - i ) );
+
+                slider    = sliders[i];
+                prevValue = slider.model.value;
+
+                if( iteration === 1 ) {
+                    prevValue = this.oValues.value( slider );
+                }
+
+                slider.setTentativeValue( prevValue + flexPerSlider, false );
+
+                // Reduce the flex by the amount by which the slider was
+                // changed, ready for subsequent iterations.
+                flex = this.snap( flex - ( slider.model.value - prevValue ) );
+
+                // Finally, if this slider can be moved further still, it may
+                // be used in the next iteration.
+                if ( ( flex < 0 && slider.model.value !== slider.model.minimum ) ||
+                     ( flex > 0 && slider.model.value !== slider.model.maximum ) ) {
+                    nextIterationSliders.push( slider );
+                }
+            }
+
+            sliders = nextIterationSliders;
+            length  = sliders.length;
+
+            // We can't go any further if the flex is 0, or if the flex value
+            // hasn't changed in this iteration.
+            if( flex === 0 || prevFlex === flex ) {
+                break;
+            }
+
+            previousFlex = flex;
+        }
+
+        return flex;
+    };
 
     // OriginalValues --------------------------------------------------------
 

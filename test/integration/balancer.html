@@ -85,7 +85,7 @@ abort events triggered:  <span id="abort-events">0</span></code></pre>
         abort:  updateValue('ignore',    'abort')
       });
 
-      balancer = new $.Quinn.Balancer();
+      balancer = new $.Quinn.Balancer({ algo: 'fair' });
       balancer.add(first).add(second).add(third);
 
       window.balancer = balancer;
