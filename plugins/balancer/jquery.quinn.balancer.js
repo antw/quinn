@@ -298,13 +298,22 @@
         var iteration = 0,
             sliders   = _.clone( this.subordinates ),
             length    = sliders.length,
-            nextIterationSliders, i, flexPerSlider, slider,
-            prevValue, prevFlex;
+            totalDelta, iterFlex, nextIterationSliders, i,
+            flexPerSlider, slider, prevValue, prevFlex;
 
         while( 20 >= iteration++ ) {
             nextIterationSliders = [];
+            iterFlex   = flex;
+            totalDelta = cumulativeDeltas( sliders );
 
             for( i = 0; i < length; i++ ) {
+                slider    = sliders[i];
+                prevValue = slider.model.value;
+
+                if( iteration === 1 ) {
+                    prevValue = this.oValues.value( slider );
+                }
+
                 // The amount of flex given to each slider. Calculated each
                 // time we balance a slider since the previous one may have
                 // used up all the available flex (depending on rounding).
@@ -312,14 +321,9 @@
                 // For example, a flexPerSlider of 0.05, and a slider step
                 // value of 0.1 would result in 0.05 being round up, leaving
                 // no flex for the second slider.
-                flexPerSlider = this.snap( flex / ( length - i ) );
-
-                slider    = sliders[i];
-                prevValue = slider.model.value;
-
-                if( iteration === 1 ) {
-                    prevValue = this.oValues.value( slider );
-                }
+                flexPerSlider = this.snap( iterFlex * (
+                    ( slider.model.maximum - slider.model.minimum ) / totalDelta
+                ) );
 
                 slider.setTentativeValue( prevValue + flexPerSlider, false );
 
@@ -329,8 +333,7 @@
 
                 // Finally, if this slider can be moved further still, it may
                 // be used in the next iteration.
-                if ( ( flex < 0 && slider.model.value !== slider.model.minimum ) ||
-                     ( flex > 0 && slider.model.value !== slider.model.maximum ) ) {
+                if ( canMove( slider, flex ) ) {
                     nextIterationSliders.push( slider );
                 }
             }
@@ -402,6 +405,32 @@
             quinn.setTentativeValue( this.values[ quinn.balanceId ] );
         }
     };
+
+    // Helpers ---------------------------------------------------------------
+
+    /**
+     * Given a collection of sliders, returns the sum of all their deltas
+     * (i.e. determine the difference between each of their minimum and
+     * maximum acceptable values, and sum them all together).
+     */
+    function cumulativeDeltas( sliders ) {
+        var sum = 0, length = sliders.length, i;
+
+        for( i = 0; i < length; i++ ) {
+            sum += ( sliders[i].model.maximum - sliders[i].model.minimum );
+        }
+
+        return sum;
+    }
+
+    /**
+     * Given a flex amount, determines if the given slider may be moved in the
+     * direction of that flex.
+     */
+    function canMove( slider, flex ) {
+        return ( flex < 0 && slider.model.value > slider.model.minimum ) ||
+            ( flex > 0 && slider.model.value < slider.model.maximum )
+    }
 
     // -----------------------------------------------------------------------
 
