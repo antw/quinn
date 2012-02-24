@@ -898,15 +898,15 @@ active.</p>
 <span class="cm">         *      to just use sanitizeValue?</span>
 <span class="cm">         */</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">min</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">max</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">min</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">min</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">max</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">max</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">&lt;</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">min</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">min</span> <span class="o">&lt;</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">min</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">min</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">&gt;</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">-=</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">max</span> <span class="o">&gt;</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">max</span> <span class="o">-=</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
         <span class="p">}</span>
 
         <span class="cm">/* Determine the initial value of the slider. Prefer an explicitly set</span>
@@ -915,7 +915,7 @@ active.</p>
 <span class="cm">         */</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">||</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">value</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">initialValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span><span class="p">;</span>
+            <span class="nx">initialValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">min</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">opts</span><span class="p">.</span><span class="nx">value</span><span class="p">))</span> <span class="p">{</span>
             <span class="nx">initialValue</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
@@ -1021,9 +1021,9 @@ maximum range options.</p>
             <span class="p">});</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">rounded</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">rounded</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">rounded</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">rounded</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">rounded</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">min</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="nx">rounded</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">;</span>
         <span class="p">}</span>
 
@@ -1045,10 +1045,10 @@ it is within the selectable minima and maxima.</p>
         <div class='highlight'><pre>    <span class="nx">Model</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sanitizeValue</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">value</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">roundToStep</span><span class="p">(</span><span class="nx">value</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">maximum</span><span class="p">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">minimum</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">max</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">min</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">min</span><span class="p">;</span>
         <span class="p">}</span>
 
         <span class="k">return</span> <span class="nx">value</span><span class="p">;</span>
