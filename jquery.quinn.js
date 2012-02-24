@@ -246,7 +246,10 @@
                 (! silent && ! this.trigger('drag', newValue))) {
 
             this.model.setValue(preDragValue);
-            this.trigger('drag', preDragValue);
+
+            // If the drag callback failed, we need to send another drag
+            // event so that the developer has the chance to respond.
+            (newValue !== false && this.trigger('drag', preDragValue));
 
             return false;
         }

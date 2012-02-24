@@ -65,12 +65,22 @@ that the group remains balanced.
         <div class='highlight'><pre>    <span class="kd">function</span> <span class="nx">Balancer</span><span class="p">(</span> <span class="nx">options</span> <span class="p">)</span> <span class="p">{</span>
         <span class="nx">_</span><span class="p">.</span><span class="nx">bindAll</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="s1">&#39;drag&#39;</span><span class="p">,</span> <span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="s1">&#39;abort&#39;</span><span class="p">);</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">options</span>      <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span> <span class="p">{},</span> <span class="p">{</span> <span class="nx">target</span><span class="o">:</span> <span class="mi">100</span> <span class="p">},</span> <span class="nx">options</span> <span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">options</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span> <span class="p">{},</span> <span class="p">{</span>
+            <span class="nx">target</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span> <span class="nx">algo</span><span class="o">:</span> <span class="s1">&#39;least_recently_used&#39;</span>
+        <span class="p">},</span> <span class="nx">options</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="nx">Balancer</span><span class="p">.</span><span class="nx">algo</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">algo</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">algo</span> <span class="o">=</span> <span class="nx">Balancer</span><span class="p">.</span><span class="nx">algo</span><span class="p">[</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">algo</span> <span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="s2">&quot;No such balancing algorithm: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">algo</span><span class="p">;</span>
+        <span class="p">}</span>
+
         <span class="k">this</span><span class="p">.</span><span class="nx">target</span>       <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">precision</span>    <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">callbacks</span>    <span class="o">=</span> <span class="p">{};</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">members</span>      <span class="o">=</span> <span class="p">[];</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">order</span>        <span class="o">=</span> <span class="p">[];</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">masterId</span>     <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">oValues</span>      <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">disabled</span>     <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
@@ -108,10 +118,11 @@ that the group remains balanced.
         <span class="nx">quinn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">&#39;abort&#39;</span><span class="p">,</span>  <span class="k">this</span><span class="p">.</span><span class="nx">abort</span> <span class="p">);</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">members</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">balanceId</span> <span class="p">);</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">precision</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">members</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
             <span class="kd">var</span> <span class="nx">split</span> <span class="o">=</span> <span class="p">(</span> <span class="s1">&#39;&#39;</span> <span class="o">+</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">step</span> <span class="p">).</span><span class="nx">split</span><span class="p">(</span> <span class="s1">&#39;.&#39;</span> <span class="p">);</span>
-            <span class="k">return</span> <span class="p">(</span> <span class="nx">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">split</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">length</span> <span class="p">)</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="k">return</span> <span class="p">(</span> <span class="nx">split</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">split</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">length</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
         <span class="p">}</span> <span class="p">)</span> <span class="p">);</span>
 
         <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
@@ -129,7 +140,7 @@ sliders in the balancer.</p>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">doBalance</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">newValue</span><span class="p">,</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
         <span class="kd">var</span> <span class="nx">amountChanged</span> <span class="o">=</span> <span class="nx">newValue</span> <span class="o">-</span> <span class="k">this</span><span class="p">.</span><span class="nx">oValues</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">),</span>
-            <span class="nx">valuesBeforeBalancing</span><span class="p">,</span> <span class="nx">flex</span><span class="p">,</span> <span class="nx">length</span><span class="p">,</span> <span class="nx">slider</span><span class="p">,</span> <span class="nx">prevValue</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span></pre></div>
+            <span class="nx">valuesBeforeBalancing</span><span class="p">,</span> <span class="nx">flex</span><span class="p">;</span></pre></div>
       </td>
     </tr>
     <tr id='section-6'>
@@ -141,7 +152,7 @@ sliders in the balancer.</p>
 allows, as the change is impossible.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">amountChanged</span><span class="p">)</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">max</span> <span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span> <span class="nx">amountChanged</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">max</span> <span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span></pre></div>
       </td>
@@ -154,7 +165,7 @@ allows, as the change is impossible.</p>
         <p>Return quickly if none of the subordinate sliders can be moved.</p>
       </td>
       <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="nx">length</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span><span class="p">.</span><span class="nx">length</span> <span class="p">)</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
 
@@ -178,111 +189,12 @@ balance the group, we need to subtract 25 from the subordinates.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>        <span class="nx">flex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">oValues</span><span class="p">.</span><span class="nx">sumOf</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span> <span class="p">)</span> <span class="o">+</span> <span class="nx">newValue</span><span class="p">;</span>
-        <span class="nx">flex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">-</span> <span class="nx">flex</span> <span class="p">);</span></pre></div>
-      </td>
-    </tr>
-    <tr id='section-9'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-9">&#182;</a>
-        </div>
-        <p>Last chance to quick return, nothing to be adjusted for?</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre>        <span class="k">if</span> <span class="p">(</span> <span class="nx">flex</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
-            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
-        <span class="p">}</span>
+        <span class="nx">flex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">target</span> <span class="o">-</span> <span class="nx">flex</span> <span class="p">);</span>
 
-        <span class="k">for</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span></pre></div>
-      </td>
-    </tr>
-    <tr id='section-10'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-10">&#182;</a>
-        </div>
-        <p>The balancer seeks to assign the full flex amount to one
-slider; if this can&rsquo;t be done, it moves on to th enext slider,
-and keeps going until either all the flex has been assigned, or
-we run out of sliders.</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre>            <span class="nx">slider</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-            <span class="nx">prevValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">oValues</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span> <span class="nx">slider</span> <span class="p">);</span></pre></div>
-      </td>
-    </tr>
-    <tr id='section-11'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-11">&#182;</a>
-        </div>
-        <p>console.log(
-newValue,
-this.snap( prevValue + flex ),
-slider.model.value,</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre>                <span class="nx">slider</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="nx">prevValue</span> <span class="o">+</span> <span class="nx">flex</span> <span class="p">),</span> <span class="kc">false</span> <span class="p">)</span></pre></div>
-      </td>
-    </tr>
-    <tr id='section-12'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-12">&#182;</a>
-        </div>
-        <p>);</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre></pre></div>
-      </td>
-    </tr>
-    <tr id='section-13'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-13">&#182;</a>
-        </div>
-        <p>Reduce the flex by the amount by which the slider was changed,
-ready for the next slider.</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre>            <span class="nx">flex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="nx">flex</span> <span class="o">-</span> <span class="p">(</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span> <span class="o">-</span> <span class="nx">prevValue</span> <span class="p">)</span> <span class="p">);</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="p">(</span> <span class="nx">flex</span> <span class="o">!==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">algo</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span> <span class="k">this</span><span class="p">,</span> <span class="nx">flex</span> <span class="p">)</span> <span class="o">!==</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
             <span class="nx">valuesBeforeBalancing</span><span class="p">.</span><span class="nx">revert</span><span class="p">();</span>
             <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
         <span class="p">}</span>
-    <span class="p">};</span></pre></div>
-      </td>
-    </tr>
-    <tr id='section-14'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-14">&#182;</a>
-        </div>
-        <p>Given a float, &ldquo;snaps&rdquo; it to match the precision (i.e. if the smallest
-step value of any of the balanced sliders is 0.1, it will round the
-number to the nearest 0.1). Used heavily in doBalance to account for the
-<em>vast</em> number of floating point errors which occur when a group contains
-three or more sliders.</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">snap</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">value</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nb">parseFloat</span><span class="p">(</span> <span class="nx">value</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">precision</span> <span class="p">)</span> <span class="p">);</span>
-    <span class="p">};</span></pre></div>
-      </td>
-    </tr>
-    <tr id='section-15'>
-      <td class=docs>
-        <div class="pilwrap">
-          <a class="pilcrow" href="#section-15">&#182;</a>
-        </div>
-        <p>Returns if the given Quinn instance is the current master slider.</p>
-      </td>
-      <td class=code>
-        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isMaster</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">masterId</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span>
-               <span class="k">this</span><span class="p">.</span><span class="nx">masterId</span> <span class="o">===</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">balanceId</span><span class="p">;</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
@@ -297,10 +209,10 @@ three or more sliders.</p>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-17'>
+    <tr id='section-10'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-17">&#182;</a>
+          <a class="pilcrow" href="#section-10">&#182;</a>
         </div>
         <p>Triggered when a slider starts to be moved by a user. The first slider
 to be moved will be considered the &ldquo;master&rdquo;; the others will be
@@ -324,10 +236,10 @@ automatically adjusted to ensure that sum still balances.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-18'>
+    <tr id='section-11'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-18">&#182;</a>
+          <a class="pilcrow" href="#section-11">&#182;</a>
         </div>
         <p>Triggered when a slider belonging to this balancer is moved. We only
 care about movement of the master.</p>
@@ -338,10 +250,10 @@ care about movement of the master.</p>
             <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">doBalance</span><span class="p">(</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="o">===</span> <span class="kc">false</span> <span class="p">)</span> <span class="p">{</span></pre></div>
       </td>
     </tr>
-    <tr id='section-19'>
+    <tr id='section-12'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-19">&#182;</a>
+          <a class="pilcrow" href="#section-12">&#182;</a>
         </div>
         <p>Can&rsquo;t do the balance, so prevent the slider movement.</p>
       </td>
@@ -354,26 +266,27 @@ care about movement of the master.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-20'>
+    <tr id='section-13'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-20">&#182;</a>
+          <a class="pilcrow" href="#section-13">&#182;</a>
         </div>
         <p>Triggered when the user has finished moving the master slider.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">change</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">isMaster</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">sliderUsed</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">);</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">finish</span><span class="p">(</span> <span class="s1">&#39;resolve&#39;</span> <span class="p">);</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">trigger</span><span class="p">(</span> <span class="s1">&#39;change&#39;</span> <span class="p">);</span>
         <span class="p">}</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-21'>
+    <tr id='section-14'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-21">&#182;</a>
+          <a class="pilcrow" href="#section-14">&#182;</a>
         </div>
         <p>Triggered when the the master slider aborts the slider movement (e.g.
 the slider value is reset back to it&rsquo;s original.</p>
@@ -398,28 +311,47 @@ the slider value is reset back to it&rsquo;s original.</p>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-23'>
+    <tr id='section-16'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-23">&#182;</a>
+          <a class="pilcrow" href="#section-16">&#182;</a>
         </div>
         <p>Called as the user begins moving a slider. Returns all of the other
 sliders in the balancer, minus those which are disabled.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getSubordinates</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span> <span class="nx">subs</span><span class="p">;</span>
 
-        <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">members</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="nx">subs</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">members</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
             <span class="k">return</span> <span class="o">!</span> <span class="nx">self</span><span class="p">.</span><span class="nx">isMaster</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">disabled</span><span class="p">;</span>
+        <span class="p">}</span> <span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">members</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">subs</span><span class="p">;</span>
+        <span class="p">}</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-17'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-17">&#182;</a>
+        </div>
+        <p>The subordinates are now re-ordererd so that the most recently used
+sliders are at the end of the array so that these sliders are
+balanced last (preferring to preserve values the user has set).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>        <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">sortBy</span><span class="p">(</span> <span class="nx">subs</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">_</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span> <span class="nx">self</span><span class="p">.</span><span class="nx">order</span><span class="p">,</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">balanceId</span> <span class="p">);</span>
         <span class="p">}</span> <span class="p">);</span>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-24'>
+    <tr id='section-18'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-24">&#182;</a>
+          <a class="pilcrow" href="#section-18">&#182;</a>
         </div>
         <p>Finishes editing slider values by resetting this.masterId and
 this.subordinates, and calling &ldquo;method&rdquo; on the subordinates.</p>
@@ -434,10 +366,10 @@ this.subordinates, and calling &ldquo;method&rdquo; on the subordinates.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-25'>
+    <tr id='section-19'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-25">&#182;</a>
+          <a class="pilcrow" href="#section-19">&#182;</a>
         </div>
         <p>Runs a method on all the subordinates.</p>
       </td>
@@ -451,10 +383,349 @@ this.subordinates, and calling &ldquo;method&rdquo; on the subordinates.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
+    <tr id='section-20'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-20">&#182;</a>
+        </div>
+        <p>Given a float, &ldquo;snaps&rdquo; it to match the precision (i.e. if the smallest
+step value of any of the balanced sliders is 0.1, it will round the
+number to the nearest 0.1). Used heavily in doBalance to account for the
+<em>vast</em> number of floating point errors which occur when a group contains
+three or more sliders.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">snap</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">value</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">pow</span> <span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span> <span class="mi">10</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">precision</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span> <span class="nx">value</span> <span class="o">*</span> <span class="nx">pow</span> <span class="p">)</span> <span class="o">/</span> <span class="nx">pow</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-21'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-21">&#182;</a>
+        </div>
+        <p>Returns if the given Quinn instance is the current master slider.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">isMaster</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">masterId</span> <span class="o">!==</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span>
+               <span class="k">this</span><span class="p">.</span><span class="nx">masterId</span> <span class="o">===</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">balanceId</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-22'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-22">&#182;</a>
+        </div>
+        <p>Marks a slider as used, pushing it to the back of the order array. This
+means that doBalance will try to balance the unused sliders first.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">sliderUsed</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">quinn</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">members</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">order</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">without</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">order</span><span class="p">,</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">balanceId</span><span class="p">)</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">order</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">quinn</span><span class="p">.</span><span class="nx">balanceId</span> <span class="p">);</span>
+    <span class="p">}</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-23'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-23">&#182;</a>
+        </div>
+        <p>Balancing Algorithms &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-24'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-24">&#182;</a>
+        </div>
+        <p>Holds functions for different balancers (least-recently-used, fair,
+etc).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">algo</span> <span class="o">=</span> <span class="p">{};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-25'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-25">&#182;</a>
+        </div>
+        <p>The least-recently-used balancer seeks to assign the full flex amount
+to one slider at a time. When this isn&rsquo;t possible, it trys to assign
+the remaining amount to the next slider, and so on&hellip; It will always
+assign to sliders which the user has not modified when possible, thus
+preserving values the user has chosen.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">algo</span><span class="p">.</span><span class="nx">least_recently_used</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">flex</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">length</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">slider</span><span class="p">,</span> <span class="nx">prevValue</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
     <tr id='section-26'>
       <td class=docs>
         <div class="pilwrap">
           <a class="pilcrow" href="#section-26">&#182;</a>
+        </div>
+        <p>The balancer seeks to assign the full flex amount to one
+slider; if this can&rsquo;t be done, it moves on to th enext slider,
+and keeps going until either all the flex has been assigned, or
+we run out of sliders.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="nx">slider</span>    <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="nx">prevValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">oValues</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span> <span class="nx">slider</span> <span class="p">);</span>
+
+            <span class="nx">slider</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="nx">prevValue</span> <span class="o">+</span> <span class="nx">flex</span> <span class="p">),</span> <span class="kc">false</span> <span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-27'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-27">&#182;</a>
+        </div>
+        <p>Reduce the flex by the amount by which the slider was changed,
+ready for the next slider.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="nx">flex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="nx">flex</span> <span class="o">-</span> <span class="p">(</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span> <span class="o">-</span> <span class="nx">prevValue</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">flex</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-28'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-28">&#182;</a>
+        </div>
+        <p>A balancing algorithm which seeks to assign the flex amount as fairly
+as possible between all of the subordinates.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">algo</span><span class="p">.</span><span class="nx">fair</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span> <span class="nx">flex</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">iterations</span>  <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="nx">iterSliders</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span> <span class="p">),</span>
+            <span class="nx">length</span>      <span class="o">=</span> <span class="nx">iterSliders</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+
+            <span class="nx">slider</span><span class="p">,</span> <span class="nx">nextIterSliders</span><span class="p">,</span> <span class="nx">iterStartFlex</span><span class="p">,</span> <span class="nx">iterDelta</span><span class="p">,</span>
+            <span class="nx">flexPerSlider</span><span class="p">,</span> <span class="nx">prevValue</span><span class="p">,</span> <span class="nx">i</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="nx">slider</span> <span class="o">=</span> <span class="nx">iterSliders</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="nx">slider</span><span class="p">.</span><span class="nx">balanceDelta</span> <span class="o">=</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">maximum</span> <span class="o">-</span>
+                                  <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">minimum</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">while</span> <span class="p">(</span> <span class="nx">iterations</span><span class="o">--</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="nx">nextIterSliders</span> <span class="o">=</span> <span class="p">[];</span>
+            <span class="nx">iterStartFlex</span>   <span class="o">=</span> <span class="nx">flex</span><span class="p">;</span>
+            <span class="nx">iterDelta</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-29'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-29">&#182;</a>
+        </div>
+        <p>Calculate the <em>total</em> delta of all the subordinates combined.
+Allows us to assign an amount of flex which is appropriate to
+the slider (those with a large delta will get more of the flex
+then those with a small delta).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="k">for</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="nx">iterDelta</span> <span class="o">+=</span> <span class="nx">iterSliders</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">balanceDelta</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="k">for</span> <span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="nx">slider</span> <span class="o">=</span> <span class="nx">iterSliders</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-30'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-30">&#182;</a>
+        </div>
+        <p>The amount of flex given to each input. Calculated each
+time we balance an input since the previous one may have
+used up all the available flex (due to rounding).</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="nx">flexPerSlider</span> <span class="o">=</span> <span class="nx">iterStartFlex</span> <span class="o">*</span> <span class="p">(</span>
+                    <span class="nx">slider</span><span class="p">.</span><span class="nx">balanceDelta</span> <span class="o">/</span> <span class="nx">iterDelta</span> <span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span> <span class="nx">iterations</span> <span class="o">===</span> <span class="mi">19</span> <span class="p">)</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-31'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-31">&#182;</a>
+        </div>
+        <p>First iteration.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                    <span class="nx">prevValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">oValues</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span> <span class="nx">slider</span> <span class="p">);</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="nx">prevValue</span> <span class="o">=</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="nx">slider</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span> <span class="nx">prevValue</span> <span class="o">+</span> <span class="nx">flexPerSlider</span><span class="p">,</span> <span class="kc">false</span> <span class="p">);</span>
+
+                <span class="nx">flex</span> <span class="o">-=</span> <span class="p">(</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span> <span class="o">-</span> <span class="nx">prevValue</span> <span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-32'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-32">&#182;</a>
+        </div>
+        <p>Finally, if this input can still be changed further, it may
+be used again in the next iteration.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="nx">nextIterSliders</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">slider</span> <span class="p">);</span>
+            <span class="p">}</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-33'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-33">&#182;</a>
+        </div>
+        <p>The inputs will be used in the next iteration&hellip;</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="nx">iterSliders</span> <span class="o">=</span> <span class="nx">nextIterSliders</span><span class="p">;</span>
+            <span class="nx">length</span>      <span class="o">=</span> <span class="nx">iterSliders</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-34'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-34">&#182;</a>
+        </div>
+        <p>If the flex is all used up, or hasn&rsquo;t changed in this
+iteration, don&rsquo;t waste time with more iterations.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="k">if</span> <span class="p">(</span> <span class="nx">flex</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">flex</span> <span class="o">===</span> <span class="nx">iterStartFlex</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">flex</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="nx">Balancer</span><span class="p">.</span><span class="nx">algo</span><span class="p">.</span><span class="nx">fair</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">flex</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">iteration</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="nx">sliders</span>   <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">clone</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">subordinates</span> <span class="p">),</span>
+            <span class="nx">length</span>    <span class="o">=</span> <span class="nx">sliders</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span>
+            <span class="nx">nextIterationSliders</span><span class="p">,</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">flexPerSlider</span><span class="p">,</span> <span class="nx">slider</span><span class="p">,</span>
+            <span class="nx">prevValue</span><span class="p">,</span> <span class="nx">prevFlex</span><span class="p">;</span>
+
+        <span class="k">while</span><span class="p">(</span> <span class="mi">20</span> <span class="o">&gt;=</span> <span class="nx">iteration</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="nx">nextIterationSliders</span> <span class="o">=</span> <span class="p">[];</span>
+
+            <span class="k">for</span><span class="p">(</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-35'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-35">&#182;</a>
+        </div>
+        <p>The amount of flex given to each slider. Calculated each
+time we balance a slider since the previous one may have
+used up all the available flex (depending on rounding).</p>
+
+<p>For example, a flexPerSlider of 0.05, and a slider step
+value of 0.1 would result in 0.05 being round up, leaving
+no flex for the second slider.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="nx">flexPerSlider</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="nx">flex</span> <span class="o">/</span> <span class="p">(</span> <span class="nx">length</span> <span class="o">-</span> <span class="nx">i</span> <span class="p">)</span> <span class="p">);</span>
+
+                <span class="nx">slider</span>    <span class="o">=</span> <span class="nx">sliders</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+                <span class="nx">prevValue</span> <span class="o">=</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+
+                <span class="k">if</span><span class="p">(</span> <span class="nx">iteration</span> <span class="o">===</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">prevValue</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">oValues</span><span class="p">.</span><span class="nx">value</span><span class="p">(</span> <span class="nx">slider</span> <span class="p">);</span>
+                <span class="p">}</span>
+
+                <span class="nx">slider</span><span class="p">.</span><span class="nx">setTentativeValue</span><span class="p">(</span> <span class="nx">prevValue</span> <span class="o">+</span> <span class="nx">flexPerSlider</span><span class="p">,</span> <span class="kc">false</span> <span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-36'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-36">&#182;</a>
+        </div>
+        <p>Reduce the flex by the amount by which the slider was
+changed, ready for subsequent iterations.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="nx">flex</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">snap</span><span class="p">(</span> <span class="nx">flex</span> <span class="o">-</span> <span class="p">(</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span> <span class="o">-</span> <span class="nx">prevValue</span> <span class="p">)</span> <span class="p">);</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-37'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-37">&#182;</a>
+        </div>
+        <p>Finally, if this slider can be moved further still, it may
+be used in the next iteration.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>                <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="nx">flex</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span> <span class="o">!==</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">minimum</span> <span class="p">)</span> <span class="o">||</span>
+                     <span class="p">(</span> <span class="nx">flex</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">value</span> <span class="o">!==</span> <span class="nx">slider</span><span class="p">.</span><span class="nx">model</span><span class="p">.</span><span class="nx">maximum</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">nextIterationSliders</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">slider</span> <span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="nx">sliders</span> <span class="o">=</span> <span class="nx">nextIterationSliders</span><span class="p">;</span>
+            <span class="nx">length</span>  <span class="o">=</span> <span class="nx">sliders</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-38'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-38">&#182;</a>
+        </div>
+        <p>We can&rsquo;t go any further if the flex is 0, or if the flex value
+hasn&rsquo;t changed in this iteration.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>            <span class="k">if</span><span class="p">(</span> <span class="nx">flex</span> <span class="o">===</span> <span class="mi">0</span> <span class="o">||</span> <span class="nx">prevFlex</span> <span class="o">===</span> <span class="nx">flex</span> <span class="p">)</span> <span class="p">{</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="nx">previousFlex</span> <span class="o">=</span> <span class="nx">flex</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">flex</span><span class="p">;</span>
+    <span class="p">};</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-39'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-39">&#182;</a>
         </div>
         <p>OriginalValues &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;</p>
       </td>
@@ -462,10 +733,10 @@ this.subordinates, and calling &ldquo;method&rdquo; on the subordinates.</p>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-27'>
+    <tr id='section-40'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-27">&#182;</a>
+          <a class="pilcrow" href="#section-40">&#182;</a>
         </div>
         <p>Given an array of Quinn instances, Originalvalues keeps track of the
 value of each slider at the time the OriginalValues instance was
@@ -485,10 +756,10 @@ created.</p>
     <span class="p">}</span></pre></div>
       </td>
     </tr>
-    <tr id='section-28'>
+    <tr id='section-41'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-28">&#182;</a>
+          <a class="pilcrow" href="#section-41">&#182;</a>
         </div>
         <p>Given a Quinn instance, returns the value of that instance at the time
 the OriginalValues was created.</p>
@@ -499,10 +770,10 @@ the OriginalValues was created.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-29'>
+    <tr id='section-42'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-29">&#182;</a>
+          <a class="pilcrow" href="#section-42">&#182;</a>
         </div>
         <p>Given an array of Quinns, returns the sum of their values at the time
 the OriginalValues was initialized.</p>
@@ -519,10 +790,10 @@ the OriginalValues was initialized.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-30'>
+    <tr id='section-43'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-30">&#182;</a>
+          <a class="pilcrow" href="#section-43">&#182;</a>
         </div>
         <p>Reverts the Quinn instances back to their original values.</p>
       </td>
@@ -537,10 +808,10 @@ the OriginalValues was initialized.</p>
     <span class="p">};</span></pre></div>
       </td>
     </tr>
-    <tr id='section-31'>
+    <tr id='section-44'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-31">&#182;</a>
+          <a class="pilcrow" href="#section-44">&#182;</a>
         </div>
         <hr />
       </td>
@@ -548,10 +819,10 @@ the OriginalValues was initialized.</p>
         <div class='highlight'><pre></pre></div>
       </td>
     </tr>
-    <tr id='section-32'>
+    <tr id='section-45'>
       <td class=docs>
         <div class="pilwrap">
-          <a class="pilcrow" href="#section-32">&#182;</a>
+          <a class="pilcrow" href="#section-45">&#182;</a>
         </div>
         <p>Expose the balancer constructor as $.Quinn.Balancer.</p>
 
