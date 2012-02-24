@@ -25,11 +25,11 @@ QUnit.specify('', function () {
             });
 
             it('should set the minimum value to 0', function () {
-                assert(slider.model.minimum).equals(0);
+                assert(slider.model.min).equals(0);
             });
 
             it('should set the maximum value to 100', function () {
-                assert(slider.model.maximum).equals(100);
+                assert(slider.model.max).equals(100);
             });
 
             it('should not be disabled', function () {
@@ -55,11 +55,11 @@ QUnit.specify('', function () {
             });
 
             it('should set the minimum value to 20', function () {
-                assert(slider.model.minimum).equals(20);
+                assert(slider.model.min).equals(20);
             });
 
             it('should set the maximum value to 40', function () {
-                assert(slider.model.maximum).equals(40);
+                assert(slider.model.max).equals(40);
             });
         }); // With min: 20, max: 40
 
@@ -81,11 +81,11 @@ QUnit.specify('', function () {
             });
 
             it('should set the minimum value to 0', function () {
-                assert(slider.model.minimum).equals(0);
+                assert(slider.model.min).equals(0);
             });
 
             it('should set the maximum value to 100', function () {
-                assert(slider.model.maximum).equals(100);
+                assert(slider.model.max).equals(100);
             });
         }); // With drawTo { left: -100, right: 200 }
 
@@ -107,11 +107,11 @@ QUnit.specify('', function () {
             });
 
             it('should set the minimum value to 0', function () {
-                assert(slider.model.minimum).equals(0);
+                assert(slider.model.min).equals(0);
             });
 
             it('should set the maximum value to 100', function () {
-                assert(slider.model.maximum).equals(100);
+                assert(slider.model.max).equals(100);
             });
         }); // With drawTo { left: -100 }
 
@@ -133,11 +133,11 @@ QUnit.specify('', function () {
             });
 
             it('should set the minimum value to 0', function () {
-                assert(slider.model.minimum).equals(0);
+                assert(slider.model.min).equals(0);
             });
 
             it('should set the maximum value to 100', function () {
-                assert(slider.model.maximum).equals(100);
+                assert(slider.model.max).equals(100);
             });
         }); // With drawTo { right: 200 }
 
@@ -159,12 +159,12 @@ QUnit.specify('', function () {
             });
 
             it('should set the minimum value to 0', function () {
-                assert(slider.model.minimum).equals(0);
+                assert(slider.model.min).equals(0);
             });
 
             it('should set the maximum value to 90', function () {
                 // 100 isn't divisible by the step.
-                assert(slider.model.maximum).equals(90);
+                assert(slider.model.max).equals(90);
             });
         }); // With selectable: [20, 40]
 

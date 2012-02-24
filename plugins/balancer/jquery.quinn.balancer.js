@@ -322,7 +322,7 @@
                 // value of 0.1 would result in 0.05 being round up, leaving
                 // no flex for the second slider.
                 flexPerSlider = this.snap( iterationFlex * (
-                    ( slider.model.maximum - slider.model.minimum ) / totalDelta
+                    ( slider.model.max - slider.model.min ) / totalDelta
                 ) );
 
                 slider.setTentativeValue( prevValue + flexPerSlider, false );
@@ -417,7 +417,7 @@
         var sum = 0, length = sliders.length, i;
 
         for( i = 0; i < length; i++ ) {
-            sum += ( sliders[i].model.maximum - sliders[i].model.minimum );
+            sum += ( sliders[i].model.max - sliders[i].model.min );
         }
 
         return sum;
@@ -428,8 +428,8 @@
      * direction of that flex.
      */
     function canMove( slider, flex ) {
-        return ( flex < 0 && slider.model.value > slider.model.minimum ) ||
-            ( flex > 0 && slider.model.value < slider.model.maximum )
+        return ( flex < 0 && slider.model.value > slider.model.min ) ||
+            ( flex > 0 && slider.model.value < slider.model.max )
     }
 
     // -----------------------------------------------------------------------
