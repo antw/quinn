@@ -298,13 +298,13 @@
         var iteration = 0,
             sliders   = _.clone( this.subordinates ),
             length    = sliders.length,
-            totalDelta, iterFlex, nextIterationSliders, i,
+            totalDelta, iterationFlex, nextIterationSliders, i,
             flexPerSlider, slider, prevValue, prevFlex;
 
         while( 20 >= iteration++ ) {
             nextIterationSliders = [];
-            iterFlex   = flex;
-            totalDelta = cumulativeDeltas( sliders );
+            iterationFlex = flex;
+            totalDelta    = cumulativeDeltas( sliders );
 
             for( i = 0; i < length; i++ ) {
                 slider    = sliders[i];
@@ -321,7 +321,7 @@
                 // For example, a flexPerSlider of 0.05, and a slider step
                 // value of 0.1 would result in 0.05 being round up, leaving
                 // no flex for the second slider.
-                flexPerSlider = this.snap( iterFlex * (
+                flexPerSlider = this.snap( iterationFlex * (
                     ( slider.model.maximum - slider.model.minimum ) / totalDelta
                 ) );
 
