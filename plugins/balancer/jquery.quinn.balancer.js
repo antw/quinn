@@ -344,7 +344,7 @@
                 break;
             }
 
-            previousFlex = flex;
+            prevFlex = flex;
         }
 
         return flex;
