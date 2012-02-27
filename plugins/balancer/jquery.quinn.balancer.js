@@ -248,9 +248,9 @@
             return true;
         }
 
-        this.order = _.without( this.order, quinn.balanceId)
+        this.order = _.without( this.order, quinn.balanceId );
         this.order.push( quinn.balanceId );
-    }
+    };
 
     // Balancing Algorithms --------------------------------------------------
 
@@ -299,7 +299,7 @@
             sliders   = _.clone( this.subordinates ),
             length    = sliders.length,
             totalDelta, iterationFlex, nextIterationSliders, i,
-            flexPerSlider, slider, prevValue, prevFlex;
+            flexPerSlider, slider, prevValue, prevFlex, diff;
 
         while( 20 >= iteration++ ) {
             nextIterationSliders = [];
@@ -327,9 +327,15 @@
 
                 slider.setTentativeValue( prevValue + flexPerSlider, false );
 
+                diff = slider.model.value - prevValue;
+
                 // Reduce the flex by the amount by which the slider was
                 // changed, ready for subsequent iterations.
-                flex = this.snap( flex - ( slider.model.value - prevValue ) );
+                flex = flex - diff;
+
+                if ( diff !== flexPerSlider ) {
+                    iterationFlex += flexPerSlider - diff;
+                }
 
                 // Finally, if this slider can be moved further still, it may
                 // be used in the next iteration.
@@ -343,7 +349,7 @@
 
             // We can't go any further if the flex is 0, or if the flex value
             // hasn't changed in this iteration.
-            if( flex === 0 || prevFlex === flex ) {
+            if( flex === 0 || length === 0 || prevFlex === flex ) {
                 break;
             }
 
@@ -385,7 +391,7 @@
      * the OriginalValues was initialized.
      */
     OriginalValues.prototype.sumOf = function( sliders ) {
-        var length = sliders.length, sum = 0, length, i;
+        var length = sliders.length, sum = 0, i;
 
         for ( i = 0; i < length; i++ ) {
             sum += this.value( sliders[i] );
@@ -429,7 +435,7 @@
      */
     function canMove( slider, flex ) {
         return ( flex < 0 && slider.model.value > slider.model.min ) ||
-            ( flex > 0 && slider.model.value < slider.model.max )
+            ( flex > 0 && slider.model.value < slider.model.max );
     }
 
     // -----------------------------------------------------------------------

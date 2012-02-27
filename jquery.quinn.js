@@ -240,7 +240,6 @@
         }
 
         newValue = this.model.setValue(newValue);
-        // console.log( this.balanceId, newValue );
 
         if (newValue === false ||
                 (! silent && ! this.trigger('drag', newValue))) {
