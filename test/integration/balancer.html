@@ -34,6 +34,20 @@
       <div class="value">0</div>
     </div>
 
+    <div class="example" id="example_4">
+      <div class="widget">
+        <div class="slider"></div>
+      </div>
+      <div class="value">0</div>
+    </div>
+
+    <div class="example" id="example_5">
+      <div class="widget">
+        <div class="slider"></div>
+      </div>
+      <div class="value">0</div>
+    </div>
+
     <pre><code>change events triggered: <span id="change-events">0</span>
 drag events triggered:   <span id="drag-events">0</span>
 abort events triggered:  <span id="abort-events">0</span></code></pre>
@@ -48,7 +62,7 @@ abort events triggered:  <span id="abort-events">0</span></code></pre>
     <script type="text/javascript" src="../../plugins/balancer/jquery.quinn.balancer.js"></script>
 
     <script lang="text/javascript">
-      var first, second, third, balancer,
+      var first, second, third, fourth, fifth, balancer,
           events = { drag: 0, change: 0, abort: 0 };
 
       function updateValue(id, type) {
@@ -78,7 +92,6 @@ abort events triggered:  <span id="abort-events">0</span></code></pre>
 
       third = new $.Quinn($('#example_3 .slider'), {
         value: 10,
-        max: 200,
 
         setup:  updateValue('example_3', 'setup'),
         drag:   updateValue('example_3', 'drag'),
@@ -86,8 +99,26 @@ abort events triggered:  <span id="abort-events">0</span></code></pre>
         abort:  updateValue('ignore',    'abort')
       });
 
+      fourth = new $.Quinn($('#example_4 .slider'), {
+        value: 0,
+
+        setup:  updateValue('example_4', 'setup'),
+        drag:   updateValue('example_4', 'drag'),
+        change: updateValue('example_4', 'change'),
+        abort:  updateValue('ignore',    'abort')
+      });
+
+      fifth = new $.Quinn($('#example_5 .slider'), {
+        value: 0,
+
+        setup:  updateValue('example_5', 'setup'),
+        drag:   updateValue('example_5', 'drag'),
+        change: updateValue('example_5', 'change'),
+        abort:  updateValue('ignore',    'abort')
+      });
+
       balancer = new $.Quinn.Balancer({ algo: 'fair' });
-      balancer.add(first).add(second).add(third);
+      balancer.add(first).add(second).add(third).add(fourth).add(fifth);
 
       window.balancer = balancer;
     </script>

@@ -296,49 +296,36 @@
      */
     Balancer.algo.fair = function( flex ) {
         var iteration = 0,
-            sliders   = _.clone( this.subordinates ),
+            sliders   = this.subordinates,
             length    = sliders.length,
-            totalDelta, iterationFlex, nextIterationSliders, i,
-            flexPerSlider, slider, prevValue, prevFlex, diff;
+
+            nextIterationSliders, i,                     // while loop
+            flexPerSlider, slider, prevValue, prevFlex;  // for loop
 
         while( 20 >= iteration++ ) {
             nextIterationSliders = [];
-            iterationFlex = flex;
-            totalDelta    = cumulativeDeltas( sliders );
 
             for( i = 0; i < length; i++ ) {
+                // The amount of flex given to each slider. Calculated each
+                // time we blanace a slider since the previous one may have
+                // used up all the available flex.
+                flexPerSlider = flex / ( length - i );
+
                 slider    = sliders[i];
                 prevValue = slider.model.value;
 
-                if( iteration === 1 ) {
+                if ( iteration === 1 ) {
                     prevValue = this.oValues.value( slider );
                 }
 
-                // The amount of flex given to each slider. Calculated each
-                // time we balance a slider since the previous one may have
-                // used up all the available flex (depending on rounding).
-                //
-                // For example, a flexPerSlider of 0.05, and a slider step
-                // value of 0.1 would result in 0.05 being round up, leaving
-                // no flex for the second slider.
-                flexPerSlider = this.snap( iterationFlex * (
-                    ( slider.model.max - slider.model.min ) / totalDelta
-                ) );
-
                 slider.setTentativeValue( prevValue + flexPerSlider, false );
-
-                diff = slider.model.value - prevValue;
 
                 // Reduce the flex by the amount by which the slider was
                 // changed, ready for subsequent iterations.
-                flex = flex - diff;
+                flex -= ( slider.model.value - prevValue );
 
-                if ( diff !== flexPerSlider ) {
-                    iterationFlex += flexPerSlider - diff;
-                }
-
-                // Finally, if this slider can be moved further still, it may
-                // be used in the next iteration.
+                // Finally, if this slider can still be moved further, it may
+                // be used again in the next iteration.
                 if ( canMove( slider, flex ) ) {
                     nextIterationSliders.push( slider );
                 }
@@ -349,7 +336,7 @@
 
             // We can't go any further if the flex is 0, or if the flex value
             // hasn't changed in this iteration.
-            if( flex === 0 || length === 0 || prevFlex === flex ) {
+            if ( flex === 0 || prevFlex === flex || length === 0 ) {
                 break;
             }
 
