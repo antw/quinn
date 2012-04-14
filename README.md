@@ -34,13 +34,13 @@ Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
 Downloads
 ---------
 
-[Everything (1.0.0.rc2)][tarball]
+[Everything (1.0.0)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (1.0.0.rc2)][development-js]
+[Development Version (1.0.0)][development-js]
 :   30.9kb, JS only, Uncompressed with comments
 
-[Production Version (1.0.0.rc2)][production-js]
+[Production Version (1.0.0)][production-js]
 :   2.6kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -338,17 +338,7 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
-#### 1.0.0.rc2 _February 20th, 2012_
-
-* A couple of fixes to touchevents; Quinn will behave better on smartphones
-  and tablets.
-
-* Better positioning of the slider handles. The positioning of each handle is
-  determined based on its radius, and the height of the slider bar to which it
-  belongs. This results in better handling of custom CSS which has large
-  handles.
-
-#### 1.0.0.rc1 _February 17th, 2012_
+#### 1.0.0 _February 20th, 2012_
 
 * **This release contains changes which are not backwards-compatible with
   previous versions.** You should only need to make small changes, but this
@@ -404,6 +394,14 @@ History
   have been renamed to `start`, `resolve`, and `reject` to more closely match
   the jQuery.Deferred API. Note that $.Quinn is *not* a jQuery.Deferred
   object; other Deferred methods are not provided.
+
+* A couple of fixes to touchevents; Quinn will behave better on smartphones
+  and tablets.
+
+* Better positioning of the slider handles. The positioning of each handle is
+  determined based on its radius, and the height of the slider bar to which it
+  belongs. This results in better handling of custom CSS which has large
+  handles.
 
 #### 0.4.2 _February 10th, 2012_
 
@@ -521,7 +519,7 @@ and Internet Explorer are not yet complete.
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
-[tarball]:        https://github.com/antw/quinn/tarball/v1.0.0.rc2
+[tarball]:        https://github.com/antw/quinn/tarball/v1.0.0
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
