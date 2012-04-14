@@ -338,7 +338,7 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
-#### 1.0.0 _February 20th, 2012_
+#### 1.0.0 _April 14th, 2012_
 
 * **This release contains changes which are not backwards-compatible with
   previous versions.** You should only need to make small changes, but this
