@@ -95,7 +95,7 @@
     }
 
     // The current Quinn version.
-    Quinn.VERSION = '1.0.0';
+    Quinn.VERSION = '1.0.1';
 
     // ### Event Handling
 

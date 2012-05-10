@@ -34,13 +34,13 @@ Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
 Downloads
 ---------
 
-[Everything (1.0.0)][tarball]
+[Everything (1.0.1)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (1.0.0)][development-js]
-:   30.9kb, JS only, Uncompressed with comments
+[Development Version (1.0.1)][development-js]
+:   31.8kb, JS only, Uncompressed with comments
 
-[Production Version (1.0.0)][production-js]
+[Production Version (1.0.1)][production-js]
 :   2.6kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -339,7 +339,7 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
-#### Git HEAD
+#### 1.0.1 _May 10th, 2012_
 
 * Added a `strict` option which prevents the initial value being snapped
   to the `step` value.
@@ -525,7 +525,7 @@ and Internet Explorer are not yet complete.
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
-[tarball]:        https://github.com/antw/quinn/tarball/v1.0.0
+[tarball]:        https://github.com/antw/quinn/tarball/v1.0.1
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
