@@ -102,7 +102,8 @@ example, a step of 10 only 0, 10, 20, 30, ..., n, to be chosen.
 If you supply an initial value which can't be used as it doesn't "fit" with
 the step, the value will be rounded to the nearest acceptable point on the
 slider. For example, an step of 10, and an initial value of 17 will result in
-the slider being initialized with a value of 20 instead.
+the slider being initialized with a value of 20 instead. This behaviour can
+be disabled *for the initial value* by also supplying `strict: false`.
 
 Combining the **step** option with [**min** and **max**][extrema] options
 permits the creation of sliders with arbitrary values:
@@ -337,6 +338,11 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 
 History
 -------
+
+#### Git HEAD
+
+* Added a `strict` option which prevents the initial value being snapped
+  to the `step` value.
 
 #### 1.0.0 _April 14th, 2012_
 
