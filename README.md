@@ -339,6 +339,12 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
+#### Git HEAD
+
+* Added a HiDPI "Retina" sprite. If you wish to use it, be sure to update
+  not only your copy of the Quinn JS, but also the CSS file and new image
+  from the "images" directory.
+
 #### 1.0.1 _May 10th, 2012_
 
 * Added a `strict` option which prevents the initial value being snapped
