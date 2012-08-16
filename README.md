@@ -339,11 +339,17 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
-#### 1.0.4 HEAD _August 16th, 2012_
+#### Git HEAD _August 16th, 2012_
 
 * Added support for changing the value with the keyboard arrow keys, page
   up and down. Alt+Left and Alt+Right will instantly set the minimum and
   maximum values respectively.
+
+  A new option, `keyFloodWait`, will impose a delay after the user lifts a
+  key, to wait and see if they repeatedly press the key to further alter
+  the value. This is disabled by default, but may be useful if you trigger
+  an expensive action (e.g. XmlHttpRequest) whenever the slider value
+  changes.
 
 #### 1.0.2 _July 11th, 2012_
 

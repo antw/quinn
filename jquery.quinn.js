@@ -75,6 +75,8 @@
         this.model          = new Model(this, this.options.strict);
         this.renderer       = new this.options.renderer(this);
 
+        this.keyFloodTimer  = null;
+
         this.wrapperWidth   = 0;
         this.wrapperOffset  = 0;
 
@@ -310,6 +312,8 @@
             return false;
         }
 
+        console.log('>>> start');
+
         this.previousValue = this.model.value;
 
         // These attributes are cached so that we don't have to look them up
@@ -328,6 +332,8 @@
      */
     Quinn.prototype.resolve = function () {
         this.deactivateActiveHandle();
+
+        console.log('<<< RESOLVE');
 
         if (_.isEqual(this.previousValue, this.model.value)) {
             // The user reset the slider back to where it was.
@@ -548,12 +554,25 @@
      */
     Quinn.prototype.handleKeyboardEvent = function (event) {
         if (event.type === 'keydown') {
+            if (this.keyFloodTimer) {
+                window.clearTimeout(this.keyFloodTimer);
+                this.keyFloodTimer = null;
+            }
+
             if (this.previousValue == null && ! this.start()) {
                 return false;
             }
         } else if (event.type === 'keyup') {
             if (this.previousValue != null) {
-                this.resolve();
+                if (this.options.keyFloodWait) {
+                    // Prevent multiple successive keydowns from repeatedly
+                    // triggering resolve.
+                    this.keyFloodTimer = window.setTimeout(_.bind(function() {
+                        this.resolve();
+                    }, this), this.options.keyFloodWait);
+                } else {
+                    this.resolve();
+                }
             }
         }
 
@@ -1094,6 +1113,12 @@
         //   object: the options passed to $.fn.quinn
         //
         renderer: Quinn.Renderer,
+
+        // Enables a slightly delay after keyboard events, in case the user
+        // presses the key multiple times in quick succession. False disables,
+        // otherwise provide a integer indicating how many milliseconds to
+        // wait.
+        keyFloodWait: false,
 
         // When using animations (such as clicking on the bar), how long
         // should the duration be? Any jQuery effect duration value is
