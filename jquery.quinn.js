@@ -271,13 +271,15 @@
      *
      * Returns the new slider value
      */
-    Quinn.prototype.stepUp = function (count, animate) {
+    Quinn.prototype.stepUp = function (count, animate, tentative) {
+        var func = (tentative ? this.setTentativeValue : this.setValue);
+
         if (this.model.values.length > 1) {
             // Cannot step a range-based slider.
             return this.model.value;
         }
 
-        return this.setValue(
+        return _.bind(func, this)(
             this.model.value + this.model.step * (count || 1), animate);
     };
 
@@ -292,8 +294,8 @@
      *
      * Returns the new slider value
      */
-    Quinn.prototype.stepDown = function (count, animate) {
-        return this.stepUp(-(count || 1), animate);
+    Quinn.prototype.stepDown = function (count, animate, tentative) {
+        return this.stepUp(-(count || 1), animate, tentative);
     };
 
     /**
@@ -344,6 +346,8 @@
 
             return false;
         }
+
+        this.previousValue = null;
     };
 
     /**
@@ -528,6 +532,7 @@
      */
     Quinn.prototype.enableKeyboardEvents = function (event) {
         $(event.target).on('keydown', this.handleKeyboardEvent);
+        $(event.target).on('keyup',   this.handleKeyboardEvent);
     };
 
     /**
@@ -535,31 +540,42 @@
      */
     Quinn.prototype.disableKeyboardEvents = function (event) {
         $(event.target).off('keydown', this.handleKeyboardEvent);
+        $(event.target).off('keyup',   this.handleKeyboardEvent);
     };
 
     /**
      * Receives events from the keyboard and adjusts the Quinn value.
      */
     Quinn.prototype.handleKeyboardEvent = function (event) {
+        if (event.type === 'keydown') {
+            if (this.previousValue == null && ! this.start()) {
+                return false;
+            }
+        } else if (event.type === 'keyup') {
+            if (this.previousValue != null) {
+                this.resolve();
+            }
+        }
+
         switch (event.which) {
             case 33: // Page up.
-                this.stepUp(10, false); break;
+                this.stepUp(10, false, true); break;
             case 34: // Page down.
-                this.stepDown(10, false); break;
+                this.stepDown(10, false, true); break;
             case 37: // Left arrow.
             case 40: // Down arrow.
                 if (event.altKey) {
-                    this.setValue(this.model.minimum, false);
+                    this.setTentativeValue(this.model.minimum, false);
                 } else {
-                    this.stepDown(event.shiftKey ? 10 : 1, false);
+                    this.stepDown(event.shiftKey ? 10 : 1, false, true);
                 }
                 break;
             case 39: // Right arrow.
             case 38: // Up arrow.
                 if (event.altKey) {
-                    this.setValue(this.model.maximum, false);
+                    this.setTentativeValue(this.model.maximum, false);
                 } else {
-                    this.stepUp(event.shiftKey ? 10 : 1, false);
+                    this.stepUp(event.shiftKey ? 10 : 1, false, true);
                 }
                 break;
             default:
@@ -818,8 +834,12 @@
             this.handles[i] = $('<span class="handle" tabindex="0"></span>');
 
             this.handles[i].on(DRAG_START_E, this.quinn.startDrag);
-            this.handles[i].on('focus', this.quinn.enableKeyboardEvents);
-            this.handles[i].on('blur', this.quinn.disableKeyboardEvents);
+
+            if (this.quinn.model.values.length < 2) {
+                this.handles[i].on('focus', this.quinn.enableKeyboardEvents);
+                this.handles[i].on('blur', this.quinn.disableKeyboardEvents);
+            }
+
             this.bar.append(this.handles[i]);
         }
 
