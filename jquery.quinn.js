@@ -563,9 +563,9 @@
                 if (this.options.keyFloodWait) {
                     // Prevent multiple successive keydowns from repeatedly
                     // triggering resolve.
-                    this.keyFloodTimer = window.setTimeout(_.bind(function() {
-                        this.resolve();
-                    }, this), this.options.keyFloodWait);
+                    this.keyFloodTimer = window.setTimeout(
+                        _.bind(this.resolve, this),
+                        this.options.keyFloodWait);
                 } else {
                     this.resolve();
                 }
