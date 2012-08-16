@@ -339,6 +339,12 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
+#### Git HEAD _August 16th, 2012_
+
+* Added support for changing the value with the keyboard arrow keys, page
+  up and down. Alt+Left and Alt+Right will instantly set the minimum and
+  maximum values respectively.
+
 #### 1.0.2 _July 11th, 2012_
 
 * Added a HiDPI "Retina" sprite. If you wish to use it, be sure to update
