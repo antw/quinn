@@ -34,14 +34,14 @@ Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
 Downloads
 ---------
 
-[Everything (1.0.2)][tarball]
+[Everything (1.0.3)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (1.0.2)][development-js]
-:   31.8kb, JS only, Uncompressed with comments
+[Development Version (1.0.3)][development-js]
+:   33.6kb, JS only, Uncompressed with comments
 
-[Production Version (1.0.2)][production-js]
-:   2.6kb, JS only, Minified and Gzipped
+[Production Version (1.0.3)][production-js]
+:   2.8kb, JS only, Minified and Gzipped
 
 Table of Contents
 -----------------
@@ -339,7 +339,7 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
-#### Git HEAD _August 16th, 2012_
+#### 1.0.3 HEAD _August 16th, 2012_
 
 * Added support for changing the value with the keyboard arrow keys, page
   up and down. Alt+Left and Alt+Right will instantly set the minimum and
@@ -537,7 +537,7 @@ and Internet Explorer are not yet complete.
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
-[tarball]:        https://github.com/antw/quinn/tarball/v1.0.2
+[tarball]:        https://github.com/antw/quinn/tarball/v1.0.3
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
