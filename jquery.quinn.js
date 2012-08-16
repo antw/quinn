@@ -312,8 +312,6 @@
             return false;
         }
 
-        console.log('>>> start');
-
         this.previousValue = this.model.value;
 
         // These attributes are cached so that we don't have to look them up
@@ -332,8 +330,6 @@
      */
     Quinn.prototype.resolve = function () {
         this.deactivateActiveHandle();
-
-        console.log('<<< RESOLVE');
 
         if (_.isEqual(this.previousValue, this.model.value)) {
             // The user reset the slider back to where it was.
