@@ -108,17 +108,14 @@
     $('pre.no-example:not(.css) code').addClass('javascript');
 
 
-    // Skip syntax highlighting on IE < 9
-    if (! $.browser.msie || $.browser.version > 8.0) {
-        $('pre.css code').each(function () {
-            var $this = $(this).addClass('css');
+    $('pre.css code').each(function () {
+        var $this = $(this).addClass('css');
 
-            $('body').append($('<style type="text/css"></style>').
-                text($this.text()));
-        });
+        $('body').append($('<style type="text/css"></style>').
+            text($this.text()));
+    });
 
-        // Do highlighting.
-        hljs.initHighlightingOnLoad();
-    }
+    // Do highlighting.
+    hljs.initHighlightingOnLoad();
 
 })(jQuery);
