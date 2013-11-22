@@ -8,8 +8,7 @@ where all of the examples below are fully interactive.
 [Quinn][github] is a jQuery-based library which creates sliders (aka. ranges,
 aka. track bars) for HTML applications. The project is hosted on
 [GitHub][github]; you can report bugs and discuss features on the
-[issue tracker][issues], or direct your tweets at [@antw][twitter]. An
-[annotated version][annotated] of the source is available.
+[issue tracker][issues], or direct your tweets at [@antw][twitter].
 
     $('.slider').quinn();
 
@@ -571,7 +570,6 @@ and Internet Explorer are not yet complete.
 [issues]:         http://github.com/antw/quinn/issues
 [twitter]:        http://twitter.com/antw
 [antw]:           http://github.com/antw
-[annotated]:      http://antw.github.com/quinn/docs/jquery.quinn.html
 [tests]:          http://antw.github.com/quinn/test
 [etm]:            http://www.energytransitionmodel.com
 [license]:        http://github.com/antw/quinn/blob/master/LICENSE

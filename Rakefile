@@ -2,7 +2,7 @@ require 'rubygems'
 require 'fileutils'
 
 desc 'Build the library and readme'
-task :build => [:readme, :annotated, :minified] do
+task :build => [:readme, :minified] do
 end
 
 desc 'Build the minified version'
@@ -13,12 +13,6 @@ task :minified do
   min     = Closure::Compiler.new.compress(source)
 
   File.open('jquery.quinn.min.js', 'w') { |f| f.puts min }
-end
-
-desc 'Builds the annotated source code docs'
-task :annotated do
-  `bundle exec rocco jquery.quinn.js`
-  FileUtils.mv('jquery.quinn.html', 'docs/jquery.quinn.html')
 end
 
 desc 'Build the index.html readme'
