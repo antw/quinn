@@ -25,7 +25,7 @@
 /* Float clearing */
 
 .quinn {
-  padding: 10px 5px 10px 0;
+  padding: 10px 0;
   zoom: 1;
 }
 
@@ -135,7 +135,7 @@
   cursor: default;
   height: 21px;
   left: 0%;
-  margin: -8px 0 0 0;
+  margin: -8px -4px 0 -4px;
   outline: none;
   position: absolute;
   width: 21px;

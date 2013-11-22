@@ -820,8 +820,7 @@
     Quinn.Renderer.prototype.render = function () {
         var i, length, marginLeft;
 
-        this.width  = this.wrapper.width();
-        this.adjust = -this.wrapper.height();
+        this.width = this.wrapper.width();
 
         function addRoundingElements (element) {
             element.append($('<div class="left" />'));
@@ -860,21 +859,18 @@
             this.bar.append(this.handles[i]);
         }
 
-        // Adjust the positioning of the handles so that they appear to
-        // "dangle" over the edge of the bar.
-
-        marginLeft = this.handles[0].width() + this.adjust;
-        marginLeft = -(marginLeft / 2) + 'px';
-
-        for (i = 0, length = this.handles.length; i < length; i++) {
-            this.handles[i].css('marginLeft', marginLeft);
-        }
-
         // Finally, these events are triggered when the user seeks to
         // update the slider.
         this.wrapper.on(DRAG_START_E, this.quinn.clickBar);
 
         this.barHeight = this.bar.height();
+
+        // If the handles have left and right margins, it indicates that the
+        // user wants the handle to "overhang" the edges of the bar. We have to
+        // account for this when positioning the handles.
+        this.handleOverhang =
+            parseInt(this.handles[0].css('margin-left'), 10) +
+            parseInt(this.handles[0].css('margin-right'), 10);
 
         this.redraw(false);
     };
@@ -900,7 +896,7 @@
             }
 
             handle   = self.handles[i].stop();
-            position = self.position(value, self.adjust) + 'px';
+            position = self.position(value) + 'px';
 
             if (animate && self.options.effects) {
                 handle.animate({ left: position }, {
@@ -945,12 +941,12 @@
             // position with the left edge underneath the handle, and the
             // right edge at 0
             left  = drawAt;
-            right = this.position(0);
+            right = this.position(0, true);
         } else {
             // position with the right edge underneath the handle, and the
             // left edge at 0
             right = drawAt;
-            left  = this.position(0);
+            left  = this.position(0, true);
         }
 
         if (left !== null) {
@@ -998,20 +994,24 @@
      * Given a slider value, returns the position in pixels where the value is
      * on the slider bar. For example, in a 200px wide bar whose values are
      * 1->100, the value 20 is found 40px from the left of the bar.
-     *
-     * If adjust is present, the position will be calculated for a handle so
-     * that it "dangles" over the edge of the bar by the given number of
-     * pixels.
      */
-    Quinn.Renderer.prototype.position = function (value, adjust) {
+    Quinn.Renderer.prototype.position = function (value, ignoreOverhang) {
         var delta    = this.quinn.drawTo.right - this.quinn.drawTo.left,
-            width    = adjust ? (this.width + adjust) : this.width,
-            position = (((value - this.quinn.drawTo.left) / delta)) * width;
+            maxRight = this.width,
+            position;
+
+        if (! ignoreOverhang) {
+            // When using the position function for drawing the delta bar, we
+            // need to account for the "overhang" margin of the handle.
+            maxRight -= this.handles[0].width() + this.handleOverhang;
+        }
+
+        position = ((value - this.quinn.drawTo.left) / delta) * maxRight;
 
         if (position < 0) {
             return 0;
-        } else if (position > this.width) {
-            return this.width;
+        } else if (position > maxRight) {
+            return maxRight;
         }
 
         return Math.round(position);

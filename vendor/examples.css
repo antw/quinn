@@ -448,4 +448,5 @@ ul.yes li:before {
 
 .example.rainbow .slider .handle {
   margin-left: -9px;
+  margin-right: -9px;
 }
