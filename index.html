@@ -72,6 +72,8 @@ aka. track bars) for HTML applications. The project is hosted on
 <p><a href="#onsetup">setup</a>, <a href="#onbegin">begin</a>, <a href="#ondrag">drag</a>, <a href="#onchange">change</a>,
 <a href="#onabort">abort</a></p>
 
+<h4 id="progressive-enhancementenhance"><a href="#progressive-enhancement">Progressive Enhancement</a></h4>
+
 <h4 id="themingtheming"><a href="#theming">Theming</a></h4>
 
 <h4 id="historyhistory"><a href="#history">History</a></h4>
@@ -319,6 +321,28 @@ after dragging the slider handle.</p>
 returned false, or the user set the slider back to the value it was at before
 they began dragging.</p>
 
+<h2 id="progressive-enhancement">Progressive Enhancement</h2>
+
+<p>In addition to using the Quinn directly, enhancing a <code>&lt;div&gt;</code> element, it can be
+used to progressively enhance an HTML <code>&lt;input&gt;</code>, including HTML5 range elements.
+In the case of range or number elements, the <code>value</code>, <code>min</code>, <code>max</code>, and <code>step</code>
+attributes will be read and used when creating your Quinn element.</p>
+
+<pre class="no-example html"><code>&lt;input type="range" value="100" min="10" max="300" step="10" /&gt;
+</code></pre>
+
+<p>If you wish to enhance a plain-ol’ <code>&lt;input&gt;</code> element, you can supply these
+values as data attributes:</p>
+
+<pre class="no-example html"><code>&lt;input type="text" value="5" data-min="-10" data-max="50" /&gt;
+</code></pre>
+
+<p>Events will be set up so that changes to the Quinn element are also made to the
+HTML input, and vice versa.</p>
+
+<pre class="no-example js"><code>$("input[type=range]").quinn();
+</code></pre>
+
 <h2 id="theming">Theming</h2>
 
 <p>Altering Quinn’s appearance is relatively simple. The default style uses a
@@ -366,6 +390,23 @@ $('.slider').quinn({
 </code></pre>
 
 <h2 id="history">History</h2>
+
+<h4 id="git-head">Git HEAD</h4>
+
+<ul>
+  <li>
+    <p>Quinn can now progressively-enhance HTML inputs, including “range” and
+“number” elements. The width of the original will be retained in the enhanced
+version, and values will be sent back to the original element. See
+<a href="#progressive-enhancement">progressive enhancement</a> for more information.</p>
+  </li>
+  <li>
+    <p>Improved rendering of the blue “delta” bar, and handle positioning. If you
+want your handle to overhang the edges of bar, you need to add a negative left
+and right margin (not necessary with the default theme so long as you use the
+updated “quinn.css” file).</p>
+  </li>
+</ul>
 
 <h4 id="august-16th-2012">1.0.5 <em>August 16th, 2012</em></h4>
 

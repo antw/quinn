@@ -57,6 +57,8 @@ Table of Contents
 [setup][onsetup], [begin][onbegin], [drag][ondrag], [change][onchange],
 [abort][onabort]
 
+#### [Progressive Enhancement][enhance]
+
 #### [Theming][theming]
 
 #### [History][history]
@@ -289,6 +291,29 @@ The **abort** event is fired once the user has finished adjusting the value
 returned false, or the user set the slider back to the value it was at before
 they began dragging.
 
+Progressive Enhancement
+-----------------------
+
+In addition to using the Quinn directly, enhancing a `<div>` element, it can be
+used to progressively enhance an HTML `<input>`, including HTML5 range elements.
+In the case of range or number elements, the `value`, `min`, `max`, and `step`
+attributes will be read and used when creating your Quinn element.
+
+    <input type="range" value="100" min="10" max="300" step="10" />
+{:class="no-example html"}
+
+If you wish to enhance a plain-ol' `<input>` element, you can supply these
+values as data attributes:
+
+    <input type="text" value="5" data-min="-10" data-max="50" />
+{:class="no-example html"}
+
+Events will be set up so that changes to the Quinn element are also made to the
+HTML input, and vice versa.
+
+    $("input[type=range]").quinn();
+{:class="no-example js"}
+
 Theming
 -------
 
@@ -338,6 +363,18 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 
 History
 -------
+
+#### Git HEAD
+
+* Quinn can now progressively-enhance HTML inputs, including "range" and
+  "number" elements. The width of the original will be retained in the enhanced
+  version, and values will be sent back to the original element. See
+  [progressive enhancement][enhance] for more information.
+
+* Improved rendering of the blue "delta" bar, and handle positioning. If you
+  want your handle to overhang the edges of bar, you need to add a negative left
+  and right margin (not necessary with the default theme so long as you use the
+  updated "quinn.css" file).
 
 #### 1.0.5 _August 16th, 2012_
 
@@ -564,5 +601,6 @@ and Internet Explorer are not yet complete.
 [ondrag]:         #ondrag
 [onchange]:       #onchange
 [onabort]:        #onabort
+[enhance]:        #progressive-enhancement
 [theming]:        #theming
 [history]:        #history

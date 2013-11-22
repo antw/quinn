@@ -47,6 +47,30 @@
     }
 
     /**
+     * When progressively enhancing an HTML input, this Quinn object's
+     * "wrapper", which is initially the input element, will be swapped with a
+     * new <div/> which can be used as the Quinn element.
+     */
+    function createReplacementEl (element) {
+        return $('<div />').css({
+            'width':   element.outerWidth(),
+            'margin':  element.css('margin'),
+            'display': 'inline-block'
+        });
+    }
+
+    /**
+     * When progressively-enhancing an HTML input, we need to use its min/max
+     * values. This will read them, falling back to data- attributes, or the
+     * Quinn defaults.
+     */
+    function readInputAttribute (el, quinn, attribute) {
+        var value = el.attr(attribute) || el.data('quinn-' + attribute);
+
+        return (value ? parseFloat(value) : quinn.options[attribute]);
+    }
+
+    /**
      * ## Quinn
      *
      * Quinn is the main slider class, and handles setting up the slider UI,
@@ -70,6 +94,11 @@
         this.disabled       = false;
         this.activeHandle   = null;
         this.previousValue  = null;
+
+        if (wrapper.is('input')) {
+            this.enhance(wrapper);
+        }
+
         this.drawTo         = drawToOpts(opts.drawTo, opts.min, opts.max);
 
         this.model          = new Model(this, this.options.strict);
@@ -600,6 +629,30 @@
         }
 
         event.preventDefault();
+    };
+
+    /**
+     * Used during initialization to progressively-enhance an existing HTML
+     * input, instead of simply drawing into a <div/>.
+     *
+     * Afters the Quinn options, renders the replacement elements in the DOM,
+     * and sets up events to send the value back-and-forth between Quinn and the
+     * original input element.
+     */
+    Quinn.prototype.enhance = function (element) {
+        this.options.disabled = element.attr('disabled');
+        this.options.step     = readInputAttribute(element, this, 'step');
+        this.options.value    = readInputAttribute(element, this, 'value');
+        this.options.min      = readInputAttribute(element, this, 'min');
+        this.options.max      = readInputAttribute(element, this, 'max');
+
+        this.wrapper = createReplacementEl(element).insertAfter(element.hide());
+
+        this.on('change', function (value) { element.val(value) });
+
+        element.on('change', _.bind(function () {
+            this.setValue(element.val());
+        }, this));
     };
 
     /**
