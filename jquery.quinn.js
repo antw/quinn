@@ -238,7 +238,7 @@
             nextScalar   = null,
             scalar;
 
-        if (typeof newValue === 'undefined' || newValue === null) {
+        if (newValue === undefined || newValue === null) {
             return false;
         }
 
@@ -698,7 +698,7 @@
          * developer, instead fall back to using the minimum.
          */
 
-        if (typeof opts.value === 'undefined' || opts.value === null) {
+        if (opts.value === undefined || opts.value === null) {
             initialValue = this.minimum;
         } else if (_.isArray(opts.value)) {
             initialValue = opts.value;
@@ -871,7 +871,7 @@
      * render() is called automatically when creating a new Quinn instance.
      */
     Quinn.Renderer.prototype.render = function () {
-        var i, length, marginLeft;
+        var i, length;
 
         this.width = this.wrapper.width();
 
