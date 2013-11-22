@@ -874,6 +874,8 @@
         // update the slider.
         this.wrapper.on(DRAG_START_E, this.quinn.clickBar);
 
+        this.barHeight = this.bar.height();
+
         this.redraw(false);
     };
 
@@ -922,16 +924,18 @@
      * within a `step` callback in a jQuery `animate` call.
      */
     Quinn.Renderer.prototype.redrawDeltaBar = function (value, handle) {
-        var left = null, right = null;
+        var left = null,
+            right = null,
+            drawAt = parseInt(handle.position().left, 10) + this.barHeight;
 
         this.deltaBar.stop(true);
 
         if (this.model.values.length > 1) {
             if (handle) {
                 if (handle === this.handles[0]) {
-                    left = value;
+                    left = drawAt;
                 } else {
-                    right = value;
+                    right = drawAt;
                 }
             } else {
                 left  = value[0];
@@ -940,22 +944,22 @@
         } else if (value < 0) {
             // position with the left edge underneath the handle, and the
             // right edge at 0
-            left  = value;
-            right = 0;
+            left  = drawAt;
+            right = this.position(0);
         } else {
             // position with the right edge underneath the handle, and the
             // left edge at 0
-            right = value;
-            left  = 0;
+            right = drawAt;
+            left  = this.position(0);
         }
 
         if (left !== null) {
-            this.deltaBar.css('left', this.position(left) + 'px');
+            this.deltaBar.css('left', left);
         }
 
         if (right !== null) {
-            right = this.width - this.position(right);
-            this.deltaBar.css('right', right + 'px');
+            right = this.width - right;
+            this.deltaBar.css('right', right);
         }
     };
 
@@ -970,12 +974,13 @@
             return function() {};
         }
 
-        var min  = this.quinn.drawTo.left,
-            max  = this.quinn.drawTo.right,
-            self = this;
+        var min    = this.quinn.drawTo.left,
+            max    = this.quinn.drawTo.right,
+            adjust = Math.ceil(this.deltaBar.height() / 2),
+            self   = this;
 
         return function (now) {
-            now = now / self.width;
+            now = (now + adjust) / self.width;
 
             // "now" is the current "left" position of the handle.
             // Convert that to the equivalent value. For example,
