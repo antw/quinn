@@ -181,13 +181,13 @@ pre .tex .formula {
 
 body {
     background: #edf2f7;
-    font: 16px/24px "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
+    font: 16px/26px "Droid Serif", Georgia, Times, "Times New Roman", serif;
     margin: 0;
 }
 
 #content {
     padding: 48px 96px;
-    width: 550px;
+    width: 650px;
 }
 
 /* baseline */
@@ -196,7 +196,7 @@ h2, h3, h4, p, ul {
 }
 
 code {
-    font: 13px/18px Menlo, Monaco, monospace;
+    font: 14px/18px Menlo, Monaco, monospace;
 }
 
 h1 {
@@ -374,7 +374,7 @@ li code, p code {
   float: left;
   margin: -24px 0;
   padding: 29px 24px 26px 5px;
-  width: 370px;
+  width: 450px;
 }
 
 .example .widget .slider {
@@ -382,13 +382,13 @@ li code, p code {
 }
 
 .example .value {
-  font: bold 15px/1 "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font: 500 17px/1 "Helvetica Neue", Arial, Helvetica, sans-serif;
   float: left;
   margin-right: -20px;
   min-height: 40px;
   padding: 2px 0 0 5px;
   text-align: center;
-  width: 113px;
+  width: 133px;
 }
 
 .example pre {
@@ -439,7 +439,7 @@ ul.yes li:before {
 /* Rainbow theme adjustment. */
 
 .example.rainbow .widget {
-  padding-bottom: 20px;
+  padding-bottom: 27px;
 }
 
 .example.rainbow .slider {
@@ -449,4 +449,27 @@ ul.yes li:before {
 .example.rainbow .slider .handle {
   margin-left: -9px;
   margin-right: -9px;
+}
+
+@media only screen and (-moz-min-device-pixel-ratio: 1.5),
+       only screen and (-o-min-device-pixel-ratio: 3/2),
+       only screen and (-webkit-min-device-pixel-ratio: 1.5),
+       only screen and (min-devicepixel-ratio: 1.5),
+       only screen and (min-resolution: 1.5dppx) {
+
+  .rainbow .quinn .bar .left,
+  .rainbow .quinn .bar .main,
+  .rainbow .quinn .bar .right,
+  .rainbow .quinn .delta-bar .left,
+  .rainbow .quinn .delta-bar .main,
+  .rainbow .quinn .delta-bar .right,
+  .rainbow .quinn .handle,
+  .rainbow .quinn .reset,
+  .rainbow .quinn .minus,
+  .rainbow .quinn .plus,
+  .rainbow .quinn .help {
+    background-image: url(../vendor/rainbow-hidpi.png);
+    background-size: 442px 250px;
+  }
+
 }
