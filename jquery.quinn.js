@@ -114,6 +114,7 @@
         this.on('drag',   opts.drag);
         this.on('change', opts.change);
         this.on('abort',  opts.abort);
+        this.on('resize', this.renderer.resized);
 
         if (_.isFunction(this.renderer.render)) {
             this.renderer.render();
@@ -824,7 +825,7 @@
      *   of the slider matches the value.
      */
     Quinn.Renderer = function (quinn) {
-        _.bindAll(this, 'render', 'redraw');
+        _.bindAll(this, 'render', 'redraw', 'resized');
 
         var self = this;
 
@@ -934,7 +935,7 @@
      * Moves the slider handle and the delta-bar background elements so that
      * they accurately represent the value of the slider.
      */
-    Quinn.Renderer.prototype.redraw = function (animate) {
+    Quinn.Renderer.prototype.redraw = function (animate, force) {
         var self = this;
 
         if (animate !== false) {
@@ -944,7 +945,7 @@
         _.each(this.model.values, function (value, i) {
             var handle, position;
 
-            if (value === self.lastDraw[i]) {
+            if (! force && value === self.lastDraw[i]) {
                 return true;
             }
 
@@ -963,6 +964,17 @@
         });
 
         this.lastDraw = _.clone(this.model.values);
+    };
+
+    /**
+     * ## resized
+     *
+     * Tells the renderer that the wrapper element has been resized and
+     * forcefully redraws.
+     */
+    Quinn.Renderer.prototype.resized = function () {
+        this.width = this.wrapper.width();
+        this.redraw(false, true);
     };
 
     /**
