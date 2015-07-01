@@ -1189,7 +1189,9 @@
 
     // The jQuery helper function. Permits $(...).quinn();
     $.fn.quinn = function (options) {
-        return $.each(this, function () { new Quinn($(this), options); });
+        return $.each(this, function () {
+            $(this).data('quinn', new Quinn($(this), options));
+        });
     };
 
     // Expose Quinn to the world on $.Quinn.
