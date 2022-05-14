@@ -23,8 +23,7 @@ Quinn has been tested and works in the following environments:
  - Internet Explorer 7 and 8
  {:.yes}
 
-There are no plans to support Internet Explorer 6. The unit tests can be run
-[in your browser][tests].
+The unit tests can be run [in your browser][tests].
 
 Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
 [Energy Transition Model][etm] application. It is released under the
