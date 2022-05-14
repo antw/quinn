@@ -29,6 +29,12 @@ Quinn was developed by [~antw][antw] as part of Quintel Intelligence's
 [Energy Transition Model][etm] application. It is released under the
 [New BSD License][license].
 
+**You probably don't want to use this!** While Quinn is still used heavily
+in the Energy Transition Model, it is also quite old and its dependency on
+jQuery makes it a questionable choice for new development. Consider
+[`<input type="range">`][range-element] or a more modern library.
+{:.old}
+
 Downloads
 ---------
 
@@ -571,6 +577,7 @@ and Internet Explorer are not yet complete.
 [antw]:           http://github.com/antw
 [tests]:          http://antw.github.com/quinn/test
 [etm]:            http://www.energytransitionmodel.com
+[range-element]:  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
 [license]:        http://github.com/antw/quinn/blob/master/LICENSE
 [jq]:             http://jquery.com
 [us]:             http://documentcloud.github.com/underscore

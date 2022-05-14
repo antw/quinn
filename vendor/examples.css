@@ -350,7 +350,7 @@ p code, li code, pre code, h3 code, h4 em {
 }
 
 li code, p code {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 /* Example Widgets */
@@ -434,6 +434,12 @@ ul.yes li:before {
     content: "✔";
     color: #588b48;
     margin-right: 6px;
+}
+
+.old {
+  background: url(../images/warn.svg) no-repeat 0px 2px;
+  background-size: 24px 24px;
+  padding-left: 34px;
 }
 
 /* Rainbow theme adjustment. */
