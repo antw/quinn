@@ -128,7 +128,7 @@
     }
 
     // The current Quinn version.
-    Quinn.VERSION = '1.1.0';
+    Quinn.VERSION = '1.2.0';
 
     // ### Event Handling
 
@@ -900,7 +900,10 @@
 
         // Add each of the handles to the bar, and bind the click events.
         for (i = 0, length = this.model.values.length; i < length; i++) {
-            this.handles[i] = $('<span class="handle" tabindex="0"></span>');
+            this.handles[i] = $('<span class="handle" tabindex="0" role="slider"></span>')
+                .attr('aria-valuemin', this.model.minimum)
+                .attr('aria-valuemax', this.model.maximum)
+                .attr('aria-valuenow', this.model.values[i]);
 
             this.handles[i].on(DRAG_START_E, this.quinn.startDrag);
 
@@ -950,6 +953,8 @@
 
             handle   = self.handles[i].stop();
             position = self.position(value) + 'px';
+
+            handle.attr('aria-valuenow', value);
 
             if (animate && self.options.effects) {
                 handle.animate({ left: position }, {

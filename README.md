@@ -38,13 +38,13 @@ jQuery makes it a questionable choice for new development. Consider
 Downloads
 ---------
 
-[Everything (1.1.0)][tarball]
+[Everything (1.2.0)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (1.1.0)][development-js]
+[Development Version (1.2.0)][development-js]
 :   37.2kb, JS only, Uncompressed with comments
 
-[Production Version (1.1.0)][production-js]
+[Production Version (1.2.0)][production-js]
 :   3.2kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -368,6 +368,11 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
+#### 1.2.0 _14 May, 2022_
+
+* An outrageously long overdue update to add role and aria accessibility
+  attributes to slider handles.
+
 #### 1.1.0 _30 October, 2014_
 
 * Quinn can now progressively-enhance HTML inputs, including "range" and
@@ -584,7 +589,7 @@ and Internet Explorer are not yet complete.
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
-[tarball]:        https://github.com/antw/quinn/tarball/v1.1.0
+[tarball]:        https://github.com/antw/quinn/tarball/v1.2.0
 [development-js]: http://antw.github.com/quinn/jquery.quinn.js
 [production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
 
