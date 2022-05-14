@@ -578,7 +578,7 @@ and Internet Explorer are not yet complete.
 [tests]:          http://antw.github.com/quinn/test
 [etm]:            http://www.energytransitionmodel.com
 [range-element]:  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
-[license]:        http://github.com/antw/quinn/blob/master/LICENSE
+[license]:        http://github.com/antw/quinn/blob/main/LICENSE
 [jq]:             http://jquery.com
 [us]:             http://documentcloud.github.com/underscore
 [easing]:         http://gsgd.co.uk/sandbox/jquery/easing
