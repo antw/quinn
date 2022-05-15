@@ -12,7 +12,7 @@ aka. track bars) for HTML applications. The project is hosted on
 
     $('.slider').quinn();
 
-The library requires [jQuery][jq] and [Underscore.js 0.3.1+][us].
+The library requires [jQuery][jq] and [Underscore.js 1.3.1+][us].
 
 Quinn has been tested and works in the following environments:
 
@@ -20,7 +20,7 @@ Quinn has been tested and works in the following environments:
  - Firefox 3.5 and newer
  - Safari 4
  - Opera 11
- - Internet Explorer 7 and 8
+ - Internet Explorer 7+
  {:.yes}
 
 The unit tests can be run [in your browser][tests].
@@ -575,26 +575,26 @@ separate `onComplete` events.
 Initial release on GitHub. Supports most planned features, but tests in Opera
 and Internet Explorer are not yet complete.
 
-[home]:           http://antw.github.com/quinn
-[github]:         http://github.com/antw/quinn
-[issues]:         http://github.com/antw/quinn/issues
-[twitter]:        http://twitter.com/antw
-[antw]:           http://github.com/antw
-[tests]:          http://antw.github.com/quinn/test
-[etm]:            http://www.energytransitionmodel.com
+[home]:           https://antw.github.com/quinn
+[github]:         https://github.com/antw/quinn
+[issues]:         https://github.com/antw/quinn/issues
+[twitter]:        https://twitter.com/antw
+[antw]:           https://github.com/antw
+[tests]:          https://antw.github.com/quinn/test
+[etm]:            https://www.energytransitionmodel.com
 [range-element]:  https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/range
-[license]:        http://github.com/antw/quinn/blob/main/LICENSE
-[jq]:             http://jquery.com
-[us]:             http://documentcloud.github.com/underscore
-[easing]:         http://gsgd.co.uk/sandbox/jquery/easing
+[license]:        https://github.com/antw/quinn/blob/main/LICENSE
+[jq]:             https://jquery.com
+[us]:             https://underscorejs.org/
+[easing]:         https://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
 [tarball]:        https://github.com/antw/quinn/tarball/v1.2.0
-[development-js]: http://antw.github.com/quinn/jquery.quinn.js
-[production-js]:  http://antw.github.com/quinn/jquery.quinn.min.js
+[development-js]: https://antw.github.io/quinn/jquery.quinn.js
+[production-js]:  https://antw.github.io/quinn/jquery.quinn.min.js
 
-[default-sprite]: http://antw.github.com/quinn/images/default.png
-[rainbow-sprite]: http://antw.github.com/quinn/vendor/rainbow.png
+[default-sprite]: https://antw.github.com/quinn/images/default.png
+[rainbow-sprite]: https://antw.github.com/quinn/vendor/rainbow.png
 
 [extrema]:        #extrema
 [value]:          #value
