@@ -980,7 +980,7 @@
     Quinn.Renderer.prototype.redrawDeltaBar = function (value, handle) {
         var left = null,
             right = null,
-            drawAt = parseInt(handle.position().left, 10) + this.barHeight;
+            drawAt = parseInt(handle.css('left'), 10) + this.barHeight;
 
         this.deltaBar.stop(true);
 
