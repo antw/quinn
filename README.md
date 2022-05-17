@@ -38,13 +38,13 @@ jQuery makes it a questionable choice for new development. Consider
 Downloads
 ---------
 
-[Everything (1.2.0)][tarball]
+[Everything (1.2.1)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (1.2.0)][development-js]
+[Development Version (1.2.1)][development-js]
 :   37.2kb, JS only, Uncompressed with comments
 
-[Production Version (1.2.0)][production-js]
+[Production Version (1.2.1)][production-js]
 :   3.2kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -594,7 +594,7 @@ and Internet Explorer are not yet complete.
 [easing]:         https://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
-[tarball]:        https://github.com/antw/quinn/tarball/v1.2.0
+[tarball]:        https://github.com/antw/quinn/tarball/v1.2.1
 [development-js]: https://antw.github.io/quinn/jquery.quinn.js
 [production-js]:  https://antw.github.io/quinn/jquery.quinn.min.js
 
