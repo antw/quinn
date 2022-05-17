@@ -368,6 +368,11 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
+#### 1.2.1 _17 May, 2022_
+
+* Fixes that the delta bar may be positioned incorrect if the slider container
+  was not visible.
+
 #### 1.2.0 _14 May, 2022_
 
 * An outrageously long overdue update to add role and aria accessibility
