@@ -38,13 +38,13 @@ jQuery makes it a questionable choice for new development. Consider
 Downloads
 ---------
 
-[Everything (1.2.1)][tarball]
+[Everything (1.2.2)][tarball]
 :   Tarball containing JS, CSS, and images
 
-[Development Version (1.2.1)][development-js]
+[Development Version (1.2.2)][development-js]
 :   37.2kb, JS only, Uncompressed with comments
 
-[Production Version (1.2.1)][production-js]
+[Production Version (1.2.2)][production-js]
 :   3.2kb, JS only, Minified and Gzipped
 
 Table of Contents
@@ -368,6 +368,12 @@ all it takes. In some cases, you may need to alter the CSS. For example:
 History
 -------
 
+#### 1.2.2 _23 May, 2022_
+
+* Fixes incorrectly positioned slider handle in default CSS styles. This fix
+  prevents the handle from always being placed _inside_ the bar rather than
+  overhanging.
+
 #### 1.2.1 _17 May, 2022_
 
 * Fixes that the delta bar may be positioned incorrect if the slider container
@@ -594,7 +600,7 @@ and Internet Explorer are not yet complete.
 [easing]:         https://gsgd.co.uk/sandbox/jquery/easing
 [style-change]:   https://github.com/antw/quinn/commit/ea29f2f
 
-[tarball]:        https://github.com/antw/quinn/tarball/v1.2.1
+[tarball]:        https://github.com/antw/quinn/tarball/v1.2.2
 [development-js]: https://antw.github.io/quinn/jquery.quinn.js
 [production-js]:  https://antw.github.io/quinn/jquery.quinn.min.js
 
